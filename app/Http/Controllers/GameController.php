@@ -25,7 +25,15 @@ class GameController extends Controller
 
         $user_id = auth()->user()->id;
 
-        return view('game')->with(['user_id' => $user_id, 'allPlayers' => $allPlayers, 'game' => $game_id]);
+        // Check whether user exists in selected game.
+        for($i = 0; $i <= count($allPlayers); $i++) {
+            if($game_id->users[$i]->id !== $user_id) {
+                return view('invitation');
+            } else {
+                return view('game')->with(['user_id' => $user_id, 'allPlayers' => $allPlayers, 'game' => $game_id]);
+            }
+        }
+
     }
 
     /**
@@ -132,6 +140,13 @@ class GameController extends Controller
     public function update(Request $request, Game $game)
     {
         //
+    }
+
+    // Handle user wanting to join a game.
+    public function invitation() {
+        $user_id = auth()->user()->id;
+
+
     }
 
     /**
