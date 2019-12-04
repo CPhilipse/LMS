@@ -15,9 +15,8 @@ class GameController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function index($id)
+    public function index(Request $request, $id)
     {
         $game_id =  Game::find($id);
 
@@ -25,15 +24,17 @@ class GameController extends Controller
 
         $user_id = auth()->user()->id;
 
+        $current_game_id = $request->route('id');
+
         // Check whether user exists in selected game.
         for($i = 0; $i <= count($allPlayers); $i++) {
             if($game_id->users[$i]->id !== $user_id) {
-                return view('invitation');
+                return redirect()->route('invitation', ['id' => $current_game_id]);
+//                return view('invitation');
             } else {
                 return view('game')->with(['user_id' => $user_id, 'allPlayers' => $allPlayers, 'game' => $game_id]);
             }
         }
-
     }
 
     /**
@@ -143,9 +144,67 @@ class GameController extends Controller
     }
 
     // Handle user wanting to join a game.
-    public function invitation() {
+    public function invitation(Request $request) {
         $user_id = auth()->user()->id;
+        $checkLink = $request->input('invitation');
+        $games = Game::all();
+        $current_game_id = $request->route('id');
+//        dd(json_decode($current_game_id));
+        $wrongLink = 'De ingevoerde link is onjuist.';
 
+
+        if(isset($checkLink)) {
+            $check = Game::where('link', $checkLink)->get()->first();
+//        dd($check);
+
+            if(isset($check->link)) {
+                if ($check->link == $checkLink) {
+                    dd('YESS ODMS FKSD ');
+                } else {
+                    dd('NOPE');
+                }
+            } else {
+                return view('invitation');
+
+            }
+        } else {
+            return view('invitation');
+        }
+
+
+//        if(isset($checkLink)) {
+//            foreach($games as $game) {
+//                print_r($game->link == $checkLink ? 'Yes the same' : 'No not the same');
+//                if($game->link == $checkLink) {
+//                    dd('Yes same link');
+//                }
+//                return view('invitation');
+//            }
+
+
+
+
+//            dd($checkLink);
+            // Check whether user exists in selected game.
+//            for ($i = 0; $i <= count($games); $i++) {
+//                if ($games[$i]->link == $checkLink) {
+//                    // Attach this user to the game.
+////                    print_r('YESS***WHAT***SAME****');
+//                    $populateGame = Game::find(json_decode($current_game_id));
+////                    $populateGame = Game::find($current_game_id);
+//
+//                    $populateGame->users()->attach(['user_id' => $user_id], ['admin' => 0, 'point' => 0, 'invited' => 1]);
+//
+//                    return redirect()->route('game', [$current_game_id]);
+//
+////                    dd('WRONG', $games[29]->link == $checkLink ? 'SAME' : 'NOT THE SAME');
+//                }
+//                    print_r($games[$i]->link == $checkLink ? 'SAME' : 'NOT THE SAME');
+////                    return view('invitation');
+//            }
+//        } else {
+//            return view('invitation');
+//        }
 
     }
 

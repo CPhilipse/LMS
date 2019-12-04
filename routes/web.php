@@ -21,7 +21,9 @@ Route::post('nieuw-spel','GameController@create')->name('createGame');
 Route::get('maak-nieuw-spel','GameController@show')->name('showGame');
 Route::post('maak-nieuw-spel-invite','GameController@addUser')->name('addUser');
 
-Route::post('spel/invitatie','GameController@invitation')->name('invitation');
+//Route::get('spel/{id}/invitatie','GameController@invitation')->name('invitation');
+//Route::post('spel/check-link', 'GameController@checkLink')->name('checkLink');
+Route::get('spel/{id}/invitatie','GameController@invitation')->name('invitation');
 Route::get('spel/{id}','GameController@index')->name('game');
 Route::get('spel/{id}/verwijderen','GameController@destroy')->name('deleteUser');
 

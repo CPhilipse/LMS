@@ -13,7 +13,15 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <form name="form" action="{{route('invitation')}}" method="POST">
+                        @if(isset($wrongLink))
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">Mislukt!</h4>
+                                <p>{{$wrongLink}}</p>
+                            </div>
+                        @endif
+
+                            <form name="form" action="{{route('invitation', request()->route('id'))}}" method="GET">
+{{--                                <form name="form" action="{{route('game', ['id' => request()->route('id')])}}" method="POST">--}}
                             @csrf
                             <input style="height: 50px" class="col-12" type="text" name="invitation" placeholder="Uitnodigingslink...">
 
