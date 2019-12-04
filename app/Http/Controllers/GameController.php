@@ -38,27 +38,27 @@ class GameController extends Controller
      */
     public function create(Request $request)
     {
-        $random_string = chr(rand(65,90)) . chr(rand(65,90)) . chr(rand(65,90)) . chr(rand(65,90)) . chr(rand(65,90));
-
         $name = $request->input('gameName');
         $uuid = session('uuid');
-        $game = Game::create(['name' => $name, 'link' => $random_string]);
+        if(!isset($name)) {
+            $message = 'Vul alstublieft een naam in voor het spel.';
+            return view('creategame')->with(['emptyName' => $message, 'uuid' => $uuid]);
+        }
+        Game::create(['name' => $name, 'link' => $uuid]);
+
         $user_id = auth()->user()->id;
         $game_id = Game::all()->last()->id;
-//        $populateGame = Game::all()->last();
         $populateGame = Game::find($game_id);
 
-
-        // Fill pivot table - for user who creates the game.
-        $populateGame->users()->attach(['user_id' => $user_id],['admin' => 1, 'point' => 0, 'invited' => 0]);
+        $populateGame->users()->attach(['user_id' => $user_id], ['admin' => 1, 'point' => 0, 'invited' => 0]);
 
         // Add invited users to the game.
         $lobby = session('lobby');
         $madeGame_id = Game::all()->last()->id;
+
         if(isset($lobby)) {
             foreach ($lobby as $user_id => $invited) {
                 $user = User::find($user_id);
-                // Fill pivot table - for the users who were added.
                 $user->games()->attach(['user_id' => $user_id, 'game_id' => $madeGame_id], ['admin' => 0, 'point' => 0, 'invited' => $invited]);
             }
         }
@@ -92,8 +92,9 @@ class GameController extends Controller
     {
         // Generate random link for the game
         $generateUuid = Str::uuid();
-        $uuid = json_encode($generateUuid) . chr(rand(65,90));
-        
+//        $uuid = json_encode($generateUuid) . intval( "0" . rand(1,9) . rand(0,9) . rand(0,9) . rand(0,9) . rand(0,9) );
+        $uuid = $generateUuid;
+
         $sessionUuid = session('uuid');
 
         // Store uuid in session so that it won't change for this game when adding users through email.
@@ -172,8 +173,6 @@ class GameController extends Controller
         $user = User::where('email', $email)->get()->first();
         $uuid = session('uuid');
 
-        // Add this user to the session, all the users in this session will then be added to the DB in create function.
-        // Key in session is user_id, value will be the value of invited for that user
         if(isset($user)) {
             if ($user->id == auth()->user()->id) {
                 // Unable to invite yourself.

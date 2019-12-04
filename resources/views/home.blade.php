@@ -30,7 +30,7 @@
                         </button>
                     </span>
 
-                    @foreach($games as $game)
+                    @foreach($games->reverse() as $game)
                             <hr>
                         <div class="p-1 mt-3" style="text-align: center;">
                             <a href="{{ route('game', ['id' => $game->id]) }}">{{$game->name}}</a>

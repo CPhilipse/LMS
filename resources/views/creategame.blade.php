@@ -42,7 +42,14 @@
                             </div>
                         @endif
 
-                        <form name="form" action="{{route('addUser', ['uuid' => $uuid])}}" method="POST">
+                        @if(isset($emptyName))
+                            <div class="alert alert-danger" role="alert">
+                                <h4 class="alert-heading">Mislukt!</h4>
+                                <p>{{$emptyName}}</p>
+                            </div>
+                        @endif
+
+                        <form name="form" action="{{route('addUser')}}" method="POST">
                             @csrf
                             <input class="col-9" type="text" name="email" placeholder="E-mail van diegene die uitgenodigd wil worden...">
 
