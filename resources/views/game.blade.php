@@ -25,21 +25,30 @@
                 @endif
 
                 <div class="w3-bar w3-black">
-                    <button class="w3-bar-item w3-button tablink w3-blue" onclick="openTab(event,'Rules')">Spelregels</button>
-                    <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'Players')">Spelers</button>
-                    <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'Rounds')">Rondes</button>
                     @foreach($allPlayers as $player)
                         @if($user_id == $player->pivot->user_id)
                             @if($player->pivot->admin == 1)
-                                    <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'Settings')">Instellingen</button>
+                                <button class="w3-bar-item w3-button tablink w3-blue" onclick="openTab(event,'Settings')">Instellingen</button>
+                                <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'Rules')">Spelregels</button>
                             @else
-                                    <button style="display: none;" class="w3-bar-item w3-button tablink" onclick="openTab(event,'Settings')" disabled></button>
+                                <button class="w3-bar-item w3-button tablink w3-blue" onclick="openTab(event,'Rules')">Spelregels</button>
+                                <button style="display: none;" class="w3-bar-item w3-button tablink" onclick="openTab(event,'Settings')" disabled></button>
                             @endif
                         @endif
                     @endforeach
+                    <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'Players')">Spelers</button>
+                    <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'Rounds')">Rondes</button>
                 </div>
 
-                <div id="Rules" class="w3-container w3-border tab">
+                @foreach($allPlayers as $player)
+                    @if($user_id == $player->pivot->user_id)
+                        @if($player->pivot->admin == 1)
+                                <div id="Rules" class="w3-container w3-border tab" style="display:none">
+                            @else
+                                <div id="Rules" class="w3-container w3-border tab">
+                            @endif
+                    @endif
+                @endforeach
                     <ul style="padding-top: 35px; padding-bottom: 25px;">
                         <li>
                             Voordat de speelronde begint selecteer je 1 team in de desbetreffende competitie waarin je speelt.
@@ -94,7 +103,15 @@
                     <p>Tokyo is the capital of Japan.</p>
                 </div>
 
-                <div id="Settings" class="w3-container w3-border tab" style="display:none">
+                    @foreach($allPlayers as $player)
+                        @if($user_id == $player->pivot->user_id)
+                            @if($player->pivot->admin == 1)
+                                    <div id="Settings" class="w3-container w3-border tab">
+                                @else
+                                    <div id="Settings" class="w3-container w3-border tab" style="display:none">
+                            @endif
+                        @endif
+                    @endforeach
 
                     @if(isset($user))
                         <div style="margin-top: 20px" class="alert alert-success" role="alert">
@@ -128,6 +145,13 @@
                         <div style="margin-top: 20px" class="alert alert-danger" role="alert">
                             <h4 class="alert-heading">Mislukt!</h4>
                             <p>{{$emptyName}}</p>
+                        </div>
+                    @endif
+
+                    @if(session('saveNotice') == true)
+                        <div style="margin-top: 20px" class="alert alert-success" role="alert">
+                            <h4 class="alert-heading">Gelukt!</h4>
+                            <p>Klik op opslaan om de gebruiker toe te voegen.</p>
                         </div>
                     @endif
 

@@ -162,7 +162,7 @@ class GameController extends Controller
             }
         }
 
-        session()->forget(['lobbyExistingGame']);
+        session()->forget(['lobbyExistingGame', 'saveNotice']);
 
         return redirect()->route('game', ['id' => $game_id]);
     }
@@ -184,13 +184,10 @@ class GameController extends Controller
 
             if(isset($check->link)) {
                 if ($check->link == $checkLink) {
-//                    $allPlayers = $check->users;
                     $check->users()->attach(['user_id' => $user_id], ['admin' => 0, 'point' => 0, 'invited' => 1]);
                     session(['rightLink' => true]);
 
                     return redirect()->route('game', ['id' => $current_game_id]);
-
-//                    return view('game')->with(['rightLink' => $rightLink, 'id' => $current_game_id, 'game' => $check, 'allPlayers' => $allPlayers, 'user_id' => $user_id, 'uuid' => $game->link, 'game_name' => $game->name]);
                 } else {
                     return view('invitation')->with('wrongLink', $wrongLink);
                 }
@@ -298,11 +295,13 @@ class GameController extends Controller
                     } else {
                         // IT'S NULL, UNSET. So user doesn't exist in the game.
                         $session[$user->id] = 1;
+                        session(['saveNotice' => true]);
                     }
                 }
 
                 session(['lobbyExistingGame' => $session]);
-                return view('game')->with(['user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game_id, 'uuid' => $game->link, 'game_name' => $game_id->name]);
+                return redirect()->route('game', ['id' => $game_id]);
+//                return view('game')->with(['user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game_id, 'uuid' => $game->link, 'game_name' => $game_id->name]);
             }
         } else {
             // User not found.
