@@ -180,40 +180,14 @@
                 </div>
 
                 <div id="Rounds" class="w3-container w3-border tab" style="display:none">
-{{--                    <div class="slideshow-container">--}}
-
-{{--                        <div class="mySlides fade">--}}
-{{--                            <div class="numbertext">1 / 3</div>--}}
-{{--                            <img src="https://i.ytimg.com/vi/MPV2METPeJU/maxresdefault.jpg" style="width:100%">--}}
-{{--                            <div class="text">Caption Text</div>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="mySlides fade">--}}
-{{--                            <div class="numbertext">2 / 3</div>--}}
-{{--                            <img src="https://i.ytimg.com/vi/MPV2METPeJU/maxresdefault.jpg" style="width:100%">--}}
-{{--                            <div class="text">Caption Two</div>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="mySlides fade">--}}
-{{--                            <div class="numbertext">3 / 3</div>--}}
-{{--                            <img src="https://i.ytimg.com/vi/MPV2METPeJU/maxresdefault.jpg" style="width:100%">--}}
-{{--                            <div class="text">Caption Three</div>--}}
-{{--                        </div>--}}
-
-{{--                        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>--}}
-{{--                        <a class="next" onclick="plusSlides(1)">&#10095;</a>--}}
-
-{{--                    </div>--}}
-{{--                    <br>--}}
-
                     @php
                         $league =
-                [
-                    [" Team 1", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
-                    [" Team 1 -", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
-                    [" Team 1 +", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
-                    [" Team 1 ?", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
-                ];
+                            [
+                                [" Team 1", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
+                                [" Team 1 -", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
+                                [" Team 1 +", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
+                                [" Team 1 ?", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
+                            ];
 
                         for ($row = 0; $row < count($league); $row++) {
                                 echo "<div class='mySlides'>";
@@ -221,8 +195,21 @@
                             echo '<a class="next" onclick="plusSlides(1)">&#10095;</a>';
                             echo "<h2 style='text-align: center; margin-top: 20px; padding-bottom: 25px'><b>Ronde $row</b></h2>";
                             for ($col = 0; $col < count($league[1]); $col++) {
-                                // Now every team has it's own callable name, which is the same value as that what is being shown.
-                                    echo "<span><input type='radio' name='" . $league[$row][$col] . "' value='other'>" . $league[$row][$col] . "</span><br>";
+                                /*
+                                 * Make a form around the radio button, with a button which will submit the choice.
+                                 * Then in the controller get this value of the choice. Put it for now in a session, do a if/else statement on the radio button of the session.
+                                 * If session is set to value, then don't show the radio button. Otherwise do show.
+                                 * Make a new column in database with 'choosen'. On click of team, change choosen for this user to 1. Which means the person has choosen. Based on this remove radio button.
+                                 * On new round, for the users who lose - read LOST::. For the users who's team won, change value choosen from 1 to 0.
+                                 * Based on who's value of 'out' is 0, check who's still in the game. If there's one left, give this person a $point + 1.
+                                 *
+                                 * Q: * How to keep record which round a certain game is on
+                                 * LOST::
+                                 * WHEN having 'out' column in the DB, on wrong change it to 0. On reset of game, set it all to 1 and give the remaining user $point + 1.
+                                 * RESET::
+                                 * Resetting the games is basiclly changing all the users in the game their 'out' value to 0 and 'choosen' value to 0.
+                                 * */
+                                echo "<span><input type='radio' name='team' value='" . $league[$row][$col] . "'>" . $league[$row][$col] . "</span><br>";
                             }
                                 echo "</div>";
                         }
@@ -255,15 +242,6 @@
                             dots[slideIndex-1].className += " active";
                         }
                     </script>
-
-{{--                    @for($row = 0; $row < count($league); $row++)--}}
-{{--                        {{var_dump($league)}}--}}
-{{--                        <h3>Ronde {{$row}}</h3>--}}
-{{--                        @for($col = 0; $col < count($league); $col++)--}}
-{{--                            <p>{{print_r($competitions)}}</p>--}}
-{{--                            --}}{{--                            <p>{{$competitions[$row][$col]}}</p>--}}
-{{--                        @endfor--}}
-{{--                    @endfor--}}
                 </div>
 
                     @foreach($allPlayers as $player)
