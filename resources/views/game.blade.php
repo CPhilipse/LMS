@@ -28,7 +28,15 @@
                     <button class="w3-bar-item w3-button tablink w3-blue" onclick="openTab(event,'Rules')">Spelregels</button>
                     <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'Players')">Spelers</button>
                     <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'Rounds')">Rondes</button>
-                    <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'Settings')">Instellingen</button>
+                    @foreach($allPlayers as $player)
+                        @if($user_id == $player->pivot->user_id)
+                            @if($player->pivot->admin == 1)
+                                    <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'Settings')">Instellingen</button>
+                            @else
+                                    <button style="display: none;" class="w3-bar-item w3-button tablink" onclick="openTab(event,'Settings')" disabled></button>
+                            @endif
+                        @endif
+                    @endforeach
                 </div>
 
                 <div id="Rules" class="w3-container w3-border tab">
