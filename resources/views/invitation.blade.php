@@ -20,13 +20,13 @@
                             </div>
                         @endif
 
-                            <form name="form" action="{{route('invitation', request()->route('id'))}}" method="GET">
-{{--                                <form name="form" action="{{route('game', ['id' => request()->route('id')])}}" method="POST">--}}
+                        <form name="form" action="{{route('invitation', request()->route('id'))}}" method="GET">
+                            {{--                                <form name="form" action="{{route('game', ['id' => request()->route('id')])}}" method="POST">--}}
                             @csrf
                             <input style="height: 50px" class="col-12" type="text" name="invitation" placeholder="Uitnodigingslink...">
 
                             <div class="pt-3 text-center">
-                                <button type="submit" class="btn btn-outline-dark col-2">
+                                <button type="submit" class="btn btn-outline-dark col-3">
                                     Naar spel
                                 </button>
                             </div>

@@ -21,24 +21,24 @@
                             </div>
                         @endif
 
-                        @if(isset($nope) == 'nope')
+                        @if(isset($nope))
                             <div class="alert alert-danger" role="alert">
                                 <h4 class="alert-heading">Mislukt!</h4>
-                                <p>Gebruiker kan niet gevonden worden.</p>
+                                <p>{{$nope}}</p>
                             </div>
                         @endif
 
-                        @if(isset($self) == 'self')
+                        @if(isset($self))
                             <div class="alert alert-danger" role="alert">
                                 <h4 class="alert-heading">Mislukt!</h4>
-                                <p>{{isset($self) ? $self : ''}}</p>
+                                <p>{{$self}}</p>
                             </div>
                         @endif
 
                         @if(isset($alreadyInvited))
                             <div class="alert alert-danger" role="alert">
                                 <h4 class="alert-heading">Mislukt!</h4>
-                                <p>{{isset($alreadyInvited) ? $alreadyInvited : ''}}</p>
+                                <p>{{$alreadyInvited}}</p>
                             </div>
                         @endif
 
@@ -51,9 +51,9 @@
 
                         <form name="form" action="{{route('addUser')}}" method="POST">
                             @csrf
-                            <input class="col-9" type="text" name="email" placeholder="E-mail van diegene die uitgenodigd wil worden...">
+                            <input style="height: 50px; max-width: 91%;" class="col-10" type="text" name="email" placeholder="E-mail van diegene die uitgenodigd wil worden...">
 
-                            <button type="submit" class="btn btn-outline-dark col-2">
+                            <button style="height: 50px; margin-bottom: 2.5px;" type="submit" class="btn btn-outline-dark col-1">
                                 +
                             </button>
                         </form>
@@ -61,17 +61,18 @@
                         <form name="form" action="{{route('createGame')}}" method="POST">
                             @csrf
                             <div class="pt-3">
-                                <input class="col-12" type="text" name="gameName" placeholder="Naam van het spel...">
+                                <input style="height: 50px" class="col-12" type="text" name="gameName" placeholder="Naam van het spel...">
                             </div>
                             <div class="pt-3">
-                                <input class="col-12" type="text" name="uuid" value="{{$uuid}}" disabled>
+                                <input style="height: 50px" class="col-12" type="text" name="uuid" value="{{$uuid}}" disabled>
                             </div>
 
-                            <br><br>
-
-                            <button type="submit" class="btn btn-outline-dark">
-                                Maak spel aan
-                            </button>
+                            <br>
+                            <div class="text-center">
+                                <button style="height: 50px;" type="submit" class="btn btn-outline-dark col-3">
+                                    Maak spel aan
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
