@@ -15,6 +15,8 @@ class GameController extends Controller
      */
     public function index(Request $request, $id)
     {
+        // The two-dimensional array is to be found in the blade > rounds tab - $competitions = [[Teams - round 1], [Teams - round 2], [Teams - round 3]];
+
         $game_id = Game::find($id);
 
         $allPlayers = $game_id->users;
@@ -23,21 +25,16 @@ class GameController extends Controller
 
         $current_game_id = $request->route('id');
 
-
-//        $check = User::where('id', $user_id)->get()->first();
-//        $check = $allPlayers
-
-//        if ($check->id == $user_id) {
-//            $allPlayers = $check->users;
-//            return view('game')->with(['rightLink' => $rightLink, 'id' => $current_game_id, 'game' => $check, 'allPlayers' => $allPlayers]);
-//        } else {
-//            return view('invitation')->with('wrongLink', $wrongLink);
-//        }
-
         // Check whether user exists in selected game.
         for ($i = 0; $i < count($allPlayers); $i++) {
             if ($game_id->users[$i]->id == $user_id) {
-                return view('game')->with(['user_id' => $user_id, 'allPlayers' => $allPlayers, 'game' => $game_id, 'uuid' => $game_id->link, 'game_name' => $game_id->name]);
+                return view('game')->with(
+                    [
+                    'user_id' => $user_id, 'allPlayers' => $allPlayers,
+                    'game' => $game_id, 'uuid' => $game_id->link, 'game_name' => $game_id->name,
+//                    'rounds' => $rounds, 'competitions' => $competitions, 'league' => $league
+                    ]
+                );
             }
         }
         return redirect()->route('invitation', ['id' => $current_game_id]);
@@ -174,10 +171,6 @@ class GameController extends Controller
         $current_game_id = $request->route('id');
 
         $wrongLink = 'De ingevoerde link is onjuist.';
-        $rightLink = 'Welkom bij het spel!';
-
-        $game_id = $request->route('id');
-        $game = Game::find($game_id);
 
         if(isset($checkLink)) {
             $check = Game::where('link', $checkLink)->get()->first();
@@ -301,7 +294,6 @@ class GameController extends Controller
 
                 session(['lobbyExistingGame' => $session]);
                 return redirect()->route('game', ['id' => $game_id]);
-//                return view('game')->with(['user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game_id, 'uuid' => $game->link, 'game_name' => $game_id->name]);
             }
         } else {
             // User not found.

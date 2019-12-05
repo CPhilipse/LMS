@@ -99,8 +99,33 @@
                 </div>
 
                 <div id="Rounds" class="w3-container w3-border tab" style="display:none">
-                    <h2>Rondes</h2>
-                    <p>Tokyo is the capital of Japan.</p>
+                    @php
+                        $league =
+                [
+                    ["Team 1", "Team 2", "-", "Team 3", "Team 4", "-", "Team 5", "Team 6", "-", "Team 7", "Team 8"],
+                    ["Team 1", "Team 2", "-", "Team 3", "Team 4", "-", "Team 5", "Team 6", "-", "Team 7", "Team 8"],
+                    ["Team 1", "Team 2", "-", "Team 3", "Team 4", "-", "Team 5", "Team 6", "-", "Team 7", "Team 8"],
+                    ["Team 1", "Team 2", "-", "Team 3", "Team 4", "-", "Team 5", "Team 6", "-", "Team 7", "Team 8"],
+                ];
+
+                        for ($row = 0; $row < count($league); $row++) {
+                            echo "<p><b>Row number $row</b></p>";
+                            for ($col = 0; $col < count($league[1]); $col++) {
+                                // Now every team has it's own callable name, which is the same value as that what is being shown.
+                                echo "<span><input type='radio' name='" . $league[$row][$col] . "' value='other'>" . $league[$row][$col] . "</span><br>";
+                            }
+                        }
+                    @endphp
+
+
+{{--                    @for($row = 0; $row < count($league); $row++)--}}
+{{--                        {{var_dump($league)}}--}}
+{{--                        <h3>Ronde {{$row}}</h3>--}}
+{{--                        @for($col = 0; $col < count($league); $col++)--}}
+{{--                            <p>{{print_r($competitions)}}</p>--}}
+{{--                            --}}{{--                            <p>{{$competitions[$row][$col]}}</p>--}}
+{{--                        @endfor--}}
+{{--                    @endfor--}}
                 </div>
 
                     @foreach($allPlayers as $player)
