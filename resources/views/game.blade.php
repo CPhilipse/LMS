@@ -1,5 +1,4 @@
 @extends('layouts.app')
-{{-- Overzichtspagina --}}
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
