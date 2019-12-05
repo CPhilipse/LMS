@@ -17,10 +17,10 @@
                     </div>
                 @endif
 
-                @if(isset($rightLink))
+                @if(session('rightLink') == true)
                     <div class="alert alert-success" role="alert">
                         <h4 class="alert-heading">Gelukt!</h4>
-                        <p>{{$rightLink}}</p>
+                        <p>Welkom bij het spel!</p>
                     </div>
                 @endif
 

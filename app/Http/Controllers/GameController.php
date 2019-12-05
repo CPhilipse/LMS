@@ -145,23 +145,24 @@ class GameController extends Controller
      */
     public function update(Request $request, Game $game)
     {
-        $lobby = session('lobby');
+        $lobby = session('lobbyExistingGame');
         $game_id = $request->route('id');
         $name = $request->input('game_name');
 
-        // Save new name
+        // Save new name of the game.
         $game = Game::find($game_id);
         $game->name = $name;
         $game->save();
 
+        // Save new users to the game.
         if (isset($lobby)) {
             foreach ($lobby as $user_id => $invited) {
                 $user = User::find($user_id);
-                $user->games()->attach(['user_id' => $user_id, 'game_id' => $game_id], ['admin' => 0, 'point' => 0, 'invited' => $invited]);
+                $user->games()->attach(['game_id' => $game_id], ['admin' => 0, 'point' => 0, 'invited' => $invited]);
             }
         }
 
-        session()->forget(['lobby']);
+        session()->forget(['lobbyExistingGame']);
 
         return redirect()->route('game', ['id' => $game_id]);
     }
@@ -175,15 +176,21 @@ class GameController extends Controller
         $wrongLink = 'De ingevoerde link is onjuist.';
         $rightLink = 'Welkom bij het spel!';
 
+        $game_id = $request->route('id');
+        $game = Game::find($game_id);
+
         if(isset($checkLink)) {
             $check = Game::where('link', $checkLink)->get()->first();
 
             if(isset($check->link)) {
                 if ($check->link == $checkLink) {
-                    $allPlayers = $check->users;
-
+//                    $allPlayers = $check->users;
                     $check->users()->attach(['user_id' => $user_id], ['admin' => 0, 'point' => 0, 'invited' => 1]);
-                    return view('game')->with(['rightLink' => $rightLink, 'id' => $current_game_id, 'game' => $check, 'allPlayers' => $allPlayers]);
+                    session(['rightLink' => true]);
+
+                    return redirect()->route('game', ['id' => $current_game_id]);
+
+//                    return view('game')->with(['rightLink' => $rightLink, 'id' => $current_game_id, 'game' => $check, 'allPlayers' => $allPlayers, 'user_id' => $user_id, 'uuid' => $game->link, 'game_name' => $game->name]);
                 } else {
                     return view('invitation')->with('wrongLink', $wrongLink);
                 }
@@ -230,22 +237,15 @@ class GameController extends Controller
 
     public function addUser(Request $request)
     {
-//        dd(session('lobby'));
         $email = $request->input('email');
         $user = User::where('email', $email)->get()->first();
         $uuid = session('uuid');
-        $game_id = $request->route('id');
-        $game = Game::find($game_id);
 
         if (isset($user)) {
             if ($user->id == auth()->user()->id) {
                 // Unable to invite yourself.
                 $self = 'U kan uzelf niet toevoegen.';
-                if(isset($game_id)) {
-                    return view('game')->with(['self' => $self, 'user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game, 'uuid' => $game->link, 'game_name' => $game->name]);
-                } else {
-                    return view('creategame')->with(['self' => $self, 'uuid' => $uuid]);
-                }
+                return view('creategame')->with(['self' => $self, 'uuid' => $uuid]);
             } else {
                 // Add invited user in session.
                 $session = session('lobby');
@@ -253,38 +253,61 @@ class GameController extends Controller
                 // Prevent from adding two same users.
                 if (isset($session[$user->id])) {
                     $alreadyInvited = $user->name . ' is al toegevoegd.';
-                    if(isset($game_id)) {
-                        return view('game')->with(['alreadyInvited' => $alreadyInvited, 'user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game, 'uuid' => $game->link, 'game_name' => $game->name]);
-                    }
+                    return view('creategame')->with(['alreadyInvited' => $alreadyInvited, 'uuid' => $uuid]);
                 } else {
                     $session[$user->id] = 1;
                 }
 
                 session(['lobby' => $session]);
-                if(isset($game_id)) {
-                    if(isset($user)) {
-                        return view('game')->with(['user' => $user->name, 'user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game_id, 'uuid' => $game->link, 'game_name' => $game_id->name]);
-                    } else {
-                        dd('die');
-                        return view('game')->with(['user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game_id, 'uuid' => $game->link, 'game_name' => $game_id->name]);
-                    }
-                } else {
-                    return view('creategame')->with(['user' => $user->name, 'uuid' => $uuid]);
-                }
+                return view('creategame')->with(['user' => $user->name, 'uuid' => $uuid]);
             }
         } else {
             // User not found.
             $nope = 'Gebruiker kan niet gevonden worden.';
-            if(isset($game_id)) {
-                return view('game')->with(['nope' => $nope, 'user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game, 'uuid' => $game->link, 'game_name' => $game->name]);
-            } else {
-                return view('creategame')->with(['nope' => $nope, 'uuid' => $uuid]);
-            }
+            return view('creategame')->with(['nope' => $nope, 'uuid' => $uuid]);
         }
     }
 
-    // Put the code for well adding user into existing game from the above function in here.
-    public function addUserExistingGame() {
+    // Add user through email from an existing game.
+    public function addUserExistingGame(Request $request) {
+        $email = $request->input('email');
+        $user = User::where('email', $email)->get()->first();
+        $game_id = $request->route('id');
+        $game = Game::find($game_id);
 
+        if (isset($user)) {
+            if ($user->id == auth()->user()->id) {
+                // Unable to invite yourself.
+                $self = 'U kan uzelf niet toevoegen.';
+                return view('game')->with(['self' => $self, 'user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game, 'uuid' => $game->link, 'game_name' => $game->name]);
+            } else {
+                // Add invited user in session.
+                $session = session('lobbyExistingGame');
+
+                // Prevent from adding two same users.
+                if (isset($session[$user->id])) {
+                    $alreadyInvited = $user->name . ' is al toegevoegd, klik op opslaan.';
+                    return view('game')->with(['alreadyInvited' => $alreadyInvited, 'user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game, 'uuid' => $game->link, 'game_name' => $game->name]);
+                } else {
+                    $check = User::where('email', $email)->get()->first()->games->where('id', $game_id)->first();
+
+                    if (isset($check)) {
+                        // User already exists in this game.
+                        $userExistsInGame = 'De gebruiker van de ingevoerde email is al in dit spel.';
+                        return view('game')->with(['userExistsInGame' => $userExistsInGame, 'user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game, 'uuid' => $game->link, 'game_name' => $game->name]);
+                    } else {
+                        // IT'S NULL, UNSET. So user doesn't exist in the game.
+                        $session[$user->id] = 1;
+                    }
+                }
+
+                session(['lobbyExistingGame' => $session]);
+                return view('game')->with(['user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game_id, 'uuid' => $game->link, 'game_name' => $game_id->name]);
+            }
+        } else {
+            // User not found.
+            $nope = 'Gebruiker kan niet gevonden worden.';
+            return view('game')->with(['nope' => $nope, 'user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game, 'uuid' => $game->link, 'game_name' => $game->name]);
+        }
     }
 }
