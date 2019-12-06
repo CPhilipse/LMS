@@ -225,7 +225,8 @@
                                      *
                                      * Have the radio buttons show on date. At the end of the last game of a round, don't show radio buttons.
                                      * DESPERATE: put the <input radio in the array before the team names.
-                                     * */
+                                     *
+                                     *  */
                                     echo "<span><input type='radio' name='team' value='" . $league[$row][$col] . "'>" . $league[$row][$col] . "</span><br>";
                                 }
                                     echo "</div>";
@@ -303,6 +304,13 @@
                         <div style="margin-top: 20px" class="alert alert-danger" role="alert">
                             <h4 class="alert-heading">Mislukt!</h4>
                             <p>{{$emptyName}}</p>
+                        </div>
+                    @endif
+
+                    @if(isset($userExistsInGame))
+                        <div style="margin-top: 20px" class="alert alert-danger" role="alert">
+                            <h4 class="alert-heading">Mislukt!</h4>
+                            <p>{{$userExistsInGame}}</p>
                         </div>
                     @endif
 

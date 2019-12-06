@@ -289,7 +289,6 @@ class GameController extends Controller
 
                     if (isset($check)) {
                         // User already exists in this game.
-                        session()->forget(['saveNotice']);
                         $userExistsInGame = 'De gebruiker van de ingevoerde email is al in dit spel.';
                         return view('game')->with(['userExistsInGame' => $userExistsInGame, 'user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game, 'uuid' => $game->link, 'game_name' => $game->name]);
                     } else {

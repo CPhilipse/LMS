@@ -20,41 +20,29 @@
                             </div>
                         @endif
 
-                        <span class="ml-4" style="padding-left: 6px">
-                        <button style="cursor: default;" type="button" class="btn btn-outline-dark col-5" disabled>Spellen van anderen - ontsleuteld</button>
-                    </span>
-                        <span class="pl-5">
-                        <button style="cursor: default;" type="button" class="btn btn-outline-dark col-5" disabled>
+                        <button style="cursor: default;" type="button" class="btn btn-outline-dark col-12" disabled>
                             Mijn spellen
                         </button>
-                    </span>
-
-                        <ul>
-                            Mijn spellen
                             @foreach($adminGames as $game)
-                                <li>
+                                <hr>
+                                <div class="p-1 mt-3" style="text-align: center;">
                                     <a href="{{ route('game', ['id' => $game->id]) }}">
                                         {{$game->name}}
                                     </a>
-                                </li>
-                                Admin: {{$game->pivot->admin == 1 ? 'U bent admin' : 'U bent gebruiker'}} <br>
-                                Punten: {{$game->pivot->point}}
+                                </div>
                             @endforeach
-                        </ul>
 
-                        <ul>
-                            Spellen anderen
+                            <hr>
+
+                            <button style="cursor: default;" type="button" class="btn btn-outline-dark col-12" disabled>Spellen van anderen - ontsleuteld</button>
                             @foreach($invitedGames as $game)
-                                <li>
+                                <hr>
+                                <div class="p-1 mt-3" style="text-align: center;">
                                     <a href="{{ route('game', ['id' => $game->id]) }}">
                                         {{$game->name}}
                                     </a>
-                                </li>
-
-                                Admin: {{$game->pivot->admin == 1 ? 'U bent admin' : 'U bent gebruiker'}} <br>
-                                Punten: {{$game->pivot->point}}
+                                </div>
                             @endforeach
-                        </ul>
                     </div>
                 </div>
             </div>
