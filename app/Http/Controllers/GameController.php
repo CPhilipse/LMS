@@ -213,16 +213,22 @@ class GameController extends Controller
      * Remove the specified resource from storage.
      * Destroy specific user from certain game.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @param $user_id
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroyUser($id, $game_id)
+    public function destroyUser(Request $request)
     {
-        $user = User::find($id);
+        $user_id = $request->route('user_id');
+        $user = User::find($user_id);
+        $current_game_id = $request->route('id');
         // Detach certain user from game > game_id
-        $user->games()->detach($game_id);
+        $user->games()->detach($current_game_id);
 
-        $message = 'delete';
-        return view('game')->with('deleteUser', $message);
+
+        session(['succesfulDeleteOfUser' => true]);
+
+        return redirect()->route('game', ['id' => $current_game_id]);
     }
 
     public function addUser(Request $request)

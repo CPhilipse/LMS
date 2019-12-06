@@ -165,7 +165,7 @@
                                 @foreach($allPlayers as $player)
                                     <div style="border-bottom: 1px solid black; height: 75px; list-style-type: none">
                                         <span style="float: left; padding-left: 25px; padding-top: 25px">{{$player->name}} - {{$player->pivot->point}}</span>
-                                        <a href="{{route('deleteUser', ['id' => $player->id])}}" style="float: right;padding-right: 25px; padding-top: 25px">X</a>
+                                        <a href="{{route('deleteUser', ['id' => $game->id, 'user_id' => $player->id])}}" style="float: right;padding-right: 25px; padding-top: 25px">X</a>
                                     </div>
                                 @endforeach
                             @else
@@ -181,38 +181,51 @@
 
                 <div id="Rounds" class="w3-container w3-border tab" style="display:none">
                     @php
-                        $league =
-                            [
-                                [" Team 1", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
-                                [" Team 1 -", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
-                                [" Team 1 +", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
-                                [" Team 1 ?", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
-                            ];
+                        $outcome =
+                                [
+                                    ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                                    ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                                    ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                                    ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                                ];
 
-                        for ($row = 0; $row < count($league); $row++) {
-                                echo "<div class='mySlides'>";
-                            echo '<a class="prev" onclick="plusSlides(-1)">&#10094;</a>';
-                            echo '<a class="next" onclick="plusSlides(1)">&#10095;</a>';
-                            echo "<h2 style='text-align: center; margin-top: 20px; padding-bottom: 25px'><b>Ronde $row</b></h2>";
-                            for ($col = 0; $col < count($league[1]); $col++) {
-                                /*
-                                 * Make a form around the radio button, with a button which will submit the choice.
-                                 * Then in the controller get this value of the choice. Put it for now in a session, do a if/else statement on the radio button of the session.
-                                 * If session is set to value, then don't show the radio button. Otherwise do show.
-                                 * Make a new column in database with 'choosen'. On click of team, change choosen for this user to 1. Which means the person has choosen. Based on this remove radio button.
-                                 * On new round, for the users who lose - read LOST::. For the users who's team won, change value choosen from 1 to 0.
-                                 * Based on who's value of 'out' is 0, check who's still in the game. If there's one left, give this person a $point + 1.
-                                 *
-                                 * Q: * How to keep record which round a certain game is on
-                                 * LOST::
-                                 * WHEN having 'out' column in the DB, on wrong change it to 0. On reset of game, set it all to 1 and give the remaining user $point + 1.
-                                 * RESET::
-                                 * Resetting the games is basiclly changing all the users in the game their 'out' value to 0 and 'choosen' value to 0.
-                                 * */
-                                echo "<span><input type='radio' name='team' value='" . $league[$row][$col] . "'>" . $league[$row][$col] . "</span><br>";
+                            $league =
+                                [
+                                    [" Team 1", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
+                                    [" Team 1 -", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
+                                    [" Team 1 +", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
+                                    [" Team 1 ?", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
+                                ];
+
+
+
+                            for ($row = 0; $row < count($league); $row++) {
+                                    echo "<div class='mySlides'>";
+                                echo '<a class="prev" onclick="plusSlides(-1)">&#10094;</a>';
+                                echo '<a class="next" style="right: 30px;" onclick="plusSlides(1)">&#10095;</a>';
+                                echo "<h2 style='text-align: center; margin-top: 20px; padding-bottom: 25px'><b>Ronde $row</b></h2>";
+                                for ($col = 0; $col < count($league[0]); $col++) {
+                                    /*
+                                     * Make a form around the radio button, with a button which will submit the choice.
+                                     * Then in the controller get this value of the choice. Put it for now in a session, do a if/else statement on the radio button of the session.
+                                     * If session is set to value, then don't show the radio button. Otherwise do show.
+                                     * Make a new column in database with 'chosen'. On click of team, change chosen for this user to 1. Which means the person has chosen. Based on this remove radio button.
+                                     * On new round, for the users who lose - read LOST::. For the users who's team won, change value chosen from 1 to 0.
+                                     * Based on who's value of 'out' is 0, check who's still in the game. If there's one left, give this person a $point + 1.
+                                     *
+                                     * Q: * How to keep record which round a certain game is on
+                                     * LOST::
+                                     * WHEN having 'out' column in the DB, on wrong change it to 0. On reset of game, set it all to 1 and give the remaining user $point + 1.
+                                     * RESET::
+                                     * Resetting the games is basically changing all the users in the game their 'out' value to 0 and 'chosen' value to 0.
+                                     *
+                                     * Have the radio buttons show on date. At the end of the last game of a round, don't show radio buttons.
+                                     * DESPERATE: put the <input radio in the array before the team names.
+                                     * */
+                                    echo "<span><input type='radio' name='team' value='" . $league[$row][$col] . "'>" . $league[$row][$col] . "</span><br>";
+                                }
+                                    echo "</div>";
                             }
-                                echo "</div>";
-                        }
                     @endphp
                     <script>
                         var slideIndex = 1;
