@@ -165,7 +165,11 @@
                                 @foreach($allPlayers as $player)
                                     <div style="border-bottom: 1px solid black; height: 75px; list-style-type: none">
                                         <span style="float: left; padding-left: 25px; padding-top: 25px">{{$player->name}} - {{$player->pivot->point}}</span>
-                                        <a href="{{route('deleteUser', ['id' => $game->id, 'user_id' => $player->id])}}" style="float: right;padding-right: 25px; padding-top: 25px">X</a>
+                                        @if($player->pivot->admin == 1)
+                                            <a href="{{route('deleteGame', ['id' => $game->id])}}" style="float: right;padding-right: 25px; padding-top: 25px">Verwijder spel</a>
+                                        @else
+                                            <a href="{{route('deleteUser', ['id' => $game->id, 'user_id' => $player->id])}}" style="float: right;padding-right: 25px; padding-top: 25px">X</a>
+                                        @endif
                                     </div>
                                 @endforeach
                             @else

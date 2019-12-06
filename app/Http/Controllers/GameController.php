@@ -15,8 +15,6 @@ class GameController extends Controller
      */
     public function index(Request $request, $id)
     {
-        // The two-dimensional array is to be found in the blade > rounds tab - $competitions = [[Teams - round 1], [Teams - round 2], [Teams - round 3]];
-
         $game_id = Game::find($id);
 
         $allPlayers = $game_id->users;
@@ -159,7 +157,7 @@ class GameController extends Controller
             }
         }
 
-        session()->forget(['lobbyExistingGame', 'saveNotice']);
+        session()->forget(['lobbyExistingGame', 'saveNotice', 'succesfulDeleteOfUser']);
 
         return redirect()->route('game', ['id' => $game_id]);
     }
@@ -197,16 +195,18 @@ class GameController extends Controller
      * Destroy specific game.
      *
      * @param  \App\Game  $game
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Game $game)
+    public function destroy(Request $request)
     {
-        $game = Game::find($game);
+        $game_id = $request->route('id');
+        $game = Game::find($game_id);
         // Detach all users from the game.
         $game->users()->detach();
+        // Delete the actual game.
+        $game->delete();
 
-        $message = 'delete';
-        return view('game')->with('delete', $message);
+        return redirect()->route('home');
     }
 
     /**
@@ -219,12 +219,12 @@ class GameController extends Controller
      */
     public function destroyUser(Request $request)
     {
+        $current_game_id = $request->route('id');
         $user_id = $request->route('user_id');
         $user = User::find($user_id);
-        $current_game_id = $request->route('id');
+
         // Detach certain user from game > game_id
         $user->games()->detach($current_game_id);
-
 
         session(['succesfulDeleteOfUser' => true]);
 
@@ -289,6 +289,7 @@ class GameController extends Controller
 
                     if (isset($check)) {
                         // User already exists in this game.
+                        session()->forget(['saveNotice']);
                         $userExistsInGame = 'De gebruiker van de ingevoerde email is al in dit spel.';
                         return view('game')->with(['userExistsInGame' => $userExistsInGame, 'user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game, 'uuid' => $game->link, 'game_name' => $game->name]);
                     } else {

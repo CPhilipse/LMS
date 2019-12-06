@@ -21,6 +21,13 @@
                         </div>
                     @endif
 
+                        @if(isset($delete))
+                            <div class="alert alert-success" role="alert">
+                                <h4 class="alert-heading">Gelukt!</h4>
+                                <p>{{$delete}}</p>
+                            </div>
+                        @endif
+
                     <span class="ml-4" style="padding-left: 6px">
                         <button type="button" class="btn btn-outline-dark col-5" onclick="location.href = '{{route('showGame')}}';">Nieuw spel aanmaken</button>
                     </span>
