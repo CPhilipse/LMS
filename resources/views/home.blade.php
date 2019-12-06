@@ -39,9 +39,11 @@
 
                     @foreach($games->reverse() as $game)
                             <hr>
-                        <div class="p-1 mt-3" style="text-align: center;">
-                            <a href="{{ route('game', ['id' => $game->id]) }}">{{$game->name}}</a>
-                        </div>
+                            <a style="color: black; font-size: 15px;" href="{{ route('game', ['id' => $game->id]) }}">
+                                <div class="p-1 mt-3" style="text-align: center;">
+                                    {{$game->name}}
+                                </div>
+                            </a>
                     @endforeach
                 </div>
             </div>

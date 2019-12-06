@@ -25,11 +25,11 @@
                         </button>
                             @foreach($adminGames as $game)
                                 <hr>
-                                <div class="p-1 mt-3" style="text-align: center;">
-                                    <a href="{{ route('game', ['id' => $game->id]) }}">
+                                <a style="color: black; font-size: 15px;" href="{{ route('game', ['id' => $game->id]) }}">
+                                    <div class="p-1 mt-3" style="text-align: center;">
                                         {{$game->name}}
-                                    </a>
-                                </div>
+                                    </div>
+                                </a>
                             @endforeach
 
                             <hr>
@@ -37,11 +37,11 @@
                             <button style="cursor: default;" type="button" class="btn btn-outline-dark col-12" disabled>Spellen van anderen - ontsleuteld</button>
                             @foreach($invitedGames as $game)
                                 <hr>
-                                <div class="p-1 mt-3" style="text-align: center;">
-                                    <a href="{{ route('game', ['id' => $game->id]) }}">
-                                        {{$game->name}}
-                                    </a>
-                                </div>
+                                <a style="color: black; font-size: 15px;" href="{{ route('game', ['id' => $game->id]) }}">
+                                    <div class="p-1 mt-3" style="text-align: center;">
+                                            {{$game->name}}
+                                    </div>
+                                </a>
                             @endforeach
                     </div>
                 </div>

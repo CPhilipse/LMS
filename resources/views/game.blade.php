@@ -16,6 +16,9 @@
     .prev, .next {
         cursor: pointer;
         position: absolute;
+        @if(session('rightLink') == true)
+        top: 38%!important;
+        @endif
         top: 31%;
         width: auto;
         padding: 16px;
@@ -205,8 +208,8 @@
 
                             for ($row = 0; $row < count($league); $row++) {
                                     echo "<div class='mySlides'>";
-                                echo '<a class="prev" onclick="plusSlides(-1)">&#10094;</a>';
-                                echo '<a class="next" style="right: 30px;" onclick="plusSlides(1)">&#10095;</a>';
+                                echo '<a class="prev" style="color: #2196F3;" onclick="plusSlides(-1)">&#10094;</a>';
+                                echo '<a class="next" style="right: 30px;color: #2196F3;" onclick="plusSlides(1)">&#10095;</a>';
                                 echo "<h2 style='text-align: center; margin-top: 20px; padding-bottom: 25px'><b>Ronde $row</b></h2>";
                                 for ($col = 0; $col < count($league[0]); $col++) {
                                     /*

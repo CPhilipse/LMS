@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Game;
 use App\User;
+use DateInterval;
+use DatePeriod;
+use DateTime;
+//use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -11,10 +15,22 @@ class GameController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * @throws \Exception
      */
     public function index(Request $request, $id)
     {
+        $start    = new DateTime('-2 years');
+        $end      = new DateTime();
+        $interval = new DateInterval('P1W');
+        $period   = new DatePeriod($start, $interval, $end);
+        foreach ($period as $date) {
+            echo $date->format('W') . " of ". $date->format('Y') . "\n";
+        }
+
+
         $game_id = Game::find($id);
 
         $allPlayers = $game_id->users;
@@ -26,6 +42,13 @@ class GameController extends Controller
         // Check whether user exists in selected game.
         for ($i = 0; $i < count($allPlayers); $i++) {
             if ($game_id->users[$i]->id == $user_id) {
+
+                $pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
+
+                if($pageWasRefreshed ) {
+                    session()->forget('rightLink');
+                }
+
                 return view('game')->with(
                     [
                     'user_id' => $user_id, 'allPlayers' => $allPlayers,
