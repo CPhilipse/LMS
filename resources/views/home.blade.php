@@ -5,10 +5,32 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
 
+
+
             <div class="container" style="background-color: black;">
                 <div class="jumbotron" style="background-color: black;">
                     <h1 style="text-align: center; color: white; font-weight: bold;">Home</h1>
                 </div>
+            </div>
+
+            <div id="timer" class="timer">
+                <Timer
+                    starttime="Nov 5, 2018 15:37:25"
+                    endtime="Nov 8, 2020 16:37:25"
+                    trans='{
+                     "day":"Day",
+                     "hours":"Hours",
+                     "minutes":"Minuts",
+                     "seconds":"Seconds",
+                     "expired":"Event has been expired.",
+                     "running":"Till the end of event.",
+                     "upcoming":"Till start of event.",
+                     "status": {
+                        "expired":"Expired",
+                        "running":"Running",
+                        "upcoming":"Future"
+                       }}'
+                ></Timer>
             </div>
 
             <div class="card">
