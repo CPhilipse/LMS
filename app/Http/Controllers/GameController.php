@@ -22,15 +22,6 @@ class GameController extends Controller
      */
     public function index(Request $request, $id)
     {
-        $start    = new DateTime('-2 years');
-        $end      = new DateTime();
-        $interval = new DateInterval('P1W');
-        $period   = new DatePeriod($start, $interval, $end);
-        foreach ($period as $date) {
-            echo $date->format('W') . " of ". $date->format('Y') . "\n";
-        }
-
-
         $game_id = Game::find($id);
 
         $allPlayers = $game_id->users;

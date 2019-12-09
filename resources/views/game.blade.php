@@ -1,9 +1,6 @@
 @extends('layouts.app')
 <style>
-    * {box-sizing: border-box}
-    body {font-family: Verdana, sans-serif; margin:0}
     .mySlides {display: none}
-    img {vertical-align: middle;}
 
     /* Slideshow container */
     .slideshow-container {
@@ -187,6 +184,27 @@
                 </div>
 
                 <div id="Rounds" class="w3-container w3-border tab" style="display:none">
+
+                    <div id="timer" class="timer">
+                        <Timer
+                            starttime="Nov 5, 2018 15:37:25"
+                            endtime="Nov 8, 2020 16:37:25"
+                            trans='{
+                             "day":"Dagen",
+                             "hours":"Uren",
+                             "minutes":"Minuten",
+                             "seconds":"Seconden",
+                             "expired":"Ronde is afgelopen.",
+                             "running":"Ronde is nu gaande.",
+                             "upcoming":"Komt nog.",
+                             "status": {
+                                "expired":"Verlopen",
+                                "running":"Open",
+                                "upcoming":"Komt nog"
+                               }}'
+                        ></Timer>
+                    </div>
+
                     @php
                         $outcome =
                                 [
