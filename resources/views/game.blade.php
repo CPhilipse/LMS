@@ -185,25 +185,7 @@
 
                 <div id="Rounds" class="w3-container w3-border tab" style="display:none">
 
-                    <div id="timer" class="timer">
-                        <Timer
-                            starttime="Nov 5, 2018 15:37:25"
-                            endtime="Nov 8, 2020 16:37:25"
-                            trans='{
-                             "day":"Dagen",
-                             "hours":"Uren",
-                             "minutes":"Minuten",
-                             "seconds":"Seconden",
-                             "expired":"Ronde is afgelopen.",
-                             "running":"Ronde is nu gaande.",
-                             "upcoming":"Komt nog.",
-                             "status": {
-                                "expired":"Verlopen",
-                                "running":"Open",
-                                "upcoming":"Komt nog"
-                               }}'
-                        ></Timer>
-                    </div>
+
 
                     @php
                         $outcome =
@@ -222,32 +204,38 @@
                                     [" Team 1 ?", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
                                 ];
 
-
-
                             for ($row = 0; $row < count($league); $row++) {
                                     echo "<div class='mySlides'>";
+                                    @endphp
+                                    <div id="timer" class="timer">
+                                        <Timer
+                                            starttime="@php
+                                                //for ($i = 0; $i < 7; $i++) {
+                                                    $n = 2019 + $row; echo 'Nov 12, ' . $n . ' 16:37:25';
+                                                //}
+                                            @endphp"
+                                            endtime="@php  $n = 2019 + $row; echo 'Dec 12, ' . $n . ' 16:37:25' @endphp"
+                                            trans='{
+                                             "day":"Dagen",
+                                             "hours":"Uren",
+                                             "minutes":"Minuten",
+                                             "seconds":"Seconden",
+                                             "expired":"Ronde is afgelopen.",
+                                             "running":"Ronde is nu gaande.",
+                                             "upcoming":"Komt nog.",
+                                             "status": {
+                                                "expired":"Verlopen",
+                                                "running":"Open",
+                                                "upcoming":"Komt nog"
+                                               }}'
+                                        ></Timer>
+                                    </div>
+                                    @php
+
                                 echo '<a class="prev" style="color: #2196F3;" onclick="plusSlides(-1)">&#10094;</a>';
                                 echo '<a class="next" style="right: 30px;color: #2196F3;" onclick="plusSlides(1)">&#10095;</a>';
                                 echo "<h2 style='text-align: center; margin-top: 20px; padding-bottom: 25px'><b>Ronde $row</b></h2>";
                                 for ($col = 0; $col < count($league[0]); $col++) {
-                                    /*
-                                     * Make a form around the radio button, with a button which will submit the choice.
-                                     * Then in the controller get this value of the choice. Put it for now in a session, do a if/else statement on the radio button of the session.
-                                     * If session is set to value, then don't show the radio button. Otherwise do show.
-                                     * Make a new column in database with 'chosen'. On click of team, change chosen for this user to 1. Which means the person has chosen. Based on this remove radio button.
-                                     * On new round, for the users who lose - read LOST::. For the users who's team won, change value chosen from 1 to 0.
-                                     * Based on who's value of 'out' is 0, check who's still in the game. If there's one left, give this person a $point + 1.
-                                     *
-                                     * Q: * How to keep record which round a certain game is on
-                                     * LOST::
-                                     * WHEN having 'out' column in the DB, on wrong change it to 0. On reset of game, set it all to 1 and give the remaining user $point + 1.
-                                     * RESET::
-                                     * Resetting the games is basically changing all the users in the game their 'out' value to 0 and 'chosen' value to 0.
-                                     *
-                                     * Have the radio buttons show on date. At the end of the last game of a round, don't show radio buttons.
-                                     * DESPERATE: put the <input radio in the array before the team names.
-                                     *
-                                     *  */
                                     echo "<span><input type='radio' name='team' value='" . $league[$row][$col] . "'>" . $league[$row][$col] . "</span><br>";
                                 }
                                     echo "</div>";
