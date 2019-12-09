@@ -209,11 +209,7 @@
                                     @endphp
                                     <div id="timer" class="timer">
                                         <Timer
-                                            starttime="@php
-                                                //for ($i = 0; $i < 7; $i++) {
-                                                    $n = 2019 + $row; echo 'Nov 12, ' . $n . ' 16:37:25';
-                                                //}
-                                            @endphp"
+                                            starttime="@php  $n = 2019 + $row; echo 'Nov 12, ' . $n . ' 16:37:25' @endphp"
                                             endtime="@php  $n = 2019 + $row; echo 'Dec 12, ' . $n . ' 16:37:25' @endphp"
                                             trans='{
                                              "day":"Dagen",
