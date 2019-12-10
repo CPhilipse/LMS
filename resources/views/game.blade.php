@@ -124,12 +124,12 @@
                 @foreach($allPlayers as $player)
                     @if($user_id == $player->pivot->user_id)
                         @if($player->pivot->admin == 1)
-                                <div id="Rules" class="w3-container w3-border tab" style="display:none">
-                            @else
-                                <div id="Rules" class="w3-container w3-border tab">
-                            @endif
+                            <div id="Rules" class="w3-container w3-border tab" style="display:none">
+                                @else
+                <div id="Rules" class="w3-container w3-border tab">
                     @endif
-                @endforeach
+                    @endif
+                    @endforeach
                     <ul style="padding-top: 35px; padding-bottom: 25px;">
                         <li>
                             Voordat de speelronde begint selecteer je 1 team in de desbetreffende competitie waarin je speelt.
@@ -184,8 +184,16 @@
                 </div>
 
                 <div id="Rounds" class="w3-container w3-border tab" style="display:none">
+                    @if(session('current_week') == true)
+                        <div class="mySlides">
+                            {{-- With buttons --}}
 
-
+                        </div>
+                    @else
+                        <div class="mySlides">
+                            {{-- Without buttons --}}
+                        </div>
+                    @endif
 
                     @php
                         $outcome =
@@ -206,172 +214,152 @@
 
                             for ($row = 0; $row < count($league); $row++) {
                                     echo "<div class='mySlides'>";
-                                    @endphp
-                                    <div id="timer" class="timer">
-                                        <timer
-                                            starttime="@php  $n = 2019 + $row; echo 'Nov 12, ' . $n . ' 16:37:25' @endphp"
-                                            endtime="@php  $n = 2019 + $row; echo 'Dec 12, ' . $n . ' 16:37:25' @endphp"
-                                            trans='{
-                                             "day":"Dagen",
-                                             "hours":"Uren",
-                                             "minutes":"Minuten",
-                                             "seconds":"Seconden",
-                                             "expired":"Ronde is afgelopen.",
-                                             "running":"Ronde is nu gaande.",
-                                             "upcoming":"Komt nog.",
-                                             "status": {
-                                                "expired":"Verlopen",
-                                                "running":"Open",
-                                                "upcoming":"Komt nog"
-                                               }}'
-                                        ></timer>
-                                    </div>
-                                    @php
 
-                                echo '<a class="prev" style="color: #2196F3;" onclick="plusSlides(-1)">&#10094;</a>';
-                                echo '<a class="next" style="right: 30px;color: #2196F3;" onclick="plusSlides(1)">&#10095;</a>';
-                                echo "<h2 style='text-align: center; margin-top: 20px; padding-bottom: 25px'><b>Ronde $row</b></h2>";
-                                for ($col = 0; $col < count($league[0]); $col++) {
-                                    echo "<span><input type='radio' name='team' value='" . $league[$row][$col] . "'>" . $league[$row][$col] . "</span><br>";
-                                }
-                                    echo "</div>";
-                            }
-                    @endphp
-                    <script>
-                        var slideIndex = 1;
-                        showSlides(slideIndex);
+                    echo "<h2 style='text-align: center; margin-top: 20px; padding-bottom: 25px'><b>Ronde $row</b></h2>";
+                    // if (week is correct) {
+                    for ($col = 0; $col < count($league[0]); $col++) {
+                        echo "<span><input type='radio' name='team' value='" . $league[$row][$col] . "'>" . $league[$row][$col] . "</span><br>";
+                    }
+                    // } else {
+                    // same for loop but then without buttons.
+                    // }
+                        echo "</div>";
+                }
+                @endphp
+                <script>
+                    var slideIndex = 1;
+                    showSlides(slideIndex);
 
-                        function plusSlides(n) {
-                            showSlides(slideIndex += n);
+                    function plusSlides(n) {
+                        showSlides(slideIndex += n);
+                    }
+
+                    function currentSlide(n) {
+                        showSlides(slideIndex = n);
+                    }
+
+                    function showSlides(n) {
+                        var i;
+                        var slides = document.getElementsByClassName("mySlides");
+                        var dots = document.getElementsByClassName("dot");
+                        if (n > slides.length) {slideIndex = 1}
+                        if (n < 1) {slideIndex = slides.length}
+                        for (i = 0; i < slides.length; i++) {
+                            slides[i].style.display = "none";
                         }
-
-                        function currentSlide(n) {
-                            showSlides(slideIndex = n);
+                        for (i = 0; i < dots.length; i++) {
+                            dots[i].className = dots[i].className.replace(" active", "");
                         }
-
-                        function showSlides(n) {
-                            var i;
-                            var slides = document.getElementsByClassName("mySlides");
-                            var dots = document.getElementsByClassName("dot");
-                            if (n > slides.length) {slideIndex = 1}
-                            if (n < 1) {slideIndex = slides.length}
-                            for (i = 0; i < slides.length; i++) {
-                                slides[i].style.display = "none";
-                            }
-                            for (i = 0; i < dots.length; i++) {
-                                dots[i].className = dots[i].className.replace(" active", "");
-                            }
-                            slides[slideIndex-1].style.display = "block";
-                            dots[slideIndex-1].className += " active";
-                        }
-                    </script>
-                </div>
-
-                    @foreach($allPlayers as $player)
-                        @if($user_id == $player->pivot->user_id)
-                            @if($player->pivot->admin == 1)
-                                    <div id="Settings" class="w3-container w3-border tab">
-                                @else
-                                    <div id="Settings" class="w3-container w3-border tab" style="display:none">
-                            @endif
-                        @endif
-                    @endforeach
-
-                    @if(isset($user))
-                        <div style="margin-top: 20px" class="alert alert-success" role="alert">
-                            <h4 class="alert-heading">Gelukt!</h4>
-                            <p>{{$user}} is toegevoegd.</p>
-                        </div>
-                    @endif
-
-                    @if(isset($nope))
-                        <div style="margin-top: 20px" class="alert alert-danger" role="alert">
-                            <h4 class="alert-heading">Mislukt!</h4>
-                            <p>{{$nope}}</p>
-                        </div>
-                    @endif
-
-                    @if(isset($self))
-                        <div style="margin-top: 20px" class="alert alert-danger" role="alert">
-                            <h4 class="alert-heading">Mislukt!</h4>
-                            <p>{{$self}}</p>
-                        </div>
-                    @endif
-
-                    @if(isset($alreadyInvited))
-                        <div style="margin-top: 20px" class="alert alert-danger" role="alert">
-                            <h4 class="alert-heading">Mislukt!</h4>
-                            <p>{{$alreadyInvited}}</p>
-                        </div>
-                    @endif
-
-                    @if(isset($emptyName))
-                        <div style="margin-top: 20px" class="alert alert-danger" role="alert">
-                            <h4 class="alert-heading">Mislukt!</h4>
-                            <p>{{$emptyName}}</p>
-                        </div>
-                    @endif
-
-                    @if(isset($userExistsInGame))
-                        <div style="margin-top: 20px" class="alert alert-danger" role="alert">
-                            <h4 class="alert-heading">Mislukt!</h4>
-                            <p>{{$userExistsInGame}}</p>
-                        </div>
-                    @endif
-
-                    @if(session('saveNotice') == true)
-                        <div style="margin-top: 20px" class="alert alert-success" role="alert">
-                            <h4 class="alert-heading">Gelukt!</h4>
-                            <p>Klik op opslaan om de gebruiker toe te voegen.</p>
-                        </div>
-                    @endif
-
-                    <form style="padding-top: 15px; margin: 0;" name="form" action="{{route('addUserExistingGame', ['id' => $game->id])}}" method="POST">
-                        @csrf
-                        <input style="height: 50px; max-width: 91%;" class="col-10" type="text" name="email" placeholder="E-mail van diegene die uitgenodigd wil worden...">
-
-                        <button style="height: 50px; margin-bottom: 2.5px;" type="submit" class="btn btn-outline-dark col-1">
-                            +
-                        </button>
-                    </form>
-
-                    <form name="form" action="{{route('updateGame', ['id' => $game->id])}}" method="POST">
-                        @csrf
-                        <div class="pt-3">
-                            <input style="height: 50px" class="col-12" type="text" name="uuid" value="{{$uuid}}" disabled>
-                        </div>
-
-                        <div class="pt-3">
-                            <input style="height: 50px" class="col-12" type="text" name="game_name" value="{{$game_name}}">
-                        </div>
-
-                        <br>
-                        <div class="text-center">
-                            <button style="height: 50px;" type="submit" class="btn btn-outline-dark col-3">
-                                Wijzigingen opslaan
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
+                        slides[slideIndex-1].style.display = "block";
+                        dots[slideIndex-1].className += " active";
+                    }
+                </script>
             </div>
-        </div>
-    </div>
-@endsection
 
-<script>
-    // Hide all element with the class name "city" and display the element with the given city name.
-    function openTab(evt, tabName) {
-        var i, x, tablinks;
-        x = document.getElementsByClassName("tab");
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
-        }
-        tablinks = document.getElementsByClassName("tablink");
-        for (i = 0; i < x.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" w3-blue", "");
-        }
-        document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.className += " w3-blue";
-    }
-</script>
+            @foreach($allPlayers as $player)
+                @if($user_id == $player->pivot->user_id)
+                    @if($player->pivot->admin == 1)
+                        <div id="Settings" class="w3-container w3-border tab">
+                            @else
+                                <div id="Settings" class="w3-container w3-border tab" style="display:none">
+                                    @endif
+                                    @endif
+                                    @endforeach
+
+                                    @if(isset($user))
+                                        <div style="margin-top: 20px" class="alert alert-success" role="alert">
+                                            <h4 class="alert-heading">Gelukt!</h4>
+                                            <p>{{$user}} is toegevoegd.</p>
+                                        </div>
+                                    @endif
+
+                                    @if(isset($nope))
+                                        <div style="margin-top: 20px" class="alert alert-danger" role="alert">
+                                            <h4 class="alert-heading">Mislukt!</h4>
+                                            <p>{{$nope}}</p>
+                                        </div>
+                                    @endif
+
+                                    @if(isset($self))
+                                        <div style="margin-top: 20px" class="alert alert-danger" role="alert">
+                                            <h4 class="alert-heading">Mislukt!</h4>
+                                            <p>{{$self}}</p>
+                                        </div>
+                                    @endif
+
+                                    @if(isset($alreadyInvited))
+                                        <div style="margin-top: 20px" class="alert alert-danger" role="alert">
+                                            <h4 class="alert-heading">Mislukt!</h4>
+                                            <p>{{$alreadyInvited}}</p>
+                                        </div>
+                                    @endif
+
+                                    @if(isset($emptyName))
+                                        <div style="margin-top: 20px" class="alert alert-danger" role="alert">
+                                            <h4 class="alert-heading">Mislukt!</h4>
+                                            <p>{{$emptyName}}</p>
+                                        </div>
+                                    @endif
+
+                                    @if(isset($userExistsInGame))
+                                        <div style="margin-top: 20px" class="alert alert-danger" role="alert">
+                                            <h4 class="alert-heading">Mislukt!</h4>
+                                            <p>{{$userExistsInGame}}</p>
+                                        </div>
+                                    @endif
+
+                                    @if(session('saveNotice') == true)
+                                        <div style="margin-top: 20px" class="alert alert-success" role="alert">
+                                            <h4 class="alert-heading">Gelukt!</h4>
+                                            <p>Klik op opslaan om de gebruiker toe te voegen.</p>
+                                        </div>
+                                    @endif
+
+                                    <form style="padding-top: 15px; margin: 0;" name="form" action="{{route('addUserExistingGame', ['id' => $game->id])}}" method="POST">
+                                        @csrf
+                                        <input style="height: 50px; max-width: 91%;" class="col-10" type="text" name="email" placeholder="E-mail van diegene die uitgenodigd wil worden...">
+
+                                        <button style="height: 50px; margin-bottom: 2.5px;" type="submit" class="btn btn-outline-dark col-1">
+                                            +
+                                        </button>
+                                    </form>
+
+                                    <form name="form" action="{{route('updateGame', ['id' => $game->id])}}" method="POST">
+                                        @csrf
+                                        <div class="pt-3">
+                                            <input style="height: 50px" class="col-12" type="text" name="uuid" value="{{$uuid}}" disabled>
+                                        </div>
+
+                                        <div class="pt-3">
+                                            <input style="height: 50px" class="col-12" type="text" name="game_name" value="{{$game_name}}">
+                                        </div>
+
+                                        <br>
+                                        <div class="text-center">
+                                            <button style="height: 50px;" type="submit" class="btn btn-outline-dark col-3">
+                                                Wijzigingen opslaan
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                        </div>
+                            </div>
+            </div>
+            @endsection
+
+            <script>
+                // Hide all element with the class name "city" and display the element with the given city name.
+                function openTab(evt, tabName) {
+                    var i, x, tablinks;
+                    x = document.getElementsByClassName("tab");
+                    for (i = 0; i < x.length; i++) {
+                        x[i].style.display = "none";
+                    }
+                    tablinks = document.getElementsByClassName("tablink");
+                    for (i = 0; i < x.length; i++) {
+                        tablinks[i].className = tablinks[i].className.replace(" w3-blue", "");
+                    }
+                    document.getElementById(tabName).style.display = "block";
+                    evt.currentTarget.className += " w3-blue";
+                }
+            </script>

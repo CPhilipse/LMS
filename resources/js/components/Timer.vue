@@ -49,11 +49,80 @@
     .timer .status-tag.expired {
         background-color: lightblue;
     }
+
+    /*  Slides  */
+    .mySlides {display: none}
+
+    /* Slideshow container */
+    .slideshow-container {
+        max-width: 1000px;
+        position: relative;
+        margin: auto;
+    }
+
+    /* Next & previous buttons */
+    .prev, .next {
+        cursor: pointer;
+        position: absolute;
+        top: 60%;
+        width: auto;
+        padding: 16px;
+        margin-top: -22px;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        transition: 0.6s ease;
+        border-radius: 0 3px 3px 0;
+        user-select: none;
+    }
+
+    /* Position the "next button" to the right */
+    .next {
+        right: 0;
+        border-radius: 3px 0 0 3px;
+    }
+
+    /* On hover, add a black background color with a little bit see-through */
+    .prev:hover, .next:hover {
+        background-color: rgba(0,0,0,0.8);
+    }
+
+    /* Caption text */
+    .text {
+        color: #f2f2f2;
+        font-size: 15px;
+        padding: 8px 12px;
+        position: absolute;
+        bottom: 8px;
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Number text (1/3 etc) */
+    .numbertext {
+        color: #f2f2f2;
+        font-size: 12px;
+        padding: 8px 12px;
+        position: absolute;
+        top: 0;
+    }
+
+    .round {
+        text-align: center;
+        margin-top: 20px;
+        padding-bottom: 25px;
+    }
+
+    /* On smaller screens, decrease text size */
+    @media only screen and (max-width: 300px) {
+        .prev, .next,.text {font-size: 11px}
+    }
 </style>
 
 <template>
+<!--    <template v-for="round in rounds">-->
     <div>
-        <div v-show="statusType !== 'expired'">
+        <div v-show ="statusType !== 'expired'">
             <div class="day">
                 <span class="number">{{ days }}</span>
                 <div class="format">{{ wordString.day }}</div>
@@ -71,8 +140,16 @@
                 <div class="format">{{ wordString.seconds }}</div>
             </div>
         </div>
+        <!--        <div class="message">{{ message }}</div>-->
         <div class="status-tag" :class="statusType">{{ statusText }}</div>
+
+        <a class="prev" style="color: #2196F3;" @click="plusSlides(-1)">&#10094;</a>
+        <a class="next" style="right: 30px;color: #2196F3;" @click="plusSlides(1)">&#10095;</a>
+        <!-- <h2 class="round"><b>Ronde {{ round }}</b></h2>-->
+
+
     </div>
+
 </template>
 
 <script>
@@ -96,7 +173,21 @@
                 message:"",
                 statusType:"",
                 statusText: "",
-
+                league: [
+                    [" Team 1", "Team 2", " Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", "Team 9", "Team 10", "Team 11", "Team 12"],
+                    [" Team 1 +", "Team 2", " Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", "Team 9", "Team 10", "Team 11", "Team 12"],
+                    [" Team 1 -", "Team 2", " Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", "Team 9", "Team 10", "Team 11", "Team 12"],
+                    [" Team 1 ?", "Team 2", " Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", "Team 9", "Team 10", "Team 11", "Team 12"],
+                ],
+                outcome: [
+                    ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                    ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                    ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                    ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ],
+                rounds: [],
+                comp: [],
+                slideIndex: 1,
             };
         },
         created: function () {
@@ -146,7 +237,34 @@
                 this.hours = Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 this.minutes = Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60));
                 this.seconds = Math.floor((dist % (1000 * 60)) / 1000);
-            }
+            },
+            showSlides: (n) => {
+                // var i;
+                // var slides = document.getElementsByClassName("mySlides");
+                // if (n > slides.length) {this.slideIndex = 1}
+                // if (n < 1) {this.slideIndex = slides.length}
+                // for (i = 0; i < slides.length; i++) {
+                //     slides[i].style.display = "none";
+                // }
+                //
+                // slides[this.slideIndex-1].style.display = "block";
+            },
+
+            plusSlides: (n) => {
+                this.showSlides(this.slideIndex += n);
+                //console.log(n);
+            },
+
+            currentSlide: (n) => {
+                this.showSlides(this.slideIndex = n);
+            },
+
+
+            loop: () => {
+                for (var round = 0; round < this.league.length; round++) {
+                    this.round = round;
+                }
+            },
 
         }
     }

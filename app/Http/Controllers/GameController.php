@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Game;
 use App\User;
+use Carbon\Carbon;
 use DateInterval;
 use DatePeriod;
 use DateTime;
@@ -22,6 +23,36 @@ class GameController extends Controller
      */
     public function index(Request $request, $id)
     {
+        $outcome =
+            [
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+            ];
+
+        // pass league as parameter to blade, so you can foreach it in blade and still make use of the slides.
+        $league =
+            [
+                '49' => ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"],
+                '50' => ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"],
+                '51' => ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"],
+                '52' => ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"],
+            ];
+
+
+
+
+        if (Carbon::now()->week == 50) {
+            dd('Round one');
+        }
+
+        if (Carbon::now()->week == 51) {
+            dd('Round 2');
+        }
+
+
+
         $game_id = Game::find($id);
 
         $allPlayers = $game_id->users;
