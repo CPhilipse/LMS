@@ -208,7 +208,7 @@
                                     echo "<div class='mySlides'>";
                                     @endphp
                                     <div id="timer" class="timer">
-                                        <Timer
+                                        <timer
                                             starttime="@php  $n = 2019 + $row; echo 'Nov 12, ' . $n . ' 16:37:25' @endphp"
                                             endtime="@php  $n = 2019 + $row; echo 'Dec 12, ' . $n . ' 16:37:25' @endphp"
                                             trans='{
@@ -224,7 +224,7 @@
                                                 "running":"Open",
                                                 "upcoming":"Komt nog"
                                                }}'
-                                        ></Timer>
+                                        ></timer>
                                     </div>
                                     @php
 

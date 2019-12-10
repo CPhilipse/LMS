@@ -53,7 +53,7 @@
 
 <template>
     <div>
-        <div v-show="statusType !== 'expired'">
+        <div v-show ="statusType !== 'expired'">
             <div class="day">
                 <span class="number">{{ days }}</span>
                 <div class="format">{{ wordString.day }}</div>
@@ -71,6 +71,7 @@
                 <div class="format">{{ wordString.seconds }}</div>
             </div>
         </div>
+        <!--        <div class="message">{{ message }}</div>-->
         <div class="status-tag" :class="statusType">{{ statusText }}</div>
     </div>
 </template>
