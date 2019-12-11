@@ -3,7 +3,6 @@
         font-size: 20px;
         color: #000;
         text-align: center;
-        margin-top: 50px;
     }
     .timer .day, .timer .hour, .timer .min, .timer .sec {
         font-size: 30px;
@@ -70,9 +69,29 @@
                 <span class="number">{{ seconds }}</span>
                 <div class="format">{{ wordString.seconds }}</div>
             </div>
+            <div class="status-tag" :class="statusType">{{ statusText }}</div>
+        </div>
+
+        <div v-show ="statusType == 'expired'">
+            <div class="day">
+            <span class="number">0</span>
+            <div class="format">{{ wordString.day }}</div>
+        </div>
+        <div class="hour">
+            <span class="number">0</span>
+            <div class="format">{{ wordString.hours }}</div>
+        </div>
+        <div class="min">
+            <span class="number">0</span>
+            <div class="format">{{ wordString.minutes }}</div>
+        </div>
+        <div class="sec">
+            <span class="number">0</span>
+            <div class="format">{{ wordString.seconds }}</div>
         </div>
         <!--        <div class="message">{{ message }}</div>-->
         <div class="status-tag" :class="statusType">{{ statusText }}</div>
+        </div>
     </div>
 </template>
 

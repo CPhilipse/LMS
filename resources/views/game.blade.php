@@ -22,7 +22,7 @@
         @if(session('rightLink') == true)
         top: 87%!important;
         @endif
-        top: 46%;
+        top: 48%;
         width: auto;
         padding: 16px;
         margin-top: -22px;
@@ -197,7 +197,7 @@
                             <a class="prevv" onclick="plusSlides(-1)">&#10094;</a>
                             <a class="nextt" onclick="plusSlides(1)">&#10095;</a>
                             <h2 class="round"><b>Ronde {{$row}}</b></h2>
-                            <div id="timer" class="timer">
+                            <div style="margin: 0!important" id="timer" class="timer">
                                 <time-default
                                     starttime="{{$weeksStart[$row] . " 00:00:00"}}"
                                     endtime="{{$weeksEnd[$row] . " 00:00:00"}}"

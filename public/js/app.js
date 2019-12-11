@@ -2399,6 +2399,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   // mounted() {
   //     console.log('Component mounted.')
@@ -7053,7 +7072,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.timer {\n    font-size: 20px;\n    color: #000;\n    text-align: center;\n    margin-top: 50px;\n}\n.timer .day, .timer .hour, .timer .min, .timer .sec {\n    font-size: 30px;\n    display: inline-block;\n    font-weight: 500;\n    text-align: center;\n    margin: 0 5px;\n}\n.timer .day .format, .timer .hour .format, .timer .min .format, .timer .sec .format {\n    font-weight: 300;\n    font-size: 14px;\n    opacity: 0.8;\n    width: 60px;\n}\n.timer .number {\n    background: lightblue;\n    padding: 0 5px;\n    border-radius: 5px;\n    display: inline-block;\n    width: 60px;\n    text-align: center;\n}\n.timer .message {\n    font-size: 14px;\n    font-weight: 400;\n    margin-top: 5px;\n}\n.timer .status-tag {\n    width: 270px;\n    margin: 10px auto;\n    padding: 8px 0;\n    font-weight: 500;\n    color: #000;\n    text-align: center;\n    border-radius: 15px;\n}\n.timer .status-tag.upcoming {\n    background-color: lightblue;\n}\n.timer .status-tag.running {\n    background-color: lightblue;\n}\n.timer .status-tag.expired {\n    background-color: lightblue;\n}\n", ""]);
+exports.push([module.i, "\n.timer {\n    font-size: 20px;\n    color: #000;\n    text-align: center;\n}\n.timer .day, .timer .hour, .timer .min, .timer .sec {\n    font-size: 30px;\n    display: inline-block;\n    font-weight: 500;\n    text-align: center;\n    margin: 0 5px;\n}\n.timer .day .format, .timer .hour .format, .timer .min .format, .timer .sec .format {\n    font-weight: 300;\n    font-size: 14px;\n    opacity: 0.8;\n    width: 60px;\n}\n.timer .number {\n    background: lightblue;\n    padding: 0 5px;\n    border-radius: 5px;\n    display: inline-block;\n    width: 60px;\n    text-align: center;\n}\n.timer .message {\n    font-size: 14px;\n    font-weight: 400;\n    margin-top: 5px;\n}\n.timer .status-tag {\n    width: 270px;\n    margin: 10px auto;\n    padding: 8px 0;\n    font-weight: 500;\n    color: #000;\n    text-align: center;\n    border-radius: 15px;\n}\n.timer .status-tag.upcoming {\n    background-color: lightblue;\n}\n.timer .status-tag.running {\n    background-color: lightblue;\n}\n.timer .status-tag.expired {\n    background-color: lightblue;\n}\n", ""]);
 
 // exports
 
@@ -38807,13 +38826,64 @@ var render = function() {
           _c("div", { staticClass: "format" }, [
             _vm._v(_vm._s(_vm.wordString.seconds))
           ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "status-tag", class: _vm.statusType }, [
+          _vm._v(_vm._s(_vm.statusText))
         ])
       ]
     ),
     _vm._v(" "),
-    _c("div", { staticClass: "status-tag", class: _vm.statusType }, [
-      _vm._v(_vm._s(_vm.statusText))
-    ])
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.statusType == "expired",
+            expression: "statusType == 'expired'"
+          }
+        ]
+      },
+      [
+        _c("div", { staticClass: "day" }, [
+          _c("span", { staticClass: "number" }, [_vm._v("0")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "format" }, [
+            _vm._v(_vm._s(_vm.wordString.day))
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "hour" }, [
+          _c("span", { staticClass: "number" }, [_vm._v("0")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "format" }, [
+            _vm._v(_vm._s(_vm.wordString.hours))
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "min" }, [
+          _c("span", { staticClass: "number" }, [_vm._v("0")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "format" }, [
+            _vm._v(_vm._s(_vm.wordString.minutes))
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "sec" }, [
+          _c("span", { staticClass: "number" }, [_vm._v("0")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "format" }, [
+            _vm._v(_vm._s(_vm.wordString.seconds))
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "status-tag", class: _vm.statusType }, [
+          _vm._v(_vm._s(_vm.statusText))
+        ])
+      ]
+    )
   ])
 }
 var staticRenderFns = []
@@ -50984,7 +51054,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('timer', __webpack_require__(/*! ./components/Timer.vue */ "./resources/js/components/Timer.vue")["default"]);
+Vue.component('Timer', __webpack_require__(/*! ./components/Timer.vue */ "./resources/js/components/Timer.vue")["default"]);
 Vue.component('time-default', __webpack_require__(/*! ./components/TimerDefault.vue */ "./resources/js/components/TimerDefault.vue")["default"]);
 Vue.component('league', __webpack_require__(/*! ./components/League.vue */ "./resources/js/components/League.vue")["default"]);
 /**

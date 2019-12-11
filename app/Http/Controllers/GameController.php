@@ -81,6 +81,7 @@ class GameController extends Controller
         $user_chosen = $game_id->users[$user_id - 1]->pivot->chosen == 0 ? false : true;
         $user_out = $game_id->users[$user_id - 1]->pivot->out == 0 ? false : true;
 
+        // Show time for each round for more clarity on the round time frame. Timer > Vue component.
         $current_week = Carbon::now()->week;
         $week1date = Carbon::create(2019, 12, 1);
         $week2date = Carbon::create(2019, 12, 8);
@@ -101,9 +102,7 @@ class GameController extends Controller
         $weeksEnd[] = $week2;
         $weeksEnd[] = $week3;
         $weeksEnd[] = $week4;
-        $weeksEnd[] = "Dec 29, 2019";
-//        dd($weeksStart);
-//        dd($weeksEnd);
+        $weeksEnd[] = "Dec 29, 2019"; // Last date
 
         // Check whether user exists in selected game.
         for ($i = 0; $i < count($allPlayers); $i++) {
