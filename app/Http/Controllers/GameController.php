@@ -41,17 +41,19 @@ class GameController extends Controller
             ];
 
 
+// Pick each round by [week]
+        // OR try to get the right
 
+//        if (Carbon::now()->week == 50) {
+//            dd('Current round');
+//        }
+//
+//        if (Carbon::now()->week == 51) {
+//            dd('Round 2');
+//        }
 
-        if (Carbon::now()->week == 50) {
-            dd('Round one');
-        }
-
-        if (Carbon::now()->week == 51) {
-            dd('Round 2');
-        }
-
-
+        // check whether user is out and has chosen, one of h'm is true.
+        // Then it shouldn't display the radio buttons in the blade
 
         $game_id = Game::find($id);
 
@@ -61,21 +63,30 @@ class GameController extends Controller
 
         $current_game_id = $request->route('id');
 
+        $user_chosen = $game_id->users[$user_id - 1]->pivot->chosen == 0 ? false : true;
+        $user_out = $game_id->users[$user_id - 1]->pivot->out == 0 ? false : true;
+
         // Check whether user exists in selected game.
         for ($i = 0; $i < count($allPlayers); $i++) {
             if ($game_id->users[$i]->id == $user_id) {
 
+                // Remove success message on refresh.
                 $pageWasRefreshed = isset($_SERVER['HTTP_CACHE_CONTROL']) && $_SERVER['HTTP_CACHE_CONTROL'] === 'max-age=0';
 
                 if($pageWasRefreshed ) {
                     session()->forget('rightLink');
                 }
 
+                // Logged in user is this specific game.
+                // So all you have to do is check whether the values of the user has chosen or out.
+//                $user = $game_id->users[$i]->id == $user_id ? $user
+
                 return view('game')->with(
                     [
                     'user_id' => $user_id, 'allPlayers' => $allPlayers,
                     'game' => $game_id, 'uuid' => $game_id->link, 'game_name' => $game_id->name,
-//                    'rounds' => $rounds, 'competitions' => $competitions, 'league' => $league
+                    'outcome' => $outcome, 'league' => $league, 'user_chosen' => $user_chosen,
+                    'user_out' => $user_out,
                     ]
                 );
             }

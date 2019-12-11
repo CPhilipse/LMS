@@ -9,18 +9,25 @@
         margin: auto;
     }
 
+    .round {
+        text-align: center;
+        margin-top: 20px;
+        padding-bottom: 25px
+    }
+
     /* Next & previous buttons */
-    .prev, .next {
+    .prevv, .nextt {
         cursor: pointer;
         position: absolute;
         @if(session('rightLink') == true)
-        top: 38%!important;
+        top: 87%!important;
         @endif
-        top: 31%;
+        top: 83%;
         width: auto;
         padding: 16px;
         margin-top: -22px;
-        color: white;
+        color: #2196F3!important;
+        /*color: white;*/
         font-weight: bold;
         font-size: 18px;
         transition: 0.6s ease;
@@ -29,13 +36,13 @@
     }
 
     /* Position the "next button" to the right */
-    .next {
-        right: 0;
+    .nextt {
+        right: 30px;
         border-radius: 3px 0 0 3px;
     }
 
     /* On hover, add a black background color with a little bit see-through */
-    .prev:hover, .next:hover {
+    .prevv:hover, .nextt:hover {
         background-color: rgba(0,0,0,0.8);
     }
 
@@ -77,7 +84,7 @@
 
     /* On smaller screens, decrease text size */
     @media only screen and (max-width: 300px) {
-        .prev, .next,.text {font-size: 11px}
+        .prevv, .nextt,.text {font-size: 11px}
     }
 </style>
 @section('content')
@@ -184,48 +191,29 @@
                 </div>
 
                 <div id="Rounds" class="w3-container w3-border tab" style="display:none">
-                    @if(session('current_week') == true)
-                        <div class="mySlides">
-                            {{-- With buttons --}}
+                    @if(!$user_chosen || !$user_out)
+                        @for($row = 0; $row < count($league); $row++)
+                            <div class="mySlides">
+                                <a class="prevv" onclick="plusSlides(-1)">&#10094;</a>
+                                <a class="nextt" onclick="plusSlides(1)">&#10095;</a>
+                                <h2 class="round"><b>Ronde {{$row}}</b></h2>
+                                {{-- With buttons --}}
 
-                        </div>
+                            </div>
+                        @endfor
                     @else
-                        <div class="mySlides">
-                            {{-- Without buttons --}}
+                        @for($row = 0; $row < count($league); $row++)
+                            <div class="mySlides">
+                                <a class="prevv" onclick="plusSlides(-1)">&#10094;</a>
+                                <a class="nextt" onclick="plusSlides(1)">&#10095;</a>
+                                <h2 style='text-align: center; margin-top: 20px; padding-bottom: 25px'><b>Ronde {{$row}}</b></h2>
+                                {{-- Without buttons --}}
+
+                            </div>
+                        @endfor
                         </div>
                     @endif
 
-                    @php
-                        $outcome =
-                                [
-                                    ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
-                                    ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
-                                    ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
-                                    ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
-                                ];
-
-                            $league =
-                                [
-                                    [" Team 1", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
-                                    [" Team 1 -", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
-                                    [" Team 1 +", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
-                                    [" Team 1 ?", " Team 2 <hr>", " Team 3", " Team 4 <hr>", " Team 5", " Team 6 <hr>", " Team 7", " Team 8 <hr>", " Team 9", " Team 10 <hr>", " Team 11", " Team 12 <hr>"],
-                                ];
-
-                            for ($row = 0; $row < count($league); $row++) {
-                                    echo "<div class='mySlides'>";
-
-                    echo "<h2 style='text-align: center; margin-top: 20px; padding-bottom: 25px'><b>Ronde $row</b></h2>";
-                    // if (week is correct) {
-                    for ($col = 0; $col < count($league[0]); $col++) {
-                        echo "<span><input type='radio' name='team' value='" . $league[$row][$col] . "'>" . $league[$row][$col] . "</span><br>";
-                    }
-                    // } else {
-                    // same for loop but then without buttons.
-                    // }
-                        echo "</div>";
-                }
-                @endphp
                 <script>
                     var slideIndex = 1;
                     showSlides(slideIndex);
