@@ -39,6 +39,16 @@ class GameController extends Controller
                 ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", 52],
             ];
 
+
+//        $league =
+//            [
+//                [["Team 1", "Team 2"], ["Team 3", "Team 4"], ["Team 5", "Team 6"], ["Team 7", "Team 8"], 49],
+//                [["Team 1", "Team 2"], ["Team 3", "Team 4"], ["Team 5", "Team 6"], ["Team 7", "Team 8"], 50],
+//                [["Team 1", "Team 2"], ["Team 3", "Team 4"], ["Team 5", "Team 6"], ["Team 7", "Team 8"], 51],
+//                [["Team 1", "Team 2"], ["Team 3", "Team 4"], ["Team 5", "Team 6"], ["Team 7", "Team 8"], 52],
+//            ];
+
+
 //        $league =
 //            [
 //                [49, ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"]],

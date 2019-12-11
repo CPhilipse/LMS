@@ -22,7 +22,7 @@
         @if(session('rightLink') == true)
         top: 87%!important;
         @endif
-        top: 53%;
+        top: 46%;
         width: auto;
         padding: 16px;
         margin-top: -22px;
@@ -191,48 +191,34 @@
                 </div>
 
                 <div id="Rounds" class="w3-container w3-border tab" style="display:none">
+
                     @for($row = 0; $row < count($league); $row++)
                         <div class="mySlides">
                             <a class="prevv" onclick="plusSlides(-1)">&#10094;</a>
                             <a class="nextt" onclick="plusSlides(1)">&#10095;</a>
                             <h2 class="round"><b>Ronde {{$row}}</b></h2>
 
+                            <form style="padding-top: 15px; margin: 0;" name="form" action="{{route('voteTeam', ['id' => $game->id])}}" method="POST">
+                                @csrf
 
-                            @if(!$user_chosen || !$user_out)
-                                @foreach(array_chunk($league[$row], 2) as $pair)
-                                    @for($col = 0; $col < count($pair); $col++)
-{{--                                        {{$pair}}--}}
-{{--                                        @for($col = 0; $col < count($league[0]); $col++)--}}
+                                <button style="height: 50px; margin-bottom: 2.5px;" type="submit" class="btn btn-outline-dark col-12">
+                                    Stemmen
+                                </button>
 
-                                        {{print_r($pair)}}
-
-{{--                                    @if(end($league[$row]) == $current_week)--}}
-{{--                                        <span><input type='radio' name='team' value='{{$league[$row][$col]}}'>{{$league[$row][$col]}}</span><br>--}}
-{{--                                    @else--}}
-{{--                                        <span>{{$league[$row][$col]}}</span><br>--}}
-{{--                                    @endif--}}
+                                @if(!$user_chosen || !$user_out)
+                                    @for($col = 0; $col < count($league[0]); $col++)
+                                        @if(end($league[$row]) == $current_week)
+                                            <span><input type='radio' name='team' value='{{$league[$row][$col]}}'>{{$league[$row][$col]}}</span><br>
+                                        @else
+                                            <span>{{$league[$row][$col]}}</span><br>
+                                        @endif
                                     @endfor
-                                @endforeach
-
-
-                            @else
-                                @for($col = 0; $col < count($league[0]); $col++)
-                                    <span>{{$league[$row][$col]}}</span><br>
-                                @endfor
-                            @endif
-
-{{--                                @foreach($league as $comp)--}}
-{{--                                    @if($comp[0] == $current_week)--}}
-                                    {{-- The input fields with buttons --}}
-{{--                                        het is week {{$current_week}}--}}
-{{--                                    @endif--}}
-{{--                                {{$comp[0][0]}}--}}
-{{--                                    {{$comp['TeamOne'] . $comp['TeamTwo'] . $comp['TeamThree']}}--}}
-{{--                                @endforeach--}}
-
-
-                            {{-- With buttons --}}
-
+                                @else
+                                    @for($col = 0; $col < count($league[0]); $col++)
+                                        <span>{{$league[$row][$col]}}</span><br>
+                                    @endfor
+                                @endif
+                            </form>
                         </div>
                     @endfor
 

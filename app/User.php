@@ -43,10 +43,6 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Game', 'App\GameRecord')->withPivot('user_id', 'game_id', 'admin', 'invited', 'point', 'chosen', 'out');
     }
 
-    public function test () {
-
-    }
-
     public function isAdmin()
     {
         $isAdmin = false;
