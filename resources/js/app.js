@@ -19,7 +19,7 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('timer', require('./components/Timer.vue').default);
+Vue.component('Timer', require('./components/Timer.vue').default);
 Vue.component('time-default', require('./components/TimerDefault.vue').default);
 Vue.component('league', require('./components/League.vue').default);
 

@@ -197,6 +197,25 @@
                             <a class="prevv" onclick="plusSlides(-1)">&#10094;</a>
                             <a class="nextt" onclick="plusSlides(1)">&#10095;</a>
                             <h2 class="round"><b>Ronde {{$row}}</b></h2>
+                            <div id="timer" class="timer">
+                                <time-default
+                                    starttime="{{$weeksStart[$row] . " 00:00:00"}}"
+                                    endtime="{{$weeksEnd[$row] . " 00:00:00"}}"
+                                    trans='{
+                                     "day":"Dagen",
+                                     "hours":"Uren",
+                                     "minutes":"Minuten",
+                                     "seconds":"Seconden",
+                                     "expired":"Ronde is afgelopen.",
+                                     "running":"Ronde is nu gaande.",
+                                     "upcoming":"Komt nog.",
+                                     "status": {
+                                        "expired":"Verlopen",
+                                        "running":"Open",
+                                        "upcoming":"Komt nog"
+                                       }}'
+                                ></time-default>
+                            </div>
 
                             <form style="padding-top: 15px; margin: 0;" name="form" action="{{route('voteTeam', ['id' => $game->id])}}" method="POST">
                                 @csrf

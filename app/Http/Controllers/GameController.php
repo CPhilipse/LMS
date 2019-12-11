@@ -82,6 +82,28 @@ class GameController extends Controller
         $user_out = $game_id->users[$user_id - 1]->pivot->out == 0 ? false : true;
 
         $current_week = Carbon::now()->week;
+        $week1date = Carbon::create(2019, 12, 1);
+        $week2date = Carbon::create(2019, 12, 8);
+        $week3date = Carbon::create(2019, 12, 15);
+        $week4date = Carbon::create(2019, 12, 22);
+        $week1 = $week1date->toFormattedDateString();
+        $week2 = $week2date->toFormattedDateString();
+        $week3 = $week3date->toFormattedDateString();
+        $week4 = $week4date->toFormattedDateString();
+
+        $weeksStart = [];
+        $weeksStart[] = $week1;
+        $weeksStart[] = $week2;
+        $weeksStart[] = $week3;
+        $weeksStart[] = $week4;
+
+        $weeksEnd = [];
+        $weeksEnd[] = $week2;
+        $weeksEnd[] = $week3;
+        $weeksEnd[] = $week4;
+        $weeksEnd[] = "Dec 29, 2019";
+//        dd($weeksStart);
+//        dd($weeksEnd);
 
         // Check whether user exists in selected game.
         for ($i = 0; $i < count($allPlayers); $i++) {
@@ -103,7 +125,9 @@ class GameController extends Controller
                         'user_id' => $user_id, 'allPlayers' => $allPlayers,
                         'game' => $game_id, 'uuid' => $game_id->link, 'game_name' => $game_id->name,
                         'outcome' => $outcome, 'league' => $league, 'user_chosen' => $user_chosen,
-                        'user_out' => $user_out, 'current_week' => $current_week,
+                        'user_out' => $user_out, 'current_week' => $current_week, 'weeksStart' => $weeksStart,
+                        'weeksEnd' => $weeksEnd,
+                        'weekOne' => $week1, 'weekTwo' => $week2, 'weekThree' => $week3, 'weekFour' => $week4
                     ]
                 );
             }
