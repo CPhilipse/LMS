@@ -22,7 +22,7 @@
         @if(session('rightLink') == true)
         top: 87%!important;
         @endif
-        top: 83%;
+        top: 53%;
         width: auto;
         padding: 16px;
         margin-top: -22px;
@@ -197,14 +197,24 @@
                             <a class="nextt" onclick="plusSlides(1)">&#10095;</a>
                             <h2 class="round"><b>Ronde {{$row}}</b></h2>
 
+
                             @if(!$user_chosen || !$user_out)
-                                @for($col = 0; $col < count($league[0]); $col++)
-                                    @if(end($league[$row]) == $current_week)
-                                        <span><input type='radio' name='team' value='{{$league[$row][$col]}}'>{{$league[$row][$col]}}</span><br>
-                                    @else
-                                        <span>{{$league[$row][$col]}}</span><br>
-                                    @endif
-                                @endfor
+                                @foreach(array_chunk($league[$row], 2) as $pair)
+                                    @for($col = 0; $col < count($pair); $col++)
+{{--                                        {{$pair}}--}}
+{{--                                        @for($col = 0; $col < count($league[0]); $col++)--}}
+
+                                        {{print_r($pair)}}
+
+{{--                                    @if(end($league[$row]) == $current_week)--}}
+{{--                                        <span><input type='radio' name='team' value='{{$league[$row][$col]}}'>{{$league[$row][$col]}}</span><br>--}}
+{{--                                    @else--}}
+{{--                                        <span>{{$league[$row][$col]}}</span><br>--}}
+{{--                                    @endif--}}
+                                    @endfor
+                                @endforeach
+
+
                             @else
                                 @for($col = 0; $col < count($league[0]); $col++)
                                     <span>{{$league[$row][$col]}}</span><br>
