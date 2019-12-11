@@ -29,6 +29,6 @@ Route::post('spel/{id}/invite','GameController@addUserExistingGame')->name('addU
 Route::post('spel/{id}/wijzigingen-spel','GameController@update')->name('updateGame');
 Route::get('spel/{id}/verwijderen/{user_id}','GameController@destroyUser')->name('deleteUser');
 Route::get('spel/{id}/verwijderen','GameController@destroy')->name('deleteGame');
-Route::get('spel/{id}/vote','GameController@vote')->name('voteTeam');
+Route::post('spel/{id}/vote','GameController@voteTeam')->name('voteTeam');
 
 Route::get('/overzicht', 'HomeController@overview')->name('overview');

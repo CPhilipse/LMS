@@ -112,6 +112,13 @@
                     </div>
                 @endif
 
+                @if(session('chooseTeam') == true)
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">Mislukt!</h4>
+                        <p>Kies een team om te stemmen.</p>
+                    </div>
+                @endif
+
                 <div class="w3-bar w3-black">
                     @foreach($allPlayers as $player)
                         @if($user_id == $player->pivot->user_id)
@@ -219,19 +226,23 @@
 
                             <form style="padding-top: 15px; margin: 0;" name="form" action="{{route('voteTeam', ['id' => $game->id])}}" method="POST">
                                 @csrf
-
-                                <button style="height: 50px; margin-bottom: 2.5px;" type="submit" class="btn btn-outline-dark col-12">
-                                    Stemmen
-                                </button>
-
-                                @if(!$user_chosen || !$user_out)
-                                    @for($col = 0; $col < count($league[0]); $col++)
-                                        @if(end($league[$row]) == $current_week)
-                                            <span><input type='radio' name='team' value='{{$league[$row][$col]}}'>{{$league[$row][$col]}}</span><br>
-                                        @else
+                                @if($user_out == 0)
+                                    @if($user_chosen == 0)
+                                        <button style="height: 50px; margin-bottom: 2.5px;" type="submit" class="btn btn-outline-dark col-12">
+                                            Stemmen
+                                        </button>
+                                        @for($col = 0; $col < count($league[0]); $col++)
+                                            @if(end($league[$row]) == $current_week)
+                                                <span><input type='radio' name='team' value='{{$league[$row][$col]}}'>{{$league[$row][$col]}}</span><br>
+                                            @else
+                                                <span>{{$league[$row][$col]}}</span><br>
+                                            @endif
+                                        @endfor
+                                    @else
+                                        @for($col = 0; $col < count($league[0]); $col++)
                                             <span>{{$league[$row][$col]}}</span><br>
-                                        @endif
-                                    @endfor
+                                        @endfor
+                                    @endif
                                 @else
                                     @for($col = 0; $col < count($league[0]); $col++)
                                         <span>{{$league[$row][$col]}}</span><br>

@@ -403,4 +403,34 @@ class GameController extends Controller
             return view('game')->with(['nope' => $nope, 'user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game, 'uuid' => $game->link, 'game_name' => $game->name]);
         }
     }
+
+
+    public function voteTeam($id, Request $request) {
+        $user_id = auth()->user()->id;
+        $game = Game::find($id);
+
+        // Grab the chosen team by the defined name in blade.
+        $chosenTeam = $request->input('team');
+
+        // Not chosen a team? Give error message.
+        if(!isset($chosenTeam)) {
+            session(['chooseTeam' => true]);
+            return redirect()->back();
+        }
+        session()->forget('chooseTeam');
+
+        // In blade show that the user chose for this team.
+        if(isset($chosenTeam)) {
+            session(['chosenTeam' => $chosenTeam]);
+        }
+
+        // User has chosen, change value so user can't vote again till next round.
+        if($game->users[$user_id - 1]->pivot->admin == 1) {
+            $game->users()->updateExistingPivot(['user_id' => $user_id], ['admin' => 1, 'point' => 0, 'invited' => 0, 'chosen' => 1, 'out' => 0]);
+        } else {
+            $game->users()->updateExistingPivot(['user_id' => $user_id], ['admin' => 0, 'point' => 0, 'invited' => 1, 'chosen' => 1, 'out' => 0]);
+        }
+
+        return redirect()->route('game', ['id' => $game->id]);
+    }
 }
