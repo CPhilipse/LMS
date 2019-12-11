@@ -191,58 +191,70 @@
                 </div>
 
                 <div id="Rounds" class="w3-container w3-border tab" style="display:none">
-                    @if(!$user_chosen || !$user_out)
-                        @for($row = 0; $row < count($league); $row++)
-                            <div class="mySlides">
-                                <a class="prevv" onclick="plusSlides(-1)">&#10094;</a>
-                                <a class="nextt" onclick="plusSlides(1)">&#10095;</a>
-                                <h2 class="round"><b>Ronde {{$row}}</b></h2>
-                                {{-- With buttons --}}
+                    @for($row = 0; $row < count($league); $row++)
+                        <div class="mySlides">
+                            <a class="prevv" onclick="plusSlides(-1)">&#10094;</a>
+                            <a class="nextt" onclick="plusSlides(1)">&#10095;</a>
+                            <h2 class="round"><b>Ronde {{$row}}</b></h2>
 
-                            </div>
-                        @endfor
-                    @else
-                        @for($row = 0; $row < count($league); $row++)
-                            <div class="mySlides">
-                                <a class="prevv" onclick="plusSlides(-1)">&#10094;</a>
-                                <a class="nextt" onclick="plusSlides(1)">&#10095;</a>
-                                <h2 style='text-align: center; margin-top: 20px; padding-bottom: 25px'><b>Ronde {{$row}}</b></h2>
-                                {{-- Without buttons --}}
+                            @if(!$user_chosen || !$user_out)
+                                @for($col = 0; $col < count($league[0]); $col++)
+                                    @if(end($league[$row]) == $current_week)
+                                        <span><input type='radio' name='team' value='{{$league[$row][$col]}}'>{{$league[$row][$col]}}</span><br>
+                                    @else
+                                        <span>{{$league[$row][$col]}}</span><br>
+                                    @endif
+                                @endfor
+                            @else
+                                @for($col = 0; $col < count($league[0]); $col++)
+                                    <span>{{$league[$row][$col]}}</span><br>
+                                @endfor
+                            @endif
 
-                            </div>
-                        @endfor
+{{--                                @foreach($league as $comp)--}}
+{{--                                    @if($comp[0] == $current_week)--}}
+                                    {{-- The input fields with buttons --}}
+{{--                                        het is week {{$current_week}}--}}
+{{--                                    @endif--}}
+{{--                                {{$comp[0][0]}}--}}
+{{--                                    {{$comp['TeamOne'] . $comp['TeamTwo'] . $comp['TeamThree']}}--}}
+{{--                                @endforeach--}}
+
+
+                            {{-- With buttons --}}
+
                         </div>
-                    @endif
+                    @endfor
 
-                <script>
-                    var slideIndex = 1;
-                    showSlides(slideIndex);
+                    <script>
+                        var slideIndex = 1;
+                        showSlides(slideIndex);
 
-                    function plusSlides(n) {
-                        showSlides(slideIndex += n);
-                    }
-
-                    function currentSlide(n) {
-                        showSlides(slideIndex = n);
-                    }
-
-                    function showSlides(n) {
-                        var i;
-                        var slides = document.getElementsByClassName("mySlides");
-                        var dots = document.getElementsByClassName("dot");
-                        if (n > slides.length) {slideIndex = 1}
-                        if (n < 1) {slideIndex = slides.length}
-                        for (i = 0; i < slides.length; i++) {
-                            slides[i].style.display = "none";
+                        function plusSlides(n) {
+                            showSlides(slideIndex += n);
                         }
-                        for (i = 0; i < dots.length; i++) {
-                            dots[i].className = dots[i].className.replace(" active", "");
+
+                        function currentSlide(n) {
+                            showSlides(slideIndex = n);
                         }
-                        slides[slideIndex-1].style.display = "block";
-                        dots[slideIndex-1].className += " active";
-                    }
-                </script>
-            </div>
+
+                        function showSlides(n) {
+                            var i;
+                            var slides = document.getElementsByClassName("mySlides");
+                            var dots = document.getElementsByClassName("dot");
+                            if (n > slides.length) {slideIndex = 1}
+                            if (n < 1) {slideIndex = slides.length}
+                            for (i = 0; i < slides.length; i++) {
+                                slides[i].style.display = "none";
+                            }
+                            for (i = 0; i < dots.length; i++) {
+                                dots[i].className = dots[i].className.replace(" active", "");
+                            }
+                            slides[slideIndex-1].style.display = "block";
+                            dots[slideIndex-1].className += " active";
+                        }
+                    </script>
+                </div>
 
             @foreach($allPlayers as $player)
                 @if($user_id == $player->pivot->user_id)

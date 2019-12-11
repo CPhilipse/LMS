@@ -31,29 +31,34 @@ class GameController extends Controller
                 ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
             ];
 
-        // pass league as parameter to blade, so you can foreach it in blade and still make use of the slides.
         $league =
             [
-                '49' => ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"],
-                '50' => ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"],
-                '51' => ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"],
-                '52' => ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"],
+                ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", 49],
+                ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", 50],
+                ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", 51],
+                ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", 52],
             ];
 
+//        $league =
+//            [
+//                [49, ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"]],
+//                [50, ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"]],
+//                [51, ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"]],
+//                [52, ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"]],
+//            ];
 
-// Pick each round by [week]
-        // OR try to get the right
+//        $league =
+//            [
+//                "fortyNine" => ["TeamOne" => "Team 1", "TeamTwo" => "Team 2", "TeamThree" => "Team 3", "TeamFour" => "Team 4",
+//                    "TeamFive" => "Team 5", "TeamSix" => "Team 6", "TeamSeven" => "Team 7", "TeamEight" => "Team 8"],
+//                "fifty" => ["TeamOne" => "Team 1", "TeamTwo" => "Team 2", "TeamThree" => "Team 3", "TeamFour" => "Team 4",
+//                    "TeamFive" => "Team 5", "TeamSix" => "Team 6", "TeamSeven" => "Team 7", "TeamEight" => "Team 8"],
+//                "fiftyOne" => ["TeamOne" => "Team 1", "TeamTwo" => "Team 2", "TeamThree" => "Team 3", "TeamFour" => "Team 4",
+//                    "TeamFive" => "Team 5", "TeamSix" => "Team 6", "TeamSeven" => "Team 7", "TeamEight" => "Team 8"],
+//                "fiftyTwo" => ["TeamOne" => "Team 1", "TeamTwo" => "Team 2", "TeamThree" => "Team 3", "TeamFour" => "Team 4",
+//                    "TeamFive" => "Team 5", "TeamSix" => "Team 6", "TeamSeven" => "Team 7", "TeamEight" => "Team 8"],
+//            ];
 
-//        if (Carbon::now()->week == 50) {
-//            dd('Current round');
-//        }
-//
-//        if (Carbon::now()->week == 51) {
-//            dd('Round 2');
-//        }
-
-        // check whether user is out and has chosen, one of h'm is true.
-        // Then it shouldn't display the radio buttons in the blade
 
         $game_id = Game::find($id);
 
@@ -65,6 +70,8 @@ class GameController extends Controller
 
         $user_chosen = $game_id->users[$user_id - 1]->pivot->chosen == 0 ? false : true;
         $user_out = $game_id->users[$user_id - 1]->pivot->out == 0 ? false : true;
+
+        $current_week = Carbon::now()->week;
 
         // Check whether user exists in selected game.
         for ($i = 0; $i < count($allPlayers); $i++) {
@@ -79,14 +86,14 @@ class GameController extends Controller
 
                 // Logged in user is this specific game.
                 // So all you have to do is check whether the values of the user has chosen or out.
-//                $user = $game_id->users[$i]->id == $user_id ? $user
+                // $user = $game_id->users[$i]->id == $user_id ? $user
 
                 return view('game')->with(
                     [
-                    'user_id' => $user_id, 'allPlayers' => $allPlayers,
-                    'game' => $game_id, 'uuid' => $game_id->link, 'game_name' => $game_id->name,
-                    'outcome' => $outcome, 'league' => $league, 'user_chosen' => $user_chosen,
-                    'user_out' => $user_out,
+                        'user_id' => $user_id, 'allPlayers' => $allPlayers,
+                        'game' => $game_id, 'uuid' => $game_id->link, 'game_name' => $game_id->name,
+                        'outcome' => $outcome, 'league' => $league, 'user_chosen' => $user_chosen,
+                        'user_out' => $user_out, 'current_week' => $current_week,
                     ]
                 );
             }
