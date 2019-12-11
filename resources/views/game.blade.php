@@ -218,8 +218,8 @@
                                      "upcoming":"Komt nog.",
                                      "status": {
                                         "expired":"Verlopen",
-                                        "running":"Open",
-                                        "upcoming":"Komt nog"
+                                        "running":"Nu open",
+                                        "upcoming":"Open in ↝"
                                        }}'
                                 ></time-default>
                             </div>
