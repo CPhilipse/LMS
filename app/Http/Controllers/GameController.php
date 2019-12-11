@@ -424,7 +424,7 @@ class GameController extends Controller
             session(['chosenTeam' => $chosenTeam]);
         }
 
-        // User has chosen, change value so user can't vote again till next round.
+        // Update user record to chosen true.
         if($game->users[$user_id - 1]->pivot->admin == 1) {
             $game->users()->updateExistingPivot(['user_id' => $user_id], ['admin' => 1, 'point' => 0, 'invited' => 0, 'chosen' => 1, 'out' => 0]);
         } else {
