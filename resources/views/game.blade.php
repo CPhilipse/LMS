@@ -20,9 +20,9 @@
         cursor: pointer;
         position: absolute;
         @if(session('rightLink') == true)
-        top: 55%!important;
+        top: 46%!important;
         @endif
-        top: 50%;
+        top: 41%;
         width: auto;
         padding: 16px;
         margin-top: -22px;
@@ -85,6 +85,29 @@
     /* On smaller screens, decrease text size */
     @media only screen and (max-width: 300px) {
         .prevv, .nextt,.text {font-size: 11px}
+    }
+
+    /* Show teams in competitions. */
+    .teams{
+        list-style-type: none;
+        padding: 0;
+    }
+    .comp:nth-of-type(4n+3), .comp:nth-of-type(4n+3) + * {
+        background-color: #000;
+        color: white;
+        padding-left: 25px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+        border-radius: 4px;
+    }
+    .comp:nth-of-type(4n+1), .comp:nth-of-type(4n+1) + * {
+        /*background-color: #7f7880;*/
+        padding-left: 25px;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+    .comp:nth-child(9) {
+        display: none;
     }
 </style>
 @section('content')
@@ -245,25 +268,31 @@
                                                     </button>
                                                 @endif
 
-                                                @for($col = 0; $col < count($league[0]); $col++)
-                                                    @if(end($league[$row]) == $current_week)
-                                                        <span><input type='radio' name='team' value='{{$league[$row][$col]}}'>{{$league[$row][$col]}}</span><br>
-                                                    @else
-                                                        <span>{{$league[$row][$col]}}</span><br>
-                                                    @endif
-                                                @endfor
+                                                <ul class="teams">
+                                                    @for($col = 0; $col < count($league[0]); $col++)
+                                                        @if(end($league[$row]) == $current_week)
+                                                            <li class="comp"><input type='radio' name='team' value='{{$league[$row][$col]}}'>{{$league[$row][$col]}}</li>
+                                                        @else
+                                                            <li class="comp">{{$league[$row][$col]}}</li>
+                                                        @endif
+                                                    @endfor
+                                                </ul>
                                             @else
                                                 <button style="cursor: default;height: 50px; margin-bottom: 2.5px;" type="button" class="btn btn-outline-dark col-12" disabled>
                                                     U heeft gekozen voor {{$player->pivot->team}}.
                                                 </button>
-                                                @for($col = 0; $col < count($league[0]); $col++)
-                                                    <span>{{$league[$row][$col]}}</span><br>
-                                                @endfor
+                                                <ul class="teams">
+                                                    @for($col = 0; $col < count($league[0]); $col++)
+                                                        <li class="comp">{{$league[$row][$col]}}</li>
+                                                    @endfor
+                                                </ul>
                                             @endif
                                         @else
-                                            @for($col = 0; $col < count($league[0]); $col++)
-                                                <span>{{$league[$row][$col]}}</span><br>
-                                            @endfor
+                                            <ul class="teams">
+                                                @for($col = 0; $col < count($league[0]); $col++)
+                                                    <li class="comp">{{$league[$row][$col]}}</li>
+                                                @endfor
+                                            </ul>
                                         @endif
                                     @endif
                                 @endforeach
