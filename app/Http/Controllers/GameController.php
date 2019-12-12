@@ -49,15 +49,6 @@ class GameController extends Controller
 
         $current_game_id = $request->route('id');
 
-        // BUG:: actually find the user and then check for pivot value. Now is wrong.
-        $existence_user_chosen = isset($game_id->users[$user_id - 1]->pivot->chosen) ? $game_id->users[$user_id - 1]->pivot->chosen : $game_id->users[$user_id - 2]->pivot->chosen;
-        $user_chosen = $existence_user_chosen == 0 ? false : true;
-
-        $existence_user_out = isset($game_id->users[$user_id - 1]->pivot->chosen) ? $game_id->users[$user_id - 1]->pivot->out : $game_id->users[$user_id - 2]->pivot->out;
-        $user_out = $existence_user_out == 0 ? false : true;
-
-        $chosen_team = $game_id->users[$user_id - 1]->pivot->team !== "" ? $game_id->users[$user_id - 1]->pivot->team : false;
-//        dd($chosen_team);
         // Show time for each round for more clarity on the round time frame. Timer > Vue component.
         $current_week = Carbon::now()->week;
         $week1date = Carbon::create(2019, 12, 1);
@@ -103,9 +94,9 @@ class GameController extends Controller
                     [
                         'user_id' => $user_id, 'allPlayers' => $allPlayers,
                         'game' => $game_id, 'uuid' => $game_id->link, 'game_name' => $game_id->name,
-                        'outcome' => $outcome, 'league' => $league, 'user_chosen' => $user_chosen,
-                        'user_out' => $user_out, 'current_week' => $current_week, 'weeksStart' => $weeksStart,
-                        'weeksEnd' => $weeksEnd, 'chosen_team' => $chosen_team, 'tooLittlePlayers' => $tooLittlePlayers,
+                        'outcome' => $outcome, 'league' => $league,
+                        'current_week' => $current_week, 'weeksStart' => $weeksStart,
+                        'weeksEnd' => $weeksEnd, 'tooLittlePlayers' => $tooLittlePlayers,
                         'weekOne' => $week1, 'weekTwo' => $week2, 'weekThree' => $week3, 'weekFour' => $week4
                     ]
                 );
@@ -401,11 +392,7 @@ class GameController extends Controller
         session()->forget('chooseTeam');
 
         // Update user record to chosen true.
-        if($game->users[$user_id - 1]->pivot->admin == 1) {
-            $game->users()->updateExistingPivot(['user_id' => $user_id], ['admin' => 1, 'point' => 0, 'invited' => 0, 'chosen' => 1, 'out' => 0, 'team' => $chosenTeam]);
-        } else {
-            $game->users()->updateExistingPivot(['user_id' => $user_id], ['admin' => 0, 'point' => 0, 'invited' => 1, 'chosen' => 1, 'out' => 0, 'team' => $chosenTeam]);
-        }
+        $game->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 1, 'team' => $chosenTeam]);
 
         return redirect()->route('game', ['id' => $game->id]);
     }

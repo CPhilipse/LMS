@@ -254,7 +254,7 @@
                                                 @endfor
                                             @else
                                                 <button style="cursor: default;height: 50px; margin-bottom: 2.5px;" type="button" class="btn btn-outline-dark col-12" disabled>
-                                                    U heeft gekozen voor {{$chosen_team}}.
+                                                    U heeft gekozen voor {{$player->pivot->team}}.
                                                 </button>
                                                 @for($col = 0; $col < count($league[0]); $col++)
                                                     <span>{{$league[$row][$col]}}</span><br>
