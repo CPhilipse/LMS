@@ -20,7 +20,7 @@
         cursor: pointer;
         position: absolute;
         @if(session('rightLink') == true)
-        top: 87%!important;
+        top: 55%!important;
         @endif
         top: 50%;
         width: auto;
@@ -226,34 +226,47 @@
 
                             <form style="padding-top: 15px; margin: 0;" name="form" action="{{route('voteTeam', ['id' => $game->id])}}" method="POST">
                                 @csrf
-                                @if($user_out == 0)
-                                    @if($user_chosen == 0)
-                                        @if($tooLittlePlayers == false)
-                                            <button style="height: 50px; margin-bottom: 2.5px;" type="submit" class="btn btn-outline-dark col-12">
-                                                Stemmen
-                                            </button>
-                                        @else
-                                            <button style="cursor: default;height: 50px; margin-bottom: 2.5px;" type="button" class="btn btn-outline-dark col-12" disabled>
-                                                Te weinig spelers om te kunnen spelen.
-                                            </button>
-                                        @endif
-                                        @for($col = 0; $col < count($league[0]); $col++)
-                                            @if(end($league[$row]) == $current_week)
-                                                <span><input type='radio' name='team' value='{{$league[$row][$col]}}'>{{$league[$row][$col]}}</span><br>
+                                {{-- Foreach over all users to access their pivot data. --}}
+                                @foreach($allPlayers as $player)
+                                    {{-- Show only data for you. --}}
+                                    @if($player->id == $user_id)
+                                        {{-- Check whether you are out. --}}
+                                        @if($player->pivot->out == 0)
+                                            {{-- Check whether you've chosen already. --}}
+                                            @if($player->pivot->chosen == 0)
+                                                {{-- Show data based on whether there are more or less then 2 people in game. --}}
+                                                @if($tooLittlePlayers == false)
+                                                    <button style="height: 50px; margin-bottom: 2.5px;" type="submit" class="btn btn-outline-dark col-12">
+                                                        Stemmen
+                                                    </button>
+                                                @else
+                                                    <button style="cursor: default;height: 50px; margin-bottom: 2.5px;" type="button" class="btn btn-outline-dark col-12" disabled>
+                                                        Te weinig spelers om te kunnen spelen.
+                                                    </button>
+                                                @endif
+
+                                                @for($col = 0; $col < count($league[0]); $col++)
+                                                    @if(end($league[$row]) == $current_week)
+                                                        <span><input type='radio' name='team' value='{{$league[$row][$col]}}'>{{$league[$row][$col]}}</span><br>
+                                                    @else
+                                                        <span>{{$league[$row][$col]}}</span><br>
+                                                    @endif
+                                                @endfor
                                             @else
-                                                <span>{{$league[$row][$col]}}</span><br>
+                                                <button style="cursor: default;height: 50px; margin-bottom: 2.5px;" type="button" class="btn btn-outline-dark col-12" disabled>
+                                                    U heeft gekozen voor {{$chosen_team}}.
+                                                </button>
+                                                @for($col = 0; $col < count($league[0]); $col++)
+                                                    <span>{{$league[$row][$col]}}</span><br>
+                                                @endfor
                                             @endif
-                                        @endfor
-                                    @else
-                                        @for($col = 0; $col < count($league[0]); $col++)
-                                            <span>{{$league[$row][$col]}}</span><br>
-                                        @endfor
+                                        @else
+                                            @for($col = 0; $col < count($league[0]); $col++)
+                                                <span>{{$league[$row][$col]}}</span><br>
+                                            @endfor
+                                        @endif
                                     @endif
-                                @else
-                                    @for($col = 0; $col < count($league[0]); $col++)
-                                        <span>{{$league[$row][$col]}}</span><br>
-                                    @endfor
-                                @endif
+                                @endforeach
                             </form>
                         </div>
                     @endfor

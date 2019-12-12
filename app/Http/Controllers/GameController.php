@@ -49,14 +49,15 @@ class GameController extends Controller
 
         $current_game_id = $request->route('id');
 
-        $user_chosen = $game_id->users[$user_id - 1]->pivot->chosen == 0 ? false : true;
-        $user_out = $game_id->users[$user_id - 1]->pivot->out == 0 ? false : true;
-        if($user_chosen) {
-            $chosen_team = $game_id->users[$user_id - 1]->pivot->team;
-        } else {
-            $chosen_team = ' ';
-        }
+        // BUG:: actually find the user and then check for pivot value. Now is wrong.
+        $existence_user_chosen = isset($game_id->users[$user_id - 1]->pivot->chosen) ? $game_id->users[$user_id - 1]->pivot->chosen : $game_id->users[$user_id - 2]->pivot->chosen;
+        $user_chosen = $existence_user_chosen == 0 ? false : true;
 
+        $existence_user_out = isset($game_id->users[$user_id - 1]->pivot->chosen) ? $game_id->users[$user_id - 1]->pivot->out : $game_id->users[$user_id - 2]->pivot->out;
+        $user_out = $existence_user_out == 0 ? false : true;
+
+        $chosen_team = $game_id->users[$user_id - 1]->pivot->team !== "" ? $game_id->users[$user_id - 1]->pivot->team : false;
+//        dd($chosen_team);
         // Show time for each round for more clarity on the round time frame. Timer > Vue component.
         $current_week = Carbon::now()->week;
         $week1date = Carbon::create(2019, 12, 1);

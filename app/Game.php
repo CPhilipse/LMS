@@ -20,6 +20,6 @@ class Game extends Model
     // Users can have many games
     public function users () {
         // $this game belongs to many users.
-        return $this->belongsToMany('App\User','App\GameRecord')->withPivot('user_id', 'game_id', 'admin', 'invited', 'point', 'chosen', 'out');
+        return $this->belongsToMany('App\User','App\GameRecord')->withPivot('user_id', 'game_id', 'admin', 'invited', 'point', 'chosen', 'out', 'team');
     }
 }
