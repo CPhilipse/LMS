@@ -51,6 +51,7 @@ class GameController extends Controller
 
         // Show time for each round for more clarity on the round time frame. Timer > Vue component.
         $current_week = Carbon::now()->week;
+
         $week1date = Carbon::create(2019, 12, 1);
         $week2date = Carbon::create(2019, 12, 8);
         $week3date = Carbon::create(2019, 12, 15);
@@ -121,7 +122,9 @@ class GameController extends Controller
             $message = 'Vul alstublieft een naam in voor het spel.';
             return view('creategame')->with(['emptyName' => $message, 'uuid' => $uuid]);
         }
-        Game::create(['name' => $name, 'link' => $uuid]);
+        $current_week = Carbon::now()->week;
+//        dd($current_week);
+        Game::create(['name' => $name, 'link' => $uuid, 'week' => $current_week]);
 
         $user_id = auth()->user()->id;
         $game_id = Game::all()->last()->id;
@@ -132,8 +135,8 @@ class GameController extends Controller
         // Add invited users to the game.
         $lobby = session('lobby');
         $madeGame_id = Game::all()->last()->id;
-
-        if(isset($lobby)) {
+//        dd($lobby);
+        if($lobby !== null) {
             foreach ($lobby as $user_id => $invited) {
                 $user = User::find($user_id);
                 $user->games()->attach(['user_id' => $user_id, 'game_id' => $madeGame_id], ['admin' => 0, 'point' => 0, 'invited' => $invited]);
@@ -217,6 +220,8 @@ class GameController extends Controller
         $game->name = $name;
         $game->save();
 
+        $current_week = Carbon::now()->week;
+
         // Save new users to the game.
         if (isset($lobby)) {
             foreach ($lobby as $user_id => $invited) {
@@ -235,6 +240,7 @@ class GameController extends Controller
         $user_id = auth()->user()->id;
         $checkLink = $request->input('invitation');
         $current_game_id = $request->route('id');
+        $current_week = Carbon::now()->week;
 
         $wrongLink = 'De ingevoerde link is onjuist.';
 

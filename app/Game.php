@@ -14,7 +14,7 @@ class Game extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'link',
+        'name', 'link', 'week'
     ];
 
     // Users can have many games
