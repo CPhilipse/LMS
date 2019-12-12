@@ -22,7 +22,7 @@
         @if(session('rightLink') == true)
         top: 87%!important;
         @endif
-        top: 48%;
+        top: 50%;
         width: auto;
         padding: 16px;
         margin-top: -22px;
@@ -228,9 +228,15 @@
                                 @csrf
                                 @if($user_out == 0)
                                     @if($user_chosen == 0)
-                                        <button style="height: 50px; margin-bottom: 2.5px;" type="submit" class="btn btn-outline-dark col-12">
-                                            Stemmen
-                                        </button>
+                                        @if($tooLittlePlayers == false)
+                                            <button style="height: 50px; margin-bottom: 2.5px;" type="submit" class="btn btn-outline-dark col-12">
+                                                Stemmen
+                                            </button>
+                                        @else
+                                            <button style="cursor: default;height: 50px; margin-bottom: 2.5px;" type="button" class="btn btn-outline-dark col-12" disabled>
+                                                Te weinig spelers om te kunnen spelen.
+                                            </button>
+                                        @endif
                                         @for($col = 0; $col < count($league[0]); $col++)
                                             @if(end($league[$row]) == $current_week)
                                                 <span><input type='radio' name='team' value='{{$league[$row][$col]}}'>{{$league[$row][$col]}}</span><br>

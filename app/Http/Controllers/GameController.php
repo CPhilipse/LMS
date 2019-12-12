@@ -16,6 +16,8 @@ class GameController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * Load the game or the invitation page if user hasn't been invited yet.
+     *
      * @param Request $request
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
@@ -39,37 +41,6 @@ class GameController extends Controller
                 ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", 52],
             ];
 
-
-//        $league =
-//            [
-//                [["Team 1", "Team 2"], ["Team 3", "Team 4"], ["Team 5", "Team 6"], ["Team 7", "Team 8"], 49],
-//                [["Team 1", "Team 2"], ["Team 3", "Team 4"], ["Team 5", "Team 6"], ["Team 7", "Team 8"], 50],
-//                [["Team 1", "Team 2"], ["Team 3", "Team 4"], ["Team 5", "Team 6"], ["Team 7", "Team 8"], 51],
-//                [["Team 1", "Team 2"], ["Team 3", "Team 4"], ["Team 5", "Team 6"], ["Team 7", "Team 8"], 52],
-//            ];
-
-
-//        $league =
-//            [
-//                [49, ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"]],
-//                [50, ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"]],
-//                [51, ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"]],
-//                [52, ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8"]],
-//            ];
-
-//        $league =
-//            [
-//                "fortyNine" => ["TeamOne" => "Team 1", "TeamTwo" => "Team 2", "TeamThree" => "Team 3", "TeamFour" => "Team 4",
-//                    "TeamFive" => "Team 5", "TeamSix" => "Team 6", "TeamSeven" => "Team 7", "TeamEight" => "Team 8"],
-//                "fifty" => ["TeamOne" => "Team 1", "TeamTwo" => "Team 2", "TeamThree" => "Team 3", "TeamFour" => "Team 4",
-//                    "TeamFive" => "Team 5", "TeamSix" => "Team 6", "TeamSeven" => "Team 7", "TeamEight" => "Team 8"],
-//                "fiftyOne" => ["TeamOne" => "Team 1", "TeamTwo" => "Team 2", "TeamThree" => "Team 3", "TeamFour" => "Team 4",
-//                    "TeamFive" => "Team 5", "TeamSix" => "Team 6", "TeamSeven" => "Team 7", "TeamEight" => "Team 8"],
-//                "fiftyTwo" => ["TeamOne" => "Team 1", "TeamTwo" => "Team 2", "TeamThree" => "Team 3", "TeamFour" => "Team 4",
-//                    "TeamFive" => "Team 5", "TeamSix" => "Team 6", "TeamSeven" => "Team 7", "TeamEight" => "Team 8"],
-//            ];
-
-
         $game_id = Game::find($id);
 
         $allPlayers = $game_id->users;
@@ -80,6 +51,11 @@ class GameController extends Controller
 
         $user_chosen = $game_id->users[$user_id - 1]->pivot->chosen == 0 ? false : true;
         $user_out = $game_id->users[$user_id - 1]->pivot->out == 0 ? false : true;
+        if($user_chosen) {
+            $chosen_team = $game_id->users[$user_id - 1]->pivot->team;
+        } else {
+            $chosen_team = ' ';
+        }
 
         // Show time for each round for more clarity on the round time frame. Timer > Vue component.
         $current_week = Carbon::now()->week;
@@ -104,6 +80,13 @@ class GameController extends Controller
         $weeksEnd[] = $week4;
         $weeksEnd[] = "Dec 29, 2019"; // Last date
 
+        // If there are less then 2 players in a game, disable vote option.
+        if(count($allPlayers) < 2) {
+            $tooLittlePlayers = true;
+        } else {
+            $tooLittlePlayers = false;
+        }
+
         // Check whether user exists in selected game.
         for ($i = 0; $i < count($allPlayers); $i++) {
             if ($game_id->users[$i]->id == $user_id) {
@@ -115,17 +98,13 @@ class GameController extends Controller
                     session()->forget('rightLink');
                 }
 
-                // Logged in user is this specific game.
-                // So all you have to do is check whether the values of the user has chosen or out.
-                // $user = $game_id->users[$i]->id == $user_id ? $user
-
                 return view('game')->with(
                     [
                         'user_id' => $user_id, 'allPlayers' => $allPlayers,
                         'game' => $game_id, 'uuid' => $game_id->link, 'game_name' => $game_id->name,
                         'outcome' => $outcome, 'league' => $league, 'user_chosen' => $user_chosen,
                         'user_out' => $user_out, 'current_week' => $current_week, 'weeksStart' => $weeksStart,
-                        'weeksEnd' => $weeksEnd,
+                        'weeksEnd' => $weeksEnd, 'chosen_team' => $chosen_team, 'tooLittlePlayers' => $tooLittlePlayers,
                         'weekOne' => $week1, 'weekTwo' => $week2, 'weekThree' => $week3, 'weekFour' => $week4
                     ]
                 );
@@ -189,7 +168,8 @@ class GameController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource. Show create game page.
+     * Save uuid in session so that it won't be renewed until used.
      *
      * @param  \App\Game  $game
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -419,16 +399,11 @@ class GameController extends Controller
         }
         session()->forget('chooseTeam');
 
-        // In blade show that the user chose for this team.
-        if(isset($chosenTeam)) {
-            session(['chosenTeam' => $chosenTeam]);
-        }
-
         // Update user record to chosen true.
         if($game->users[$user_id - 1]->pivot->admin == 1) {
-            $game->users()->updateExistingPivot(['user_id' => $user_id], ['admin' => 1, 'point' => 0, 'invited' => 0, 'chosen' => 1, 'out' => 0]);
+            $game->users()->updateExistingPivot(['user_id' => $user_id], ['admin' => 1, 'point' => 0, 'invited' => 0, 'chosen' => 1, 'out' => 0, 'team' => $chosenTeam]);
         } else {
-            $game->users()->updateExistingPivot(['user_id' => $user_id], ['admin' => 0, 'point' => 0, 'invited' => 1, 'chosen' => 1, 'out' => 0]);
+            $game->users()->updateExistingPivot(['user_id' => $user_id], ['admin' => 0, 'point' => 0, 'invited' => 1, 'chosen' => 1, 'out' => 0, 'team' => $chosenTeam]);
         }
 
         return redirect()->route('game', ['id' => $game->id]);

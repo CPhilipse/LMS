@@ -14,6 +14,6 @@ class GameRecord extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'game_id', 'admin', 'point', 'invited', 'chosen', 'out'
+        'user_id', 'game_id', 'admin', 'point', 'invited', 'chosen', 'out', 'team'
     ];
 }

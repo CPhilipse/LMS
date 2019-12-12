@@ -30,6 +30,7 @@ class CreateGameRecordsTable extends Migration
             $table->boolean('invited');
             $table->boolean('chosen')->default(0);
             $table->boolean('out')->default(0);
+            $table->string('team')->default(' ');
         });
     }
 
