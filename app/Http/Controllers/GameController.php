@@ -41,6 +41,18 @@ class GameController extends Controller
                 ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", 52],
             ];
 
+// In the end:: try this league with this: https://stackoverflow.com/questions/1551822/looping-a-multidimensional-array-in-php/24457508
+//        $league =
+//            [
+//                ["PEC", "Willem II", "Emmen", "Groningen", "Vitesse", "Ajax", "Twente", "PSV", "VVV",
+//                    "RKC", "Heracles", "Heerenveen", "Feyenoord", "Sparta", "ADO", "Utrecht", "AZ", "Fortuna", 49],
+//                ["Sparta", "VVV", "Groningen", "Twente", "Ajax", "Emmen", "Willem II", "Vitesse", "Fortuna",
+//                    "Heracles", "Heerenveen", "Feyenoord", "RKC", "AZ", "Utrecht", "PEC", "PSV", "ADO", 50],
+//                ["Vitesse", "PEC", "VVV", "Ajax", "ADO", "Sparta", "Emmen", "Heerenveen",
+//                    "Fortuna", "Willem II", "Twente", "RKC", "AZ", "Groningen", "Feyenoord", "Utrecht", "Heracles", "PSV", 51],
+//                ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", 52],
+//            ];
+
         $game_id = Game::find($id);
 
         $allPlayers = $game_id->users;
@@ -52,10 +64,11 @@ class GameController extends Controller
         // Show time for each round for more clarity on the round time frame. Timer > Vue component.
         $current_week = Carbon::now()->week;
 
-        $week1date = Carbon::create(2019, 12, 1);
-        $week2date = Carbon::create(2019, 12, 8);
-        $week3date = Carbon::create(2019, 12, 15);
-        $week4date = Carbon::create(2019, 12, 22);
+        // https://weeknummers.com/weeknummers/2019/
+        $week1date = Carbon::create(2019, 12, 2);
+        $week2date = Carbon::create(2019, 12, 9);
+        $week3date = Carbon::create(2019, 12, 16);
+        $week4date = Carbon::create(2019, 12, 23);
         $week1 = $week1date->toFormattedDateString();
         $week2 = $week2date->toFormattedDateString();
         $week3 = $week3date->toFormattedDateString();
@@ -67,11 +80,52 @@ class GameController extends Controller
         $weeksStart[] = $week3;
         $weeksStart[] = $week4;
 
+        $week1dateEnd = Carbon::create(2019, 12, 8);
+        $week2dateEnd = Carbon::create(2019, 12, 15);
+        $week3dateEnd = Carbon::create(2019, 12, 22);
+        $week4dateEnd = Carbon::create(2019, 12, 29);
+        $week1End = $week1dateEnd->toFormattedDateString();
+        $week2End = $week2dateEnd->toFormattedDateString();
+        $week3End = $week3dateEnd->toFormattedDateString();
+        $week4End = $week4dateEnd->toFormattedDateString();
+
         $weeksEnd = [];
-        $weeksEnd[] = $week2;
-        $weeksEnd[] = $week3;
-        $weeksEnd[] = $week4;
-        $weeksEnd[] = "Dec 29, 2019"; // Last date
+        $weeksEnd[] = $week1End;
+        $weeksEnd[] = $week2End;
+        $weeksEnd[] = $week3End;
+        $weeksEnd[] = $week4End;
+
+        // Every user that goes in a game, it'll update this data for each user separately. Not all at once, which is fine.
+        // Because it will be updated for every user anyway.
+        // Update week when round/week is over, empty chosen and team so users can choose again, unless they are out.
+        // Also check whether the user is out based on the outcome.
+        $test_week = 50;
+        if($test_week !== $game_id->week) {
+            // Onchange of week you can vote again.
+            session()->forget('chooseTeam');
+
+            // Update week works*
+            $game_id->week = $test_week;
+            $game_id->save();
+
+            // check outcome. - outcome[0] will be the outcome for team one and vice versa. Iterate through the outcomes and teams.
+            // In the interation/loop if($team_in_db_of_this_user == $team_in_loop) { which will only be true if it .. }
+            // if($outcome[0] < $outcome[1]) {
+            // $team_won = $league[0];
+            // $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
+            // } else {
+            // $team_lost = $league[1]
+            // $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+            // }
+
+
+
+            // Everyone got it right | TEST
+            // Update pivot data works*
+            $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
+
+        }
+
 
         // If there are less then 2 players in a game, disable vote option.
         if(count($allPlayers) < 2) {
@@ -381,7 +435,6 @@ class GameController extends Controller
             return view('game')->with(['nope' => $nope, 'user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game, 'uuid' => $game->link, 'game_name' => $game->name]);
         }
     }
-
 
     public function voteTeam($id, Request $request) {
         $user_id = auth()->user()->id;
