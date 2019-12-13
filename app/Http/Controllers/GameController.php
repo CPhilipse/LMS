@@ -35,10 +35,10 @@ class GameController extends Controller
 
         $league =
             [
-                ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", 49],
-                ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", 50],
-                ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", 51],
-                ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", 52],
+                ["PEC", "Willem II", "Emmen", "Groningen", "Vitesse", "Ajax", "Twente", "PSV", "VVV", "RKC", "Heracles", "Heerenveen", 49],
+                ["Sparta", "VVV", "Groningen", "Twente", "Ajax", "Emmen", "Willem II", "Vitesse", "Fortuna", "Heracles", "Heerenveen", "Feyenoord", 50],
+                ["Vitesse", "PEC", "VVV", "Ajax", "ADO", "Sparta", "Emmen", "Heerenveen", "Fortuna", "Willem II", "Twente", "RKC", 51],
+                ["Team 1", "Team 2", "Team 3", "Team 4", "Team 5", "Team 6", "Team 7", "Team 8", "Team 9", "Team 10", "Team 11", "Team 12", 52],
             ];
 
 // In the end:: try this league with this: https://stackoverflow.com/questions/1551822/looping-a-multidimensional-array-in-php/24457508
@@ -177,7 +177,7 @@ class GameController extends Controller
             return view('creategame')->with(['emptyName' => $message, 'uuid' => $uuid]);
         }
         $current_week = Carbon::now()->week;
-//        dd($current_week);
+
         Game::create(['name' => $name, 'link' => $uuid, 'week' => $current_week]);
 
         $user_id = auth()->user()->id;
@@ -189,7 +189,7 @@ class GameController extends Controller
         // Add invited users to the game.
         $lobby = session('lobby');
         $madeGame_id = Game::all()->last()->id;
-//        dd($lobby);
+
         if($lobby !== null) {
             foreach ($lobby as $user_id => $invited) {
                 $user = User::find($user_id);
@@ -199,8 +199,8 @@ class GameController extends Controller
 
         session()->forget(['uuid', 'lobby']);
 
-        $success = 'Succesvol spel ' . Game::all()->last()->name . ' gemaakt.';
         $allGames = Game::all();
+        $success = 'Succesvol spel ' . $allGames->last()->name . ' gemaakt.';
 
         return view('home')->with(['success' => $success, 'games' => $allGames]);
     }

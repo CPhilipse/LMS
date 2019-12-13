@@ -17,7 +17,7 @@ class CreateGamesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('link');
-            $table->integer('week');
+            $table->integer('week')->default(0);
         });
     }
 

@@ -20,9 +20,9 @@
         cursor: pointer;
         position: absolute;
         @if(session('rightLink') == true)
-        top: 46%!important;
+        top: 39%!important;
         @endif
-        top: 41%;
+        top: 34%;
         width: auto;
         padding: 16px;
         margin-top: -22px;
@@ -106,7 +106,7 @@
         padding-bottom: 10px;
         padding-top: 10px;
     }
-    .comp:nth-child(9) {
+    .comp:nth-child(13) {
         display: none;
     }
 </style>
