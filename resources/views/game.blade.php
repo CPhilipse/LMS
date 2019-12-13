@@ -410,6 +410,11 @@
                                         </div>
 
                                         <div class="pt-3">
+                                            <label>Deelbare hyperlink - <b>Kopiëren:</b> klik op het veld en druk dan op <b>ctrl + a + c</b>.</label>
+                                            <input style="height: 50px" class="col-12" type="text" name="uuid" value="http://127.0.0.1:8000/spel/{{$game->id}}/invitatie?_token=yvle9hr8ZX7jo5XGqqf9n3AqGZqneWtip8uAZDpv&invitation={{$uuid}}" disabled>
+                                        </div>
+
+                                        <div class="pt-3">
                                             <input style="height: 50px" class="col-12" type="text" name="game_name" value="{{$game_name}}">
                                         </div>
 
