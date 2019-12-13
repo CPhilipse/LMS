@@ -1,5 +1,10 @@
 @extends('layouts.app')
 <style>
+    .w3-btns {
+        background-color: #60b6d2!important;
+        color: white;
+    }
+
     .mySlides {display: none}
 
     /* Slideshow container */
@@ -19,14 +24,14 @@
     .prevv, .nextt {
         cursor: pointer;
         position: absolute;
-        @if(session('rightLink') == true)
-        top: 39%!important;
+        @if(session('rightLink') || session('chooseTeam') == true)
+        top: 40%!important;
         @endif
         top: 34%;
         width: auto;
         padding: 16px;
         margin-top: -22px;
-        color: #2196F3!important;
+        color: #60b6d2!important;
         /*color: white;*/
         font-weight: bold;
         font-size: 18px;
@@ -146,10 +151,10 @@
                     @foreach($allPlayers as $player)
                         @if($user_id == $player->pivot->user_id)
                             @if($player->pivot->admin == 1)
-                                <button class="w3-bar-item w3-button tablink w3-blue" onclick="openTab(event,'Settings')">Instellingen</button>
+                                <button class="w3-bar-item w3-button tablink w3-btns" onclick="openTab(event,'Settings')">Instellingen</button>
                                 <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'Rules')">Spelregels</button>
                             @else
-                                <button class="w3-bar-item w3-button tablink w3-blue" onclick="openTab(event,'Rules')">Spelregels</button>
+                                <button class="w3-bar-item w3-button tablink w3-btns" onclick="openTab(event,'Rules')">Spelregels</button>
                                 <button style="display: none;" class="w3-bar-item w3-button tablink" onclick="openTab(event,'Settings')" disabled></button>
                             @endif
                         @endif
@@ -431,9 +436,9 @@
                     }
                     tablinks = document.getElementsByClassName("tablink");
                     for (i = 0; i < x.length; i++) {
-                        tablinks[i].className = tablinks[i].className.replace(" w3-blue", "");
+                        tablinks[i].className = tablinks[i].className.replace(" w3-btns", "");
                     }
                     document.getElementById(tabName).style.display = "block";
-                    evt.currentTarget.className += " w3-blue";
+                    evt.currentTarget.className += " w3-btns";
                 }
             </script>
