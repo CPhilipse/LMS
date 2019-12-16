@@ -381,6 +381,9 @@ class GameController extends Controller
             $game_id->week = $current_week;
             $game_id->save();
 
+            $teams_won = [];
+            $teams_lost = [];
+            // On new round update the users their records.
             // check outcome. - outcome[0] will be the outcome for team one and vice versa. Iterate through the outcomes and teams.
             // In the interation/loop if($team_in_db_of_this_user == $team_in_loop) { which will only be true if it .. }
             // for loop in $outcome[..] in the first modulo even and second one odd. count($outcome)
@@ -393,7 +396,12 @@ class GameController extends Controller
                     // Here come the winning teams, so loop through even numbers in league and only the teams which have passed the greatest number on the previous condition are being taken out.
                     // Now you've got all the teams that won, check this with the user chosen team.
                     for($teams = 0; $teams <= count($league[0]); $teams++) {
-                        $team_won = $league[0];
+                        // Check values of even numbers in list and put these in array. Then check by foreach whether the value of user record Team is equivalent to a value in this array.
+                        if($league[$teams % 2 == 0]) {
+                            foreach($league[$teams] as $list_number => $team) {
+                                $teams_won[] = $team;
+                            }
+                        }
 
                     }
 
@@ -401,24 +409,29 @@ class GameController extends Controller
                 } else {
 
                     // if count(allusers[$i]) pivot column out is less then or equal to <= 1 then add one point to the remaining user.
-                    if ()
-                    $team_lost = $league[1];
+                    // if ()
                     $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
 
 
                     $users_out = [];
                     for ($i = 0; $i < count($allPlayers); $i++) {
+                        // Check which users have it wrong ** By doing the same thing above *
                         if ($game_id->users[$i]->out == 1) {
-                            $test[] = $game_id->users[$i]->user_id;
+                            // Need to do another check on whether the user is already in this array. Copy of the code from handling adding users - lobby.
+                            $users_out[] = $game_id->users[$i]->user_id;
                         }
 
-                        foreach ($users_out as $key => $user_id_out) {
-                            $game_id->users()->updateExistingPivot(['user_id' => $user_id_out], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+                        // Adjust the data of the users who have it wrong by changing their record for out to 1.
+                        if(isset($users_out)) {
+                            foreach ($users_out as $key => $user_id_out) {
+                                $game_id->users()->updateExistingPivot(['user_id' => $user_id_out], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+                            }
                         }
 
+                        // If there is only one player left add a point to this user his record.
                         if (count($users_out) <= count($allPlayers)) {
                             if ($game_id->users[$i]->out == 0) {
-                                $game_id->users()->updateExistingPivot(['user_id' => $game_id->users[$i]->user_id], ['point' => +1, 'chosen' => 0, 'team' => ' ', 'out' => 0]);
+                                $game_id->users()->updateExistingPivot(['user_id' => $game_id->users[$i]->user_id], ['point' => + 1, 'chosen' => 0, 'team' => ' ', 'out' => 0]);
                             }
                         }
                     }
@@ -481,10 +494,12 @@ class GameController extends Controller
     {
         $name = $request->input('gameName');
         $uuid = session('uuid');
+
         if(!isset($name)) {
             $message = 'Vul alstublieft een naam in voor het spel.';
             return view('creategame')->with(['emptyName' => $message, 'uuid' => $uuid]);
         }
+
         $current_week = Carbon::now()->week;
 
         // Create the game with the corresponding attributes.
@@ -544,7 +559,7 @@ class GameController extends Controller
 
         $sessionUuid = session('uuid');
 
-        // Store uuid in session so that it won't change for this game when adding users through email.
+        // Store uuid in session so that it won't change on refresh.
         if(!isset($sessionUuid)) {
             session(['uuid' => $uuid]);
         }
@@ -675,14 +690,16 @@ class GameController extends Controller
         return redirect()->route('game', ['id' => $current_game_id]);
     }
 
-    // Handle adding user when creating game.
+    // Handle adding users when creating game.
     public function addUser(Request $request)
     {
         $email = $request->input('email');
         $user = User::where('email', $email)->get()->first();
         $uuid = session('uuid');
 
+        // Check whether the filled in user email has an account.
         if (isset($user)) {
+            // Check whether you try to invite yourself.
             if ($user->id == auth()->user()->id) {
                 // Unable to invite yourself.
                 $self = 'U kan uzelf niet toevoegen.';
@@ -716,7 +733,9 @@ class GameController extends Controller
         $game_id = $request->route('id');
         $game = Game::find($game_id);
 
+        // Check whether the filled in user email has an account.
         if (isset($user)) {
+            // Check whether you try to invite yourself.
             if ($user->id == auth()->user()->id) {
                 // Unable to invite yourself.
                 $self = 'U kan uzelf niet toevoegen.';
