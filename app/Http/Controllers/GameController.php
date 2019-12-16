@@ -5,10 +5,6 @@ namespace App\Http\Controllers;
 use App\Game;
 use App\User;
 use Carbon\Carbon;
-use DateInterval;
-use DatePeriod;
-use DateTime;
-//use Faker\Provider\DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -29,6 +25,36 @@ class GameController extends Controller
     {
         $outcome =
             [
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
+                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
                 ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
                 ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
                 ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3"],
@@ -357,13 +383,40 @@ class GameController extends Controller
 
             // check outcome. - outcome[0] will be the outcome for team one and vice versa. Iterate through the outcomes and teams.
             // In the interation/loop if($team_in_db_of_this_user == $team_in_loop) { which will only be true if it .. }
-             if($outcome[0] < $outcome[1]) {
-                 $team_won = $league[0];
-                 $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
-             } else {
-                 $team_lost = $league[1];
-                 $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
-             }
+            // for loop in $outcome[..] in the first modulo even and second one odd. count($outcome)
+            for($score = 0; $score <= count($outcome[0]); $score++) {
+                // % returns leftover, so one's and zero's. **
+                if ($outcome[$score % 2 == 0 ? $score : 1] <= $outcome[$score % 2 == 1 ? $score : 0]) {
+                    $team_won = $league[0];
+                    $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
+                } else {
+
+                    // if count(allusers[$i]) pivot column out is less then or equal to <= 1 then add one point to the remaining user.
+                    if ()
+                    $team_lost = $league[1];
+                    $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+
+
+                    $users_out = [];
+                    for ($i = 0; $i < count($allPlayers); $i++) {
+                        if ($game_id->users[$i]->out == 1) {
+                            $test[] = $game_id->users[$i]->user_id;
+                        }
+
+                        foreach ($users_out as $key => $user_id_out) {
+                            $game_id->users()->updateExistingPivot(['user_id' => $user_id_out], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+                        }
+
+                        if (count($users_out) <= count($allPlayers)) {
+                            if ($game_id->users[$i]->out == 0) {
+                                $game_id->users()->updateExistingPivot(['user_id' => $game_id->users[$i]->user_id], ['point' => +1, 'chosen' => 0, 'team' => ' ', 'out' => 0]);
+                            }
+                        }
+                    }
+
+
+                }
+            }
 
 
 
