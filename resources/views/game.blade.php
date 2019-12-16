@@ -256,13 +256,13 @@
                                 @csrf
                                 {{-- Foreach over all users to access their pivot data. --}}
                                 @foreach($allPlayers as $player)
-                                    {{-- Show only data for you. --}}
+                                    {{-- Check whether your id corresponds with id in game. --}}
                                     @if($player->id == $user_id)
-                                        {{-- Check whether you are out. --}}
+                                        {{-- Check whether you are out. If so don't show vote/radio buttons --}}
                                         @if($player->pivot->out == 0)
-                                            {{-- Check whether you've chosen already. --}}
+                                            {{-- Check whether you've chosen already. If so don't show vote/radio buttons --}}
                                             @if($player->pivot->chosen == 0)
-                                                {{-- Show data based on whether there are more or less then 2 people in game. --}}
+                                                {{-- Show option to vote based on whether there are more or less then 2 people in game. --}}
                                                 @if($tooLittlePlayers == false)
                                                     <button style="height: 50px; margin-bottom: 2.5px;" type="submit" class="btn btn-outline-dark col-12">
                                                         Stemmen
@@ -407,11 +407,6 @@
                                         @csrf
                                         <div class="pt-3">
                                             <input style="height: 50px" class="col-12" type="text" name="uuid" value="{{$uuid}}" disabled>
-                                        </div>
-
-                                        <div class="pt-3">
-                                            <label>Deelbare hyperlink - <b>Kopiëren:</b> klik op het veld en druk dan op <b>ctrl + a + c</b>.</label>
-                                            <input style="height: 50px" class="col-12" type="text" name="uuid" value="http://127.0.0.1:8000/spel/{{$game->id}}/invitatie?_token=yvle9hr8ZX7jo5XGqqf9n3AqGZqneWtip8uAZDpv&invitation={{$uuid}}" disabled>
                                         </div>
 
                                         <div class="pt-3">

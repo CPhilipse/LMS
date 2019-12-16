@@ -18,6 +18,8 @@ class GameController extends Controller
      * Display a listing of the resource.
      * Load the game or the invitation page if user hasn't been invited yet.
      *
+     * Load the static data corresponding to the Dutch league with the right time frame of the rounds.
+     *
      * @param Request $request
      * @param $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
@@ -342,8 +344,6 @@ class GameController extends Controller
 
         // Whole league time-zone
 
-        // Every user that goes in a game, it'll update this data for each user separately. Not all at once, which is fine.
-        // Because it will be updated for every user anyway.
         // Update week when round/week is over, empty chosen and team so users can choose again, unless they are out.
         // Also check whether the user is out based on the outcome.
 //        $test_week = 50;
@@ -357,13 +357,13 @@ class GameController extends Controller
 
             // check outcome. - outcome[0] will be the outcome for team one and vice versa. Iterate through the outcomes and teams.
             // In the interation/loop if($team_in_db_of_this_user == $team_in_loop) { which will only be true if it .. }
-            // if($outcome[0] < $outcome[1]) {
-            // $team_won = $league[0];
-            // $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
-            // } else {
-            // $team_lost = $league[1]
-            // $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
-            // }
+             if($outcome[0] < $outcome[1]) {
+                 $team_won = $league[0];
+                 $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
+             } else {
+                 $team_lost = $league[1];
+                 $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+             }
 
 
 
@@ -425,18 +425,22 @@ class GameController extends Controller
         }
         $current_week = Carbon::now()->week;
 
+        // Create the game with the corresponding attributes.
         Game::create(['name' => $name, 'link' => $uuid, 'week' => $current_week]);
 
+        // Get this just generated game.
         $user_id = auth()->user()->id;
         $game_id = Game::all()->last()->id;
         $populateGame = Game::find($game_id);
 
+        // Make logged in user admin of this generated game.
         $populateGame->users()->attach(['user_id' => $user_id], ['admin' => 1, 'point' => 0, 'invited' => 0]);
 
-        // Add invited users to the game.
+        // Add invited users to this game.
         $lobby = session('lobby');
         $madeGame_id = Game::all()->last()->id;
 
+        // Check whether somebody was added.
         if($lobby !== null) {
             foreach ($lobby as $user_id => $invited) {
                 $user = User::find($user_id);
@@ -483,6 +487,7 @@ class GameController extends Controller
             session(['uuid' => $uuid]);
         }
 
+        // If uuid wasn't generated, generate one.
         if($sessionUuid == null) {
             session(['uuid' => $uuid]);
         }
@@ -504,7 +509,7 @@ class GameController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified resource in storage. Update game name or/and lobby.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Game  $game
@@ -529,12 +534,13 @@ class GameController extends Controller
             }
         }
 
+        // Remove messages given to blade
         session()->forget(['lobbyExistingGame', 'saveNotice', 'succesfulDeleteOfUser']);
 
         return redirect()->route('game', ['id' => $game_id]);
     }
 
-    // Handle user wanting to join a game.
+    // Handle user wanting to join a game through invitation link.
     public function invitation(Request $request) {
         $user_id = auth()->user()->id;
         $checkLink = $request->input('invitation');
@@ -542,11 +548,15 @@ class GameController extends Controller
 
         $wrongLink = 'De ingevoerde link is onjuist.';
 
+        // Check if field is empty
         if(isset($checkLink)) {
             $check = Game::where('link', $checkLink)->get()->first();
 
+            // Check if the game->link is found
             if(isset($check->link)) {
+                // Check if the game->link is correct
                 if ($check->link == $checkLink) {
+                    // If the link is correct add the user to this game.
                     $check->users()->attach(['user_id' => $user_id], ['admin' => 0, 'point' => 0, 'invited' => 1]);
                     session(['rightLink' => true]);
 
@@ -558,7 +568,7 @@ class GameController extends Controller
                 return view('invitation')->with('wrongLink', $wrongLink);
             }
         } else {
-            return view('invitation');
+            return view('invitation')->with('wrongLink', $wrongLink);
         }
     }
 
@@ -603,6 +613,7 @@ class GameController extends Controller
         return redirect()->route('game', ['id' => $current_game_id]);
     }
 
+    // Handle adding user when creating game.
     public function addUser(Request $request)
     {
         $email = $request->input('email');
@@ -680,6 +691,7 @@ class GameController extends Controller
         }
     }
 
+    // Handle the voting of a team.
     public function voteTeam($id, Request $request) {
         $user_id = auth()->user()->id;
         $game = Game::find($id);
