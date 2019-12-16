@@ -371,6 +371,26 @@ class GameController extends Controller
 
         // Whole league time-zone
 
+        $teams_in_current_week = [];
+        for($row = 0; $row < count($league); $row++) {
+            for($col = 0; $col < count($league[0]); $col++) {
+                // Minus one because you need to have the teams from the previous week. Unless you do the update of the week after this, then remove it.
+                if(end($league[$row]) - 1 == $current_week) {
+                    $teams_in_current_week[] = $league[$row];
+                }
+            }
+        }
+
+        $round = $teams_in_current_week[0];
+        foreach($round as $key => $team) {
+            // First check the teams that won and put it in the array, then do condition whether user chosen team is in here.
+            print_r($team);
+        }
+
+
+
+
+
         // Update week when round/week is over, empty chosen and team so users can choose again, unless they are out.
         // Also check whether the user is out based on the outcome.
 //        $test_week = 50;
@@ -385,11 +405,20 @@ class GameController extends Controller
             $teams_won = [];
             $teams_lost = [];
             // Only the teams of the previous week/round needs to go in this array.
-            // So check for the week and iterated on that.
+            // So check for the week and iterate on that.
             // ** CORRECTION ^
+            // just as in blade;
+            for($row = 0; $row < count($league); $row++) {
+                for($col = 0; $col < count($league[0]); $col++) {
+                    if(end($league[$row]) == $current_week) {
+
+                    }
+                }
+            }
 
 
-            // On new round update the users their records.
+
+                // On new round update the users their records.
             // check outcome. - outcome[0] will be the outcome for team one and vice versa. Iterate through the outcomes and teams.
             // In the interation/loop if($team_in_db_of_this_user == $team_in_loop) { which will only be true if it .. }
             // for loop in $outcome[..] in the first modulo even and second one odd. count($outcome)
