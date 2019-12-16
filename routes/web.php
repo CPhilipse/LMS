@@ -14,15 +14,14 @@
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
 Route::get('/', 'HomeController@index')->name('home');
 
+// Create game pages
 Route::post('nieuw-spel','GameController@create')->name('createGame');
 Route::get('maak-nieuw-spel','GameController@show')->name('showGame');
 Route::post('maak-nieuw-spel-invite','GameController@addUser')->name('addUser');
 
-//Route::get('spel/{id}/invitatie','GameController@invitation')->name('invitation');
-//Route::post('spel/check-link', 'GameController@checkLink')->name('checkLink');
+// Existing game pages
 Route::get('spel/{id}/invitatie','GameController@invitation')->name('invitation');
 Route::get('spel/{id}','GameController@index')->name('game');
 Route::post('spel/{id}/invite','GameController@addUserExistingGame')->name('addUserExistingGame');
@@ -31,4 +30,5 @@ Route::get('spel/{id}/verwijderen/{user_id}','GameController@destroyUser')->name
 Route::get('spel/{id}/verwijderen','GameController@destroy')->name('deleteGame');
 Route::post('spel/{id}/vote','GameController@voteTeam')->name('voteTeam');
 
+// Overview where you can see all your games
 Route::get('/overzicht', 'HomeController@overview')->name('overview');

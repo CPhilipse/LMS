@@ -274,6 +274,7 @@
                                                 @endif
 
                                                 <ul class="teams">
+                                                    {{-- Loop through 2D dimensional array --}}
                                                     @for($col = 0; $col < count($league[0]); $col++)
                                                         @if(end($league[$row]) == $current_week)
                                                             <li class="comp"><input type='radio' name='team' value='{{$league[$row][$col]}}'>{{$league[$row][$col]}}</li>
