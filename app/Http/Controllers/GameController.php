@@ -385,9 +385,18 @@ class GameController extends Controller
             // In the interation/loop if($team_in_db_of_this_user == $team_in_loop) { which will only be true if it .. }
             // for loop in $outcome[..] in the first modulo even and second one odd. count($outcome)
             for($score = 0; $score <= count($outcome[0]); $score++) {
-                // % returns leftover, so one's and zero's. **
-                if ($outcome[$score % 2 == 0 ? $score : 1] <= $outcome[$score % 2 == 1 ? $score : 0]) {
-                    $team_won = $league[0];
+                // Check whether the numbers corresponding to the even number in the list are greater than the odd ones.
+                if ($outcome[$score % 2 == 0 ? $score : 1] > $outcome[$score % 2 == 1 ? $score : 0]) {
+                    // buttt.. how to check the outcome of the user chosen team?
+                    // Maybe loop again but then over the league, same way as the outcomes so that both iterate at the same place?
+                    // That's what you will do with $team_won and $team_lost I think.
+                    // Here come the winning teams, so loop through even numbers in league and only the teams which have passed the greatest number on the previous condition are being taken out.
+                    // Now you've got all the teams that won, check this with the user chosen team.
+                    for($teams = 0; $teams <= count($league[0]); $teams++) {
+                        $team_won = $league[0];
+
+                    }
+
                     $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
                 } else {
 
