@@ -62,44 +62,43 @@ class GameController extends Controller
                 ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 13],
             ];
 
-        // In the end:: try this league with this: https://stackoverflow.com/questions/1551822/looping-a-multidimensional-array-in-php/24457508
         $league =
             [
-                ["PEC", "Willem II", "Emmen", "Groningen", "Vitesse", "Ajax", "Twente", "PSV", "VVV", "RKC", "Heracles", "Heerenveen", 31],
-                ["Sparta", "VVV", "Groningen", "Twente", "Ajax", "Emmen", "Willem II", "Vitesse", "Fortuna", "Heracles", "Heerenveen", "Feyenoord", 32],
-                ["Vitesse", "PEC", "VVV", "Ajax", "ADO", "Sparta", "Emmen", "Heerenveen", "Fortuna", "Willem II", "Twente", "RKC", 33],
-                ["Willem II", "Emmen", "Heracles", "Vitesse", "Heerenveen", "Twente", "RKC", "ADO", "Utrecht", "VVV", "PEC", "Sparta", 34],
-                ["Emmen", "PEC", "Heerenveen", "Fortuna", "Groningen", "Heracles", "ADO", "VVV", "Twente", "Utrecht", "Sparta", "Ajax", 35], // Vitesse, AZ, Willem II, Feyenoord, RKC, PSV
-                ["Ajax", "Heerenveen", "AZ", "Sparta", "VVV", "Groningen", "Utrecht", "Emmen", "PSV", "Vitesse", "PEC", "RKC", 36], // Heracles, Willem II, Feyenoord, ADO, Fortuna, Twente
-                ["Twente", "Heracles", "Sparta", "RKC", "Groningen", "PEC", "Willem II", "VVV", "Vitesse", "Fortuna", "Heerenveen", "Utrecht", 37], // Emmen, Feyenoord, ADO, AZ, PSV, Ajax
-                ["PSV", "Groningen", "Ajax", "Fortuna", "Feyenoord", "AZ", "PSV", "Groningen", "Ajax", "Fortuna", "Feyenoord", "AZ", 38], // half
-                ["Emmen", "ADO", "VVV", "Heerenveen", "Ajax", "Groningen", "Fortuna", "Sparta", "RKC", "Vitesse", "PEC", "PSV", 39], // Utrecht, Willem II, AZ, Heracles, Feyenoord, Twente
-                ["Groningen", "RKC", "Heracles", "Emmen", "Vitesse", "Utrecht", "Sparta", "Twente", "Heerenveen", "PEC", "ADO", "Ajax", 40], // Fortuna, Feyenoord, PSV, VVV, Willem II, AZ
-                ["RKC", "Ajax", "AZ", "Heerenveen", "Twente", "Willem II", "Utrecht", "PSV", "VVV", "Vitesse", "PEC", "ADO", 41], // Groningen, Sparta, Emmen, Fortuna, Feyenoord, Heracles
-                ["Twente", "Emmen", "Willem II", "RKC", "Vitesse", "ADO", "Fortuna", "VVV", "Heracles", "PEC", "Heerenveen", "Groningen", 42], // Sparta, Utrecht, PSV, AZ, Ajax, Feyenoord
-                ["PEC", "Ajax", "RKC", "Heracles", "Sparta", "PSV", "AZ", "Twente", "Emmen", "Vitesse", "VVV", "Feyenoord", 43], // Utrecht, Fortuna, Groningen, Willem II, ADO, Heerenveen
-                ["Vitesse", "Groningen", "Heerenveen", "Sparta", "Fortuna", "ADO", "Heracles", "VVV", "Ajax", "Utrecht", "Twente", "PEC", 44], // Willem II, PSV, Feyenoord, RKC, AZ, EMMEN
-                ["Utrecht", "AZ", "PEC", "Fortuna", "Ajax", "Heracles", "ADO", "Willem II", "Groningen", "Feyenoord", "RKC", "Emmen", 45], // PSV, Heerenveen, Sparta, Vitesse, VVV, Twente
-                ["Heerenveen", "Vitesse", "Willem II", "Sparta", "Fortuna", "Groningen", "Heracles", "ADO", "Twente", "Ajax", "Utrecht", "RKC", 46], // Feyenoord, PEC, AZ, VVV, Emmen, PSV
-                ["Ajax", "Willem II", "ADO", "Twente", "VVV", "Emmen", "PSV", "Fortuna", "PEC", "AZ", "Vitesse", "Feyenoord", 47], // Groningen, Utrecht, RKC, Heerenveen, Sparta, Heracles
-                ["Heerenveen", "Willem II", "ADO", "Groningen", "VVV", "PEC", "Fortuna", "RKC", "Twente", "Vitesse", "Emmen", "Sparta", 48], // Feyenoord, PSV, Heracles, Utrecht, AZ, Ajax
-                ["RKC", "Twente", "Heerenveen", "Heracles", "PSV", "PEC", "Sparta", "AZ", "Willem II", "Fortuna", "Ajax", "ADO", 49], // 18 - Groningen, Emmen, Utrecht, Feyenoord, Vitesse, VVV
-                ["PEC", "Utrecht", "Fortuna", "Vitesse", "Feyenoord", "Heerenveen", "Twente", "Groningen", "AZ", "Willem II", "VVV", "PSV", 50], // 19 - Emmen, Heracles, Ajax, Sparta, ADO, RKC
-                ["Utrecht", "ADO", "Heerenveen", "AZ", "RKC", "VVV", "Heracles", "Feyenoord", "Sparta", "Fortuna", "Vitesse", "Emmen", 51], // 20 - Willem II, PEC, Groningen, Ajax, PSV, Twente
-                ["AZ", "RKC", "ADO", "Vitesse", "Feyenoord", "Emmen", "Twente", "Sparta", "PEC", "Groningen", "Willem II", "Heracles", 52], // 21 - Fortuna, Heerenveen, VVV, Utrecht, Ajax, PSV
-                ["Heracles", "Fortuna", "Groningen", "Vitesse", "Heerenveen", "VVV", "PSV", "Willem II", "RKC", "PEC", "Utrecht", "Ajax", 1], // 22 - Sparta, ADO, AZ, Feyenoord, Emmen, Twente
-                ["Willem II", "Utrecht", "VVV", "Heracles", "Twente", "AZ", "ADO", "PSV", "Fortuna", "Emmen", "Vitesse", "Heerenveen", 2], // 23 - Sparta, Groningen, Ajax, RKC, PEC, Feyenoord
-                ["RKC", "Sparta", "Emmen", "Willem II", "AZ", "PEC", "Feyenoord", "Fortuna", "Groningen", "VVV", "Utrecht", "Twente", 3], // 24 - Heerenveen, ADO, Vitesse, PSV, Heracles, Ajax
-                ["Willem II", "Groningen", "ADO", "Heracles", "PEC", "Vitesse", "VVV", "Fortuna", "Twente", "Heerenveen", "RKC", "Utrecht", 4], // 25 - Sparte, Emmen, PSV, Feyenoord, Ajax, AZ
-                ["Fortuna", "PEC", "Emmen", "VVV", "AZ", "ADO", "Heerenveen", "Ajax", "Vitesse", "Twente", "Utrecht", "Sparta", 5], // 26 - Feyenoord, Willem II, Heracles, RKC, Groningen, PSV
-                ["ADO", "Fortuna", "Willem II", "Heerenveen", "PEC", "Heracles", "Ajax", "Twente", "Utrecht", "Vitesse", "Sparta", "Feyenoord", 6], // 27 - VVV, AZ, PSV, Emmen, RKC, Groningen
-                ["Heracles", "Sparta", "Twente", "ADO", "PEC", "VVV", "Vitesse", "Willem II", "Heerenveen", "RKC", "Fortuna", "PSV", 7], // 28 - Feyenoord, Ajax, Groningen, AZ, Emmen, Utrecht
-                ["Sparta", "Heerenveen", "VVV", "Willem II", "PSV", "Heracles", "AZ", "Vitesse", "Utrecht", "Groningen", "RKC", "Feyenoord", 8], // 29 - Ajax, PEC, ADO, Emmen, Twente, Fortuna
-                ["Groningen", "Heerenveen", "Vitesse", "RKC", "Feyenoord", "VVV", "Heracles", "AZ", "Willem II", "ADO", "PSV", "Sparta", 9], // 30 - Fortuna, Utrecht, Emmen, Ajax, PEC, Twente
-                ["AZ", "PSV", "Sparta", "PEC", "RKC", "Willem II", "ADO", "Feyenoord", "Groningen", "Fortuna", "Utrecht", "Heracles", 10], // 31 - Heerenveen, Emmen, Twente, VVV, Ajax, Vitesse
-                ["Fortuna", "AZ", "PSV", "Utrecht", "Emmen", "RKC", "PEC", "Heerenveen", "Feyenoord", "Groningen", "Heracles", "Twente", 11], // 32 - VVV, ADO, Willem II, Ajax, Vitesse, Sparta
-                ["RKC", "Fortuna", "Sparta", "Willem II", "Twente", "Feyenoord", "PEC", "Emmen", "Heerenveen", "PSV", "Groningen", "ADO", 12], // 33 - Ajax, VVV, Vitesse, Heracles, AZ, Utrecht
-                ["ADO", "PEC", "Willem II", "Twente", "Utrecht", "Heerenveen", "Heracles", "Groningen", "PSV", "RKC", "Feyenoord", "Vitesse", 13], // 34 - Fortuna, Ajax, VVV, Sparta, Emmen, AZ
+                ["PEC", "Willem II", "Emmen", "Groningen", "Vitesse", "Ajax", "Twente", "PSV", "VVV", "RKC", "Heracles", "Heerenveen", 31], // Round: 0
+                ["Sparta", "VVV", "Groningen", "Twente", "Ajax", "Emmen", "Willem II", "Vitesse", "Fortuna", "Heracles", "Heerenveen", "Feyenoord", 32], // 1
+                ["Vitesse", "PEC", "VVV", "Ajax", "ADO", "Sparta", "Emmen", "Heerenveen", "Fortuna", "Willem II", "Twente", "RKC", 33], // 2
+                ["Willem II", "Emmen", "Heracles", "Vitesse", "Heerenveen", "Twente", "RKC", "ADO", "Utrecht", "VVV", "PEC", "Sparta", 34], // 3
+                ["Emmen", "PEC", "Heerenveen", "Fortuna", "Groningen", "Heracles", "ADO", "VVV", "Twente", "Utrecht", "Sparta", "Ajax", 35], // 4
+                ["Ajax", "Heerenveen", "AZ", "Sparta", "VVV", "Groningen", "Utrecht", "Emmen", "PSV", "Vitesse", "PEC", "RKC", 36], // 5
+                ["Twente", "Heracles", "Sparta", "RKC", "Groningen", "PEC", "Willem II", "VVV", "Vitesse", "Fortuna", "Heerenveen", "Utrecht", 37], // 6
+                ["PSV", "Groningen", "Ajax", "Fortuna", "Feyenoord", "AZ", "PSV", "Groningen", "Ajax", "Fortuna", "Feyenoord", "AZ", 38], // 7
+                ["Emmen", "ADO", "VVV", "Heerenveen", "Ajax", "Groningen", "Fortuna", "Sparta", "RKC", "Vitesse", "PEC", "PSV", 39], // 8
+                ["Groningen", "RKC", "Heracles", "Emmen", "Vitesse", "Utrecht", "Sparta", "Twente", "Heerenveen", "PEC", "ADO", "Ajax", 40], // 9
+                ["RKC", "Ajax", "AZ", "Heerenveen", "Twente", "Willem II", "Utrecht", "PSV", "VVV", "Vitesse", "PEC", "ADO", 41], // 10
+                ["Twente", "Emmen", "Willem II", "RKC", "Vitesse", "ADO", "Fortuna", "VVV", "Heracles", "PEC", "Heerenveen", "Groningen", 42], // 11
+                ["PEC", "Ajax", "RKC", "Heracles", "Sparta", "PSV", "AZ", "Twente", "Emmen", "Vitesse", "VVV", "Feyenoord", 43], // 12
+                ["Vitesse", "Groningen", "Heerenveen", "Sparta", "Fortuna", "ADO", "Heracles", "VVV", "Ajax", "Utrecht", "Twente", "PEC", 44], // 13
+                ["Utrecht", "AZ", "PEC", "Fortuna", "Ajax", "Heracles", "ADO", "Willem II", "Groningen", "Feyenoord", "RKC", "Emmen", 45], // 14
+                ["Heerenveen", "Vitesse", "Willem II", "Sparta", "Fortuna", "Groningen", "Heracles", "ADO", "Twente", "Ajax", "Utrecht", "RKC", 46], // 15
+                ["Ajax", "Willem II", "ADO", "Twente", "VVV", "Emmen", "PSV", "Fortuna", "PEC", "AZ", "Vitesse", "Feyenoord", 47], // 16
+                ["Heerenveen", "Willem II", "ADO", "Groningen", "VVV", "PEC", "Fortuna", "RKC", "Twente", "Vitesse", "Emmen", "Sparta", 48], // 17
+                ["RKC", "Twente", "Heerenveen", "Heracles", "PSV", "PEC", "Sparta", "AZ", "Willem II", "Fortuna", "Ajax", "ADO", 49], // 18
+                ["PEC", "Utrecht", "Fortuna", "Vitesse", "Feyenoord", "Heerenveen", "Twente", "Groningen", "AZ", "Willem II", "VVV", "PSV", 50], // 19
+                ["Utrecht", "ADO", "Heerenveen", "AZ", "RKC", "VVV", "Heracles", "Feyenoord", "Sparta", "Fortuna", "Vitesse", "Emmen", 51], // 20
+                ["AZ", "RKC", "ADO", "Vitesse", "Feyenoord", "Emmen", "Twente", "Sparta", "PEC", "Groningen", "Willem II", "Heracles", 52], // 21
+                ["Heracles", "Fortuna", "Groningen", "Vitesse", "Heerenveen", "VVV", "PSV", "Willem II", "RKC", "PEC", "Utrecht", "Ajax", 1], // 22
+                ["Willem II", "Utrecht", "VVV", "Heracles", "Twente", "AZ", "ADO", "PSV", "Fortuna", "Emmen", "Vitesse", "Heerenveen", 2], // 23
+                ["RKC", "Sparta", "Emmen", "Willem II", "AZ", "PEC", "Feyenoord", "Fortuna", "Groningen", "VVV", "Utrecht", "Twente", 3], // 24
+                ["Willem II", "Groningen", "ADO", "Heracles", "PEC", "Vitesse", "VVV", "Fortuna", "Twente", "Heerenveen", "RKC", "Utrecht", 4], // 25
+                ["Fortuna", "PEC", "Emmen", "VVV", "AZ", "ADO", "Heerenveen", "Ajax", "Vitesse", "Twente", "Utrecht", "Sparta", 5], // 26
+                ["ADO", "Fortuna", "Willem II", "Heerenveen", "PEC", "Heracles", "Ajax", "Twente", "Utrecht", "Vitesse", "Sparta", "Feyenoord", 6], // 27
+                ["Heracles", "Sparta", "Twente", "ADO", "PEC", "VVV", "Vitesse", "Willem II", "Heerenveen", "RKC", "Fortuna", "PSV", 7], // 28
+                ["Sparta", "Heerenveen", "VVV", "Willem II", "PSV", "Heracles", "AZ", "Vitesse", "Utrecht", "Groningen", "RKC", "Feyenoord", 8], // 29
+                ["Groningen", "Heerenveen", "Vitesse", "RKC", "Feyenoord", "VVV", "Heracles", "AZ", "Willem II", "ADO", "PSV", "Sparta", 9], // 30
+                ["AZ", "PSV", "Sparta", "PEC", "RKC", "Willem II", "ADO", "Feyenoord", "Groningen", "Fortuna", "Utrecht", "Heracles", 10], // 31
+                ["Fortuna", "AZ", "PSV", "Utrecht", "Emmen", "RKC", "PEC", "Heerenveen", "Feyenoord", "Groningen", "Heracles", "Twente", 11], // 32
+                ["RKC", "Fortuna", "Sparta", "Willem II", "Twente", "Feyenoord", "PEC", "Emmen", "Heerenveen", "PSV", "Groningen", "ADO", 12], // 33
+                ["ADO", "PEC", "Willem II", "Twente", "Utrecht", "Heerenveen", "Heracles", "Groningen", "PSV", "RKC", "Feyenoord", "Vitesse", 13], // Round: 34
             ];
 
         $game_id = Game::find($id);
@@ -371,131 +370,133 @@ class GameController extends Controller
 
         // Whole league time-zone
 
-        $teams_in_current_week = [];
-        for($row = 0; $row < count($league); $row++) {
-            for($col = 0; $col < count($league[0]); $col++) {
-                // Minus one because you need to have the teams from the previous week. Unless you do the update of the week after this, then remove it.
-                if(end($league[$row]) - 1 == $current_week) {
-                    $teams_in_current_week[] = $league[$row];
-                }
-            }
-        }
 
-        $round = $teams_in_current_week[0];
-        foreach($round as $key => $team) {
-            // First check the teams that won and put it in the array, then do condition whether user chosen team is in here.
-            print_r($team);
-        }
-
-
-
-
-
-        // Update week when round/week is over, empty chosen and team so users can choose again, unless they are out.
-        // Also check whether the user is out based on the outcome.
-//        $test_week = 50;
+        $test_week = 50;
+        // On new round update the users their records.
         if($current_week !== $game_id->week) {
+
             // Onchange of week you can vote again.
             session()->forget('chooseTeam');
 
-            // Update week works*
+            // Update week/round.
             $game_id->week = $current_week;
             $game_id->save();
 
-            $teams_won = [];
-            $teams_lost = [];
-            // Only the teams of the previous week/round needs to go in this array.
-            // So check for the week and iterate on that.
-            // ** CORRECTION ^
-            // just as in blade;
+            $teams_in_previous_week = [];
             for($row = 0; $row < count($league); $row++) {
                 for($col = 0; $col < count($league[0]); $col++) {
-                    if(end($league[$row]) == $current_week) {
-
+                    // Minus one because you need to have the teams from the previous week. Unless you do the update of the week after this, then remove it.
+                    if(end($league[$row]) - 1 == $current_week) {
+                        $teams_in_previous_week[] = $league[$row];
                     }
                 }
             }
 
+            $round = $teams_in_previous_week[0];
 
-
-                // On new round update the users their records.
-            // check outcome. - outcome[0] will be the outcome for team one and vice versa. Iterate through the outcomes and teams.
-            // In the interation/loop if($team_in_db_of_this_user == $team_in_loop) { which will only be true if it .. }
-            // for loop in $outcome[..] in the first modulo even and second one odd. count($outcome)
-            for($score = 0; $score <= count($outcome[0]); $score++) {
-                // Check whether the numbers corresponding to the even number in the list are greater than the odd ones.
-                if ($outcome[$score % 2 == 0 ? $score : 1] > $outcome[$score % 2 == 1 ? $score : 0]) {
-                    // buttt.. how to check the outcome of the user chosen team?
-                    // Maybe loop again but then over the league, same way as the outcomes so that both iterate at the same place?
-                    // That's what you will do with $team_won and $team_lost I think.
-                    // Here come the winning teams, so loop through even numbers in league and only the teams which have passed the greatest number on the previous condition are being taken out.
-                    // Now you've got all the teams that won, check this with the user chosen team.
-                    for($teams = 0; $teams <= count($league[0]); $teams++) {
-                        // Check values of even numbers in list and put these in array. Then check by foreach whether the value of user record Team is equivalent to a value in this array.
-                        if($league[$teams % 2 == 0]) {
-                            foreach($league[$teams] as $list_number => $team) {
-                                $teams_won[] = $team;
-                            }
-                        }
+            $outcome_in_previous_week = [];
+            for($row = 0; $row < count($outcome); $row++) {
+                for($col = 0; $col < count($outcome[0]); $col++) {
+                    if(end($outcome[$row]) - 1 == $current_week) {
+                        $outcome_in_previous_week[] = $outcome[$row];
                     }
+                }
+            }
 
-                    $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
+            $round_outcome = $outcome_in_previous_week[0];
+            // If it's true, the team value in the even key number has won. If false, the odd key number lost.
+            $comp1 = $round_outcome[0] < $round_outcome[1];
+            $comp2 = $round_outcome[2] < $round_outcome[3];
+            $comp3 = $round_outcome[4] < $round_outcome[5];
+            $comp4 = $round_outcome[6] < $round_outcome[7];
+            $comp5 = $round_outcome[8] < $round_outcome[9];
+            $comp6 = $round_outcome[10] < $round_outcome[11];
+
+            // Iterate through all players their choice, compare that with the victory team of each competition.
+            for($users = 0; $users < count($allPlayers); $users++) {
+                $user_choice = $game_id->users[$users]->pivot->team;
+                $user_id = $game_id->users[$users]->id;
+
+                if($comp1) {
+                    if($user_choice == $round[0]) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
+                    }
                 } else {
-
-                    // if count(allusers[$i]) pivot column out is less then or equal to <= 1 then add one point to the remaining user.
-                    // if ()
-                    $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
-
-
-                    for($teams = 0; $teams <= count($league[0]); $teams++) {
-                        // Check values of even numbers in list and put these in array. Then check by foreach whether the value of user record Team is equivalent to a value in this array.
-                        if($league[$teams % 2 == 1]) {
-                            // Actually add the values of the odd numbers in the list to a new array in which we will check whether the user chosen team is in there. IF NOT, set out to 1.
-                            foreach($league[$teams] as $list_number => $team) {
-                                $teams_lost[] = $team;
-                            }
-                        }
+                    if($user_choice == $round[1]) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
+                }
 
-
-
-                    $users_out = [];
-                    for ($i = 0; $i < count($allPlayers); $i++) {
-
-
-
-
-                        // Check which users have it wrong, or check which teams lost and then check which user had such team in record. ** By doing the same thing above *
-                        if ($game_id->users[$i]->out == 1) {
-                            // Need to do another check on whether the user is already in this array. Copy of the code from handling adding users - lobby.
-                            $users_out[] = $game_id->users[$i]->user_id;
-                        }
-
-                        // Adjust the data of the users who have it wrong by changing their record for out to 1.
-                        if(isset($users_out)) {
-                            foreach ($users_out as $key => $user_id_out) {
-                                $game_id->users()->updateExistingPivot(['user_id' => $user_id_out], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
-                            }
-                        }
-
-                        // If there is only one player left add a point to this user his record.
-                        if (count($users_out) <= count($allPlayers)) {
-                            if ($game_id->users[$i]->out == 0) {
-                                $game_id->users()->updateExistingPivot(['user_id' => $game_id->users[$i]->user_id], ['point' => + 1, 'chosen' => 0, 'team' => ' ', 'out' => 0]);
-                            }
-                        }
+                if($comp2) {
+                    if($user_choice == $round[2]) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
                     }
+                } else {
+                    if($user_choice == $round[3]) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+                    }
+                }
 
+                if($comp3) {
+                    if($user_choice == $round[4]) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
+                    }
+                } else {
+                    if($user_choice == $round[5]) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+                    }
+                }
 
+                if($comp4) {
+                    if($user_choice == $round[6]) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
+                    }
+                } else {
+                    if($user_choice == $round[7]) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+                    }
+                }
+
+                if($comp5) {
+                    if($user_choice == $round[8]) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
+                    }
+                } else {
+                    if($user_choice == $round[9]) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+                    }
+                }
+
+                if($comp6) {
+                    if($user_choice == $round[10]) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
+                    }
+                } else {
+                    if($user_choice == $round[11]) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+                    }
                 }
             }
+            // Logic user going to next round or being out DONE.
 
+            $users_out = [];
+            for ($i = 0; $i < count($allPlayers); $i++) {
+                $user_out = $game_id->users[$i]->out;
+                $user_id = $game_id->users[$i]->user_id;
 
+                // Check which users have it wrong, or check which teams lost and then check which user had such team in record. ** By doing the same thing above *
+                if ($user_out == 1) {
+                    // Need to do another check on whether the user is already in this array. Copy of the code from handling adding users - lobby.
+                    $users_out[] = $user_id;
+                }
 
-            // Everyone got it right | TEST
-            // Update pivot data works*
-            $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
-
+                // If there is only one player left add a point to this user his record.
+                if (count($users_out) <= count($allPlayers)) {
+                    if ($game_id->users[$i]->out == 0) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['point' => + 1, 'chosen' => 0, 'team' => ' ', 'out' => 0]);
+                    }
+                }
+            }
         }
 
 
