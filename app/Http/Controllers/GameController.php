@@ -502,11 +502,14 @@ class GameController extends Controller
                 }
 
                 // Give alreadyVotedOn variable to the blade for removing/hiding buttons from those teams.
-                $chosenTeamRecord = session('chosenTeamRecord');
-                if(isset($chosenTeamRecord)) {
+
+                $chosenTeamRecordSession = [];
+                $chosenTeamRecordSession[] = session('chosenTeamRecord');
+                if(isset($chosenTeamRecordSession)) {
                     // Separate check for every user.
                     // Do with chosenteamrecord same check as with lobby, if team already is in there, return message, you already voted for this team.
-                    if(count($chosenTeamRecord) <= count($league[0])) {
+//                    dd($chosenTeamRecordSession);
+                    if(count($chosenTeamRecordSession) <= count($league[0])) {
                         if ($game_id->users[$i]->out == 0) {
                             $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['point' => + 1, 'chosen' => 0, 'team' => ' ', 'out' => 0]);
                         }
@@ -519,6 +522,8 @@ class GameController extends Controller
                  *
                  * */
             }
+
+            return redirect()->route('game', ['id' => $current_game_id]);
         }
 
 
@@ -860,25 +865,22 @@ class GameController extends Controller
         }
         session()->forget('chooseTeam');
 
+        $chosenTeamRecordSession = [];
+        $chosenTeamRecordSession[] = session('chosenTeamRecord');
+
+        // Prevent from being able to vote for same team in one game.
+        for($o = 0; $o < count($chosenTeamRecordSession); $o++) {
+            if ($chosenTeamRecordSession[$o] == $chosenTeam) {
+                session(['alreadyVotedFor' => true]);
+                return redirect()->route('game', ['id' => $game->id]);
+            }
+        }
 
         $chosenTeamRecord = [];
         session(['chosenTeamRecord' => $chosenTeam]);
         $chosenTeamRecord[] = session('chosenTeamRecord');
-//        dd($chosenTeamRecord[0]);
 
-//        $ai = [];
-//        $ai[] = $chosenTeamRecord;
-
-
-        // Prevent from being able to vote for same team in one game.
-        for($o = 0; $o < count($chosenTeamRecord); $o++) {
-            if ($chosenTeamRecord[$o] == $chosenTeam) {
-                session(['alreadyVotedFor' => true]);
-                return redirect()->route('game', ['id' => $game->id]);
-            } else {
-                session()->forget('alreadyVotedFor');
-            }
-        }
+        session()->forget('alreadyVotedFor');
 
         // Update user record to chosen true.
         $game->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 1, 'team' => $chosenTeam]);

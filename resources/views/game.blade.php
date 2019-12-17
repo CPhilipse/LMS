@@ -17,7 +17,7 @@
     .prevv, .nextt {
         cursor: pointer;
         position: absolute;
-        @if(session('rightLink') || session('chooseTeam') == true)
+        @if(session('rightLink') || session('chooseTeam') || session('alreadyVotedFor') == true)
         top: 40%!important;
         @endif
         top: 34%;
