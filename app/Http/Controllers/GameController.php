@@ -477,16 +477,14 @@ class GameController extends Controller
                     }
                 }
             }
-            // Logic user going to next round or being out DONE.
 
             $users_out = [];
             for ($i = 0; $i < count($allPlayers); $i++) {
                 $user_out = $game_id->users[$i]->out;
                 $user_id = $game_id->users[$i]->user_id;
 
-                // Check which users have it wrong, or check which teams lost and then check which user had such team in record. ** By doing the same thing above *
+                // Check which users are out and put them in an array for counter check below.
                 if ($user_out == 1) {
-                    // Need to do another check on whether the user is already in this array. Copy of the code from handling adding users - lobby.
                     $users_out[] = $user_id;
                 }
 
@@ -496,6 +494,12 @@ class GameController extends Controller
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['point' => + 1, 'chosen' => 0, 'team' => ' ', 'out' => 0]);
                     }
                 }
+
+                /*
+                 * 1. User needs to have a record of chosen teams. How else are you going to check whether an user already has chosen this certain team in a game?
+                 * 2.
+                 *
+                 * */
             }
         }
 
