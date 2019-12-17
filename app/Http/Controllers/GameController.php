@@ -488,16 +488,23 @@ class GameController extends Controller
                     $users_out[] = $user_id;
                 }
 
-                // If there is only one player left add a point to this user his record.
+                // If there is only one player left add a point to this user his record. Reset game.
                 if (count($users_out) <= count($allPlayers)) {
                     if ($game_id->users[$i]->out == 0) {
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['point' => + 1, 'chosen' => 0, 'team' => ' ', 'out' => 0]);
                     }
+
+                    if ($game_id->users[$i]->out == 1) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 0]);
+                    }
+                    // Reset chosen team record. So that any team can be chosen again by the user.
+                    session()->forget('chosenTeamRecord');
                 }
+
 
                 /*
                  * 1. User needs to have a record of chosen teams. How else are you going to check whether an user already has chosen this certain team in a game?
-                 * 2.
+                 * 2. Put team choices in session and forget this session on reset of game, which happens when points are being given and chosen and out are being reset to 0.
                  *
                  * */
             }
@@ -841,6 +848,8 @@ class GameController extends Controller
             return redirect()->back();
         }
         session()->forget('chooseTeam');
+
+        session(['chosenTeamRecord' => $chosenTeam]);
 
         // Update user record to chosen true.
         $game->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 1, 'team' => $chosenTeam]);
