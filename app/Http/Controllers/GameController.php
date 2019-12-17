@@ -860,16 +860,24 @@ class GameController extends Controller
         }
         session()->forget('chooseTeam');
 
+
+        $chosenTeamRecord = [];
         session(['chosenTeamRecord' => $chosenTeam]);
-        $chosenTeamRecord = session('chosenTeamRecord');
+        $chosenTeamRecord[] = session('chosenTeamRecord');
+//        dd($chosenTeamRecord[0]);
+
+//        $ai = [];
+//        $ai[] = $chosenTeamRecord;
+
 
         // Prevent from being able to vote for same team in one game.
-        if (isset($chosenTeamRecord[$chosenTeam])) {
-            session(['alreadyVotedFor' => true]);
-            return redirect()->route('game', ['id' => $game->id]);
-        } else {
-            session()->forget('alreadyVotedFor');
-            $chosenTeamRecord[$chosenTeam] = 1;
+        for($o = 0; $o < count($chosenTeamRecord); $o++) {
+            if ($chosenTeamRecord[$o] == $chosenTeam) {
+                session(['alreadyVotedFor' => true]);
+                return redirect()->route('game', ['id' => $game->id]);
+            } else {
+                session()->forget('alreadyVotedFor');
+            }
         }
 
         // Update user record to chosen true.
