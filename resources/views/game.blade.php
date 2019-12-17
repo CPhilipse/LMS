@@ -104,6 +104,13 @@
                     </div>
                 @endif
 
+                @if(session('alreadyVotedFor') == true)
+                    <div class="alert alert-danger" role="alert">
+                        <h4 class="alert-heading">Mislukt!</h4>
+                        <p>U kan niet op dezelfde team kiezen in één game.</p>
+                    </div>
+                @endif
+
                 <div class="w3-bar w3-black">
                     @foreach($allPlayers as $player)
                         @if($user_id == $player->pivot->user_id)
