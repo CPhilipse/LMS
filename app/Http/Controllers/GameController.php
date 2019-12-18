@@ -377,10 +377,6 @@ class GameController extends Controller
             // Onchange of week you can vote again.
             session()->forget('chooseTeam');
 
-            // Update week/round.
-            $game_id->week = $current_week;
-            $game_id->save();
-
             // Put users who are still in the game in an array in case they all choose wrong. These last users will when that happens get a point.
             $users_in = [];
             for ($i = 0; $i < count($allPlayers); $i++) {
@@ -393,29 +389,28 @@ class GameController extends Controller
                 }
             }
 
-
-            $teams_in_previous_week = [];
+            // Put current week teams in new array
+            $teams_in_current_week = [];
             for($row = 0; $row < count($league); $row++) {
                 for($col = 0; $col < count($league[0]); $col++) {
-                    // Minus one because you need to have the teams from the previous week. Unless you do the update of the week after this, then remove it.
-                    if(end($league[$row]) - 1 == $current_week) {
-                        $teams_in_previous_week[] = $league[$row];
+                    if(end($league[$row]) == $current_week) {
+                        $teams_in_current_week[] = $league[$row];
                     }
                 }
             }
 
-            $round = $teams_in_previous_week[0];
+            $round = $teams_in_current_week[0];
 
-            $outcome_in_previous_week = [];
+            $outcome_in_current_week = [];
             for($row = 0; $row < count($outcome); $row++) {
                 for($col = 0; $col < count($outcome[0]); $col++) {
-                    if(end($outcome[$row]) - 1 == $current_week) {
-                        $outcome_in_previous_week[] = $outcome[$row];
+                    if(end($outcome[$row]) == $current_week) {
+                        $outcome_in_current_week[] = $outcome[$row];
                     }
                 }
             }
 
-            $round_outcome = $outcome_in_previous_week[0];
+            $round_outcome = $outcome_in_current_week[0];
             // If it's true, the team value in the even key number has lost. If false, the odd key number won.
             $comp1 = $round_outcome[0] < $round_outcome[1];
             $comp2 = $round_outcome[2] < $round_outcome[3];
@@ -433,72 +428,72 @@ class GameController extends Controller
 //                    dd('team 1 won');
                     // It won't go in these conditions where it checks with the users their choice. **
                     if($user_choice == $round[0]) {
-                        dd($user_id_rule . 'TEAM 1 WON, your choice too.');
+//                        dd($user_id_rule . 'TEAM 1 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
                     if($user_choice == $round[1]) {
-                        dd($user_id_rule . 'TEAM 0 WON, your choice too.');
+//                        dd($user_id_rule . 'TEAM 0 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
 
                 if($comp2) {
                     if($user_choice == $round[2]) {
-                        dd($user_id_rule . 'TEAM 3 WON, your choice too.');
+//                        dd($user_id_rule . 'TEAM 3 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
                     if($user_choice == $round[3]) {
-                        dd($user_id_rule . 'TEAM 2 WON, your choice too.');
+//                        dd($user_id_rule . 'TEAM 2 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
 
                 if($comp3) {
                     if($user_choice == $round[4]) {
-                        dd($user_id_rule . 'TEAM 5 WON, your choice too.');
+//                        dd($user_id_rule . 'TEAM 5 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
                     if($user_choice == $round[5]) {
-                        dd($user_id_rule . 'TEAM 4 WON, your choice too.');
+//                        dd($user_id_rule . 'TEAM 4 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
 
                 if($comp4) {
                     if($user_choice == $round[6]) {
-                        dd($user_id_rule . 'TEAM 7 WON, your choice too.');
+//                        dd($user_id_rule . 'TEAM 7 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
                     if($user_choice == $round[7]) {
-                        dd($user_id_rule . 'TEAM 6 WON, your choice too.');
+//                        dd($user_id_rule . 'TEAM 6 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
 
                 if($comp5) {
                     if($user_choice == $round[8]) {
-                        dd($user_id_rule . 'TEAM 9 WON, your choice too.');
+//                        dd($user_id_rule . 'TEAM 9 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
                     if($user_choice == $round[9]) {
-                        dd($user_id_rule . 'TEAM 8 WON, your choice too.');
+//                        dd($user_id_rule . 'TEAM 8 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
 
                 if($comp6) {
                     if($user_choice == $round[10]) {
-                        dd($user_id_rule . 'TEAM 11 WON, your choice too.');
+//                        dd($user_id_rule . 'TEAM 11 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
                     if($user_choice == $round[11]) {
-                        dd($user_id_rule . 'TEAM 10 WON, your choice too.');
+//                        dd($user_id_rule . 'TEAM 10 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
@@ -551,6 +546,10 @@ class GameController extends Controller
                     }
                 }
             }
+
+            // Update week/round.
+            $game_id->week = $current_week;
+            $game_id->save();
 
             return redirect()->route('game', ['id' => $current_game_id]);
         }
