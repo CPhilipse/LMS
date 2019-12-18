@@ -507,8 +507,6 @@ class GameController extends Controller
                     session()->forget('chosenTeamRecord');
                 }
 
-                // Give alreadyVotedOn variable to the blade for removing/hiding buttons from those teams.
-
                 $chosenTeamRecordSession = [];
                 $chosenTeamRecordSession[] = session('chosenTeamRecord');
                 if(isset($chosenTeamRecordSession)) {
@@ -522,12 +520,6 @@ class GameController extends Controller
                         }
                     }
                 }
-
-                /*
-                 * 1. User needs to have a record of chosen teams. How else are you going to check whether an user already has chosen this certain team in a game?
-                 * 2. Put team choices in session and forget this session on reset of game, which happens when points are being given and chosen and out are being reset to 0.
-                 *
-                 * */
             }
 
             return redirect()->route('game', ['id' => $current_game_id]);

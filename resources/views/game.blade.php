@@ -339,13 +339,6 @@
                                 </div>
                             @endif
 
-                            @if(isset($emptyName))
-                                <div style="margin-top: 20px" class="alert alert-danger" role="alert">
-                                    <h4 class="alert-heading">Mislukt!</h4>
-                                    <p>{{$emptyName}}</p>
-                                </div>
-                            @endif
-
                             @if(session('userExistsInGame') == true)
                                 <div style="margin-top: 20px" class="alert alert-danger" role="alert">
                                     <h4 class="alert-heading">Mislukt!</h4>
