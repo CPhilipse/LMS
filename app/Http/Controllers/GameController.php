@@ -418,6 +418,12 @@ class GameController extends Controller
                 $user_id = $game_id->users[$users]->id;
 
                 if($comp1) {
+                    /*
+                     * TODO::
+                     *   Rule: If multiple last users in a round have made the wrong choice which make them all out, then add a point to all those users.
+                     *   1. Check who is still in game. Put in array if still in game. Then somewhere below add a point to those users if they all are out after all these conditions below.
+                     *   2. This way you have the users who where left last.
+                     * */
                     if($user_choice == $round[0]) {
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
                     }
@@ -506,12 +512,13 @@ class GameController extends Controller
                 $chosenTeamRecordSession = [];
                 $chosenTeamRecordSession[] = session('chosenTeamRecord');
                 if(isset($chosenTeamRecordSession)) {
-                    // Separate check for every user.
-                    // Do with chosenteamrecord same check as with lobby, if team already is in there, return message, you already voted for this team.
-//                    dd($chosenTeamRecordSession);
+                    // Rule: user has chosen all teams. Remaining users get a point and game resets.
                     if(count($chosenTeamRecordSession) <= count($league[0])) {
                         if ($game_id->users[$i]->out == 0) {
                             $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['point' => + 1, 'chosen' => 0, 'team' => ' ', 'out' => 0]);
+                        }
+                        if ($game_id->users[$i]->out == 1) {
+                            $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 0]);
                         }
                     }
                 }
@@ -876,6 +883,7 @@ class GameController extends Controller
             }
         }
 
+        // Add the chosen team to the record session so the user can't vote for this team in the next round again. Until reset.
         $chosenTeamRecord = [];
         session(['chosenTeamRecord' => $chosenTeam]);
         $chosenTeamRecord[] = session('chosenTeamRecord');
