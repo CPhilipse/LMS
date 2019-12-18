@@ -801,16 +801,14 @@ class GameController extends Controller
             // Check whether you try to invite yourself.
             if ($user->id == auth()->user()->id) {
                 // Unable to invite yourself.
-                $self = 'U kan uzelf niet toevoegen.';
-                return view('game')->with(['self' => $self, 'user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game, 'uuid' => $game->link, 'game_name' => $game->name]);
+                return redirect()->route('game', ['id' => $game_id]);
             } else {
                 // Add invited user in session.
                 $session = session('lobbyExistingGame');
 
                 // Prevent from adding two same users.
                 if (isset($session[$user->id])) {
-                    $alreadyInvited = $user->name . ' is al toegevoegd, klik op opslaan.';
-                    return view('game')->with(['alreadyInvited' => $alreadyInvited, 'user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game, 'uuid' => $game->link, 'game_name' => $game->name]);
+                    return redirect()->route('game', ['id' => $game_id]);
                 } else {
                     $check = User::where('email', $email)->get()->first()->games->where('id', $game_id)->first();
 

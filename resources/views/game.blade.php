@@ -325,17 +325,17 @@
                                 </div>
                             @endif
 
-                            @if(isset($self))
+                            @if(session('self') == true)
                                 <div style="margin-top: 20px" class="alert alert-danger" role="alert">
                                     <h4 class="alert-heading">Mislukt!</h4>
-                                    <p>{{$self}}</p>
+                                    <p>U kan uzelf niet toevoegen.</p>
                                 </div>
                             @endif
 
-                            @if(isset($alreadyInvited))
+                            @if(session('alreadyInvited') == true)
                                 <div style="margin-top: 20px" class="alert alert-danger" role="alert">
                                     <h4 class="alert-heading">Mislukt!</h4>
-                                    <p>{{$alreadyInvited}}</p>
+                                    <p>Gebruiker is al toegevoegd, klik op opslaan.</p>
                                 </div>
                             @endif
 
