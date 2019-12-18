@@ -346,10 +346,10 @@
                                 </div>
                             @endif
 
-                            @if(isset($userExistsInGame))
+                            @if(session('userExistsInGame') == true)
                                 <div style="margin-top: 20px" class="alert alert-danger" role="alert">
                                     <h4 class="alert-heading">Mislukt!</h4>
-                                    <p>{{$userExistsInGame}}</p>
+                                    <p>De gebruiker van de ingevoerde email is al in dit spel.</p>
                                 </div>
                             @endif
 

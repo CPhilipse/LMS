@@ -675,7 +675,7 @@ class GameController extends Controller
         }
 
         // Remove messages given to blade
-        session()->forget(['lobbyExistingGame', 'saveNotice', 'succesfulDeleteOfUser']);
+        session()->forget(['lobbyExistingGame', 'saveNotice', 'succesfulDeleteOfUser', 'userExistsInGame']);
 
         return redirect()->route('game', ['id' => $game_id]);
     }
@@ -816,8 +816,8 @@ class GameController extends Controller
 
                     if (isset($check)) {
                         // User already exists in this game.
-                        $userExistsInGame = 'De gebruiker van de ingevoerde email is al in dit spel.';
-                        return view('game')->with(['userExistsInGame' => $userExistsInGame, 'user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game, 'uuid' => $game->link, 'game_name' => $game->name]);
+                        session(['userExistsInGame' => true]);
+                        return redirect()->route('game', ['id' => $game_id]);
                     } else {
                         // IT'S NULL, UNSET. So user doesn't exist in the game.
                         $session[$user->id] = 1;
