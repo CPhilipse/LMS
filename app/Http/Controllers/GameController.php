@@ -382,6 +382,19 @@ class GameController extends Controller
             $game_id->week = $current_week;
             $game_id->save();
 
+            // Put users who are still in the game in an array in case they all choose wrong. These last users will when that happens get a point.
+            $users_in = [];
+            for ($i = 0; $i < count($allPlayers); $i++) {
+                $user_out = $game_id->users[$i]->out;
+                $user_id = $game_id->users[$i]->user_id;
+
+                // Check which users are still in the game and put them in an array
+                if ($user_out == 0) {
+                    $users_in[] = $user_id;
+                }
+            }
+
+
             $teams_in_previous_week = [];
             for($row = 0; $row < count($league); $row++) {
                 for($col = 0; $col < count($league[0]); $col++) {
@@ -418,12 +431,6 @@ class GameController extends Controller
                 $user_id = $game_id->users[$users]->id;
 
                 if($comp1) {
-                    /*
-                     * TODO::
-                     *   Rule: If multiple last users in a round have made the wrong choice which make them all out, then add a point to all those users.
-                     *   1. Check who is still in game. Put in array if still in game. Then somewhere below add a point to those users if they all are out after all these conditions below.
-                     *   2. This way you have the users who where left last.
-                     * */
                     if($user_choice == $round[0]) {
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
                     }
@@ -492,6 +499,15 @@ class GameController extends Controller
                 // Check which users are out and put them in an array for counter check below.
                 if ($user_out == 1) {
                     $users_out[] = $user_id;
+                }
+
+                // If all the users who are out is equal to all the users, then give points to the ones who were last
+                // Rule: If multiple last users in a round have made the wrong choice which make them all out, then add a point to all those users.
+                if (count($users_out) == count($allPlayers)) {
+                    $amount_users_last = count($users_in);
+                    for($q = 0; $q < $amount_users_last; $q++) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $users_in[$q]], ['point' => + 1, 'chosen' => 0, 'team' => ' ', 'out' => 0]);
+                    }
                 }
 
                 // If there is only one player left add a point to this user his record. Reset game.
