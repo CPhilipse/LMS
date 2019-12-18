@@ -619,17 +619,6 @@ class GameController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource. Show create game page.
      * Save uuid in session so that it won't be renewed until used.
      *
@@ -657,17 +646,6 @@ class GameController extends Controller
         $session = session('uuid');
 
         return view('creategame')->with('uuid', $session);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Game  $game
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Game $game)
-    {
-        //
     }
 
     /**
