@@ -25,41 +25,41 @@ class GameController extends Controller
     {
         $outcome =
             [
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 31],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 32],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 33],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 34],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 35],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 36],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 37],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 38],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 39],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 40],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 41],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 42],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 43],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 44],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 45],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 46],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 47],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 48],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 49],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 50],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 51],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 52],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 1],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 2],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 3],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 4],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 5],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 6],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 7],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 8],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 9],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 10],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 11],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 12],
-                ["0", "2", "1", "3", "2", "4", "1", "3", "2", "1", "4", "3", 13],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 31],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 32],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 33],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 34],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 35],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 36],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 37],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 38],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 39],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 40],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 41],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 42],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 43],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 44],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 45],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 46],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 47],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 48],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 49],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 50],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 51],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 52],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 1],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 2],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 3],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 4],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 5],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 6],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 7],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 8],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 9],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 10],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 11],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 12],
+                [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 13],
             ];
 
         $league =
@@ -371,7 +371,6 @@ class GameController extends Controller
         // Whole league time-zone
 
 
-        $test_week = 50;
         // On new round update the users their records.
         if($current_week !== $game_id->week) {
 
@@ -417,7 +416,7 @@ class GameController extends Controller
             }
 
             $round_outcome = $outcome_in_previous_week[0];
-            // If it's true, the team value in the even key number has won. If false, the odd key number lost.
+            // If it's true, the team value in the even key number has lost. If false, the odd key number won.
             $comp1 = $round_outcome[0] < $round_outcome[1];
             $comp2 = $round_outcome[2] < $round_outcome[3];
             $comp3 = $round_outcome[4] < $round_outcome[5];
@@ -428,65 +427,67 @@ class GameController extends Controller
             // Iterate through all players their choice, compare that with the victory team of each competition.
             for($users = 0; $users < count($allPlayers); $users++) {
                 $user_choice = $game_id->users[$users]->pivot->team;
-                $user_id = $game_id->users[$users]->id;
+                $user_id_rule = $game_id->users[$users]->id;
 
                 if($comp1) {
+                    dd('team 1 won');
                     if($user_choice == $round[0]) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
+                    dd('team 0 won');
                     if($user_choice == $round[1]) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
 
                 if($comp2) {
                     if($user_choice == $round[2]) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
                     if($user_choice == $round[3]) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
 
                 if($comp3) {
                     if($user_choice == $round[4]) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
                     if($user_choice == $round[5]) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
 
                 if($comp4) {
                     if($user_choice == $round[6]) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
                     if($user_choice == $round[7]) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
 
                 if($comp5) {
                     if($user_choice == $round[8]) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
                     if($user_choice == $round[9]) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
 
                 if($comp6) {
                     if($user_choice == $round[10]) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ']);
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
                     if($user_choice == $round[11]) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
             }
@@ -494,11 +495,11 @@ class GameController extends Controller
             $users_out = [];
             for ($i = 0; $i < count($allPlayers); $i++) {
                 $user_out = $game_id->users[$i]->out;
-                $user_id = $game_id->users[$i]->user_id;
+                $user_id_rule = $game_id->users[$i]->user_id;
 
                 // Check which users are out and put them in an array for counter check below.
                 if ($user_out == 1) {
-                    $users_out[] = $user_id;
+                    $users_out[] = $user_id_rule;
                 }
 
                 // If all the users who are out is equal to all the users, then give points to the ones who were last
@@ -513,11 +514,11 @@ class GameController extends Controller
                 // If there is only one player left add a point to this user his record. Reset game.
                 if (count($users_out) == count($allPlayers) - 1) {
                     if ($game_id->users[$i]->out == 0) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['point' => + 1, 'chosen' => 0, 'team' => ' ', 'out' => 0]);
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['point' => + 1, 'chosen' => 0, 'team' => ' ', 'out' => 0]);
                     }
 
                     if ($game_id->users[$i]->out == 1) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 0]);
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 0]);
                     }
                     // Reset chosen team record. So that any team can be chosen again by the user.
                     session()->forget('chosenTeamRecord');
@@ -526,13 +527,14 @@ class GameController extends Controller
                 $chosenTeamRecordSession = [];
                 $chosenTeamRecordSession[] = session('chosenTeamRecord');
                 if(isset($chosenTeamRecordSession)) {
+                    dd('Rule: user has chosen all teams. Remaining users get a point and game resets.');
                     // Rule: user has chosen all teams. Remaining users get a point and game resets.
                     if(count($chosenTeamRecordSession) <= count($league[0])) {
                         if ($game_id->users[$i]->out == 0) {
-                            $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['point' => + 1, 'chosen' => 0, 'team' => ' ', 'out' => 0]);
+                            $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['point' => + 1, 'chosen' => 0, 'team' => ' ', 'out' => 0]);
                         }
                         if ($game_id->users[$i]->out == 1) {
-                            $game_id->users()->updateExistingPivot(['user_id' => $user_id], ['chosen' => 0, 'team' => ' ', 'out' => 0]);
+                            $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 0]);
                         }
                     }
                 }
@@ -716,7 +718,7 @@ class GameController extends Controller
                 return view('invitation')->with('wrongLink', $wrongLink);
             }
         } else {
-            return view('invitation')->with('wrongLink', $wrongLink);
+            return view('invitation');
         }
     }
 
@@ -860,7 +862,7 @@ class GameController extends Controller
 
         $chosenTeamRecordSession = [];
         $chosenTeamRecordSession[] = session('chosenTeamRecord');
-
+//        dd($chosenTeamRecordSession);
         // Prevent from being able to vote for same team in one game.
         for($o = 0; $o < count($chosenTeamRecordSession); $o++) {
             if ($chosenTeamRecordSession[$o] == $chosenTeam) {
