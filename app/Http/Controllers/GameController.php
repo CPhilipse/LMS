@@ -84,7 +84,7 @@ class GameController extends Controller
                 ["Heerenveen", "Willem II", "ADO", "Groningen", "VVV", "PEC", "Fortuna", "RKC", "Twente", "Vitesse", "Emmen", "Sparta", 48], // 17
                 ["RKC", "Twente", "Heerenveen", "Heracles", "PSV", "PEC", "Sparta", "AZ", "Willem II", "Fortuna", "Ajax", "ADO", 49], // 18
                 ["PEC", "Utrecht", "Fortuna", "Vitesse", "Feyenoord", "Heerenveen", "Twente", "Groningen", "AZ", "Willem II", "VVV", "PSV", 50], // 19
-                ["Utrecht", "ADO", "Heerenveen", "AZ", "RKC", "VVV", "Heracles", "Feyenoord", "Sparta", "Fortuna", "Vitesse", "Emmen", 51], // 20
+                ["Utrecht", "ADO", "AZ", "Heerenveen", "RKC", "VVV", "Heracles", "Feyenoord", "Sparta", "Fortuna", "Vitesse", "Emmen", 51], // 20
                 ["AZ", "RKC", "ADO", "Vitesse", "Feyenoord", "Emmen", "Twente", "Sparta", "PEC", "Groningen", "Willem II", "Heracles", 52], // 21
                 ["Heracles", "Fortuna", "Groningen", "Vitesse", "Heerenveen", "VVV", "PSV", "Willem II", "RKC", "PEC", "Utrecht", "Ajax", 1], // 22
                 ["Willem II", "Utrecht", "VVV", "Heracles", "Twente", "AZ", "ADO", "PSV", "Fortuna", "Emmen", "Vitesse", "Heerenveen", 2], // 23
@@ -423,76 +423,78 @@ class GameController extends Controller
             for($users = 0; $users < count($allPlayers); $users++) {
                 $user_choice = $game_id->users[$users]->pivot->team;
                 $user_id_rule = $game_id->users[$users]->id;
-                // The mistake must be in the conditions where you user should be updated.
+                // Why do conditions don't seem to work is because probably the teams are being saved with a space in front of the name.
+                $string_user_choice = str_replace(' ', '', $user_choice);
+//                dd($round[0] == $string_user_choice ? 'Same team' . $string_user_choice . ' - ' . $round[0] : 'Wrong' . $string_user_choice . ' - ' . $round[0]);
+//                dd($string_user_choice);
                 if($comp1) {
 //                    dd('team 1 won');
-                    // It won't go in these conditions where it checks with the users their choice. **
-                    if($user_choice == $round[0]) {
+                    if($string_user_choice == $round[0]) {
 //                        dd($user_id_rule . 'TEAM 1 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
-                    if($user_choice == $round[1]) {
+                    if($string_user_choice == $round[1]) {
 //                        dd($user_id_rule . 'TEAM 0 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
 
                 if($comp2) {
-                    if($user_choice == $round[2]) {
+                    if($string_user_choice == $round[2]) {
 //                        dd($user_id_rule . 'TEAM 3 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
-                    if($user_choice == $round[3]) {
+                    if($string_user_choice == $round[3]) {
 //                        dd($user_id_rule . 'TEAM 2 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
 
                 if($comp3) {
-                    if($user_choice == $round[4]) {
+                    if($string_user_choice == $round[4]) {
 //                        dd($user_id_rule . 'TEAM 5 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
-                    if($user_choice == $round[5]) {
+                    if($string_user_choice == $round[5]) {
 //                        dd($user_id_rule . 'TEAM 4 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
 
                 if($comp4) {
-                    if($user_choice == $round[6]) {
+                    if($string_user_choice == $round[6]) {
 //                        dd($user_id_rule . 'TEAM 7 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
-                    if($user_choice == $round[7]) {
+                    if($string_user_choice == $round[7]) {
 //                        dd($user_id_rule . 'TEAM 6 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
 
                 if($comp5) {
-                    if($user_choice == $round[8]) {
+                    if($string_user_choice == $round[8]) {
 //                        dd($user_id_rule . 'TEAM 9 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
-                    if($user_choice == $round[9]) {
+                    if($string_user_choice == $round[9]) {
 //                        dd($user_id_rule . 'TEAM 8 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
                 }
 
                 if($comp6) {
-                    if($user_choice == $round[10]) {
+                    if($string_user_choice == $round[10]) {
 //                        dd($user_id_rule . 'TEAM 11 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
                     }
                 } else {
-                    if($user_choice == $round[11]) {
+                    if($string_user_choice == $round[11]) {
 //                        dd($user_id_rule . 'TEAM 10 WON, your choice too.');
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ', 'out' => 1]);
                     }
@@ -545,6 +547,7 @@ class GameController extends Controller
                         }
                     }
                 }
+                $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => ' ']);
             }
 
             // Update week/round.
