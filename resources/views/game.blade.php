@@ -318,10 +318,10 @@
                                 </div>
                             @endif
 
-                            @if(isset($nope))
+                            @if(session('nope') == true)
                                 <div style="margin-top: 20px" class="alert alert-danger" role="alert">
                                     <h4 class="alert-heading">Mislukt!</h4>
-                                    <p>{{$nope}}</p>
+                                    <p>Gebruiker kan niet gevonden worden.</p>
                                 </div>
                             @endif
 

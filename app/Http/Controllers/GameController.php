@@ -675,7 +675,7 @@ class GameController extends Controller
         }
 
         // Remove messages given to blade
-        session()->forget(['lobbyExistingGame', 'saveNotice', 'succesfulDeleteOfUser', 'userExistsInGame']);
+        session()->forget(['lobbyExistingGame', 'saveNotice', 'succesfulDeleteOfUser', 'userExistsInGame', 'alreadyInvited', 'self', 'nope']);
 
         return redirect()->route('game', ['id' => $game_id]);
     }
@@ -801,6 +801,7 @@ class GameController extends Controller
             // Check whether you try to invite yourself.
             if ($user->id == auth()->user()->id) {
                 // Unable to invite yourself.
+                session(['self' => true]);
                 return redirect()->route('game', ['id' => $game_id]);
             } else {
                 // Add invited user in session.
@@ -808,6 +809,7 @@ class GameController extends Controller
 
                 // Prevent from adding two same users.
                 if (isset($session[$user->id])) {
+                    session(['alreadyInvited' => true]);
                     return redirect()->route('game', ['id' => $game_id]);
                 } else {
                     $check = User::where('email', $email)->get()->first()->games->where('id', $game_id)->first();
@@ -828,8 +830,8 @@ class GameController extends Controller
             }
         } else {
             // User not found.
-            $nope = 'Gebruiker kan niet gevonden worden.';
-            return view('game')->with(['nope' => $nope, 'user_id' => auth()->user()->id, 'allPlayers' => $game->users, 'game' => $game, 'uuid' => $game->link, 'game_name' => $game->name]);
+            session(['nope' => true]);
+            return redirect()->route('game', ['id' => $game_id]);
         }
     }
 
