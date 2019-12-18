@@ -487,6 +487,12 @@ class GameController extends Controller
                     }
                 }
             }
+            /*
+             * TODO::
+             *   1. Conditions above seem to work, but check anyway.
+             *   2. Points aren't being added. So check the rules conditions below.
+             *
+             * */
 
             $users_out = [];
             for ($i = 0; $i < count($allPlayers); $i++) {
