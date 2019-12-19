@@ -370,7 +370,6 @@ class GameController extends Controller
 
         // Whole league time-zone
 
-
         // On new round update the users their records.
         if($current_week !== $game_id->week) {
 
@@ -378,14 +377,8 @@ class GameController extends Controller
             session()->forget('chooseTeam');
 
             // Put users who are still in the game in an array in case they all choose wrong. These last users will when that happens get a point.
+            // Empty array on every round because new last users every round.
             $users_in = [];
-            /*
-             * TODO::
-             *  1. Put users_in (users who were last) in session instead of just array.
-             *  2. Use it where needed
-             *  3. Then in the end empty out this array.
-             *
-             * */
             for ($i = 0; $i < count($allPlayers); $i++) {
                 $user_out = $game_id->users[$i]->pivot->out;
                 $user_id = $game_id->users[$i]->pivot->user_id;
@@ -395,9 +388,6 @@ class GameController extends Controller
                     $users_in[] = $user_id;
                 }
             }
-
-            session(['users_who_were_last' => $users_in]);
-            $users_in_session = session('users_who_were_last');
 
             // Put current week teams in new array
             $teams_in_current_week = [];
@@ -420,33 +410,35 @@ class GameController extends Controller
 
                 $user_id_rule = $game_id->users[$users]->id;
 
+                // WORKS
                 // Check whether the user their choice is equal to the team that won.
                 // RULE:: if user chosen team lost, you out.
-                if($user_choice == $round[1]) {
-                    $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
-                } else {
-                    if($user_choice == $round[3]) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
-                    } else {
-                        if($user_choice == $round[5]) {
-                            $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
-                        } else {
-                            if($user_choice == $round[7]) {
-                                $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
-                            } else {
-                                if($user_choice == $round[8]) {
-                                    $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
-                                } else {
-                                    if($user_choice == $round[10]) {
-                                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
-                                    } else {
-                                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '', 'out' => 1]);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+//                if($user_choice == $round[1]) {
+//                    $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+//                } else {
+//                    if($user_choice == $round[3]) {
+//                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+//                    } else {
+//                        if($user_choice == $round[5]) {
+//                            $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+//                        } else {
+//                            if($user_choice == $round[7]) {
+//                                $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+//                            } else {
+//                                if($user_choice == $round[8]) {
+//                                    $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+//                                } else {
+//                                    if($user_choice == $round[10]) {
+//                                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+//                                    } else {
+//                                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '', 'out' => 1]);
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+                // WORKS
             }
 
             $users_out = [];
@@ -462,24 +454,26 @@ class GameController extends Controller
                 }
             }
 
-            dd($users_in_session);
-
             for ($i = 0; $i < count($allPlayers); $i++) {
                 $user_id_rule_out_check = $game_id->users[$i]->pivot->user_id;
 
                 // If all the users who are out is equal to all the users, then give points to the ones who were last
                 // Rule:: If multiple last users in a round have made the wrong choice which make them all out, then add a point to all those users.
-                // Check whether all users are out, if so then go through the players who were last which has been put in an array ($users_in_session) in the beginning of this condition.
+                // Check whether all users are out, if so then go through the players who were last which has been put in an array ($users_in).
                 if (count($users_out) == count($allPlayers)) {
-                    dd($users_in_session);
-                    $users_who_were_last = count($users_in_session);
-                    for($add_point = 0; $add_point < $users_who_were_last; $add_point++) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $users_in_session[$add_point]], ['point' => + 1, 'chosen' => 0, 'team' => '', 'out' => 0]);
+
+                    // Add point to the users who were last
+                    for($add_point = 0; $add_point < count($users_in); $add_point++) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $users_in[$add_point]], ['point' => + 1]);
                     }
+
+                    // Reset game.
+                    if ($game_id->users[$i]->pivot->out == 1) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule_out_check], ['chosen' => 0, 'team' => '', 'out' => 0]);
+                    }
+
                     // Reset chosen team record. So that any team can be chosen again by the user.
                     session()->forget('chosenTeamRecord');
-                    // Reset game.
-                    $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule_out_check], ['chosen' => 0, 'team' => '', 'out' => 0]);
                 }
 
                 /*
@@ -521,12 +515,8 @@ class GameController extends Controller
                 $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule_out_check], ['chosen' => 0, 'team' => '']);
             }
 
-            // Empty users_who_were_last because every round there are new users who are last.
-            session()->forget('users_who_were_last');
-
-
 //            dd($users_out, 'Players out total: ' . count($users_out), 'All players total: ' . count($allPlayers), count($users_out) == count($allPlayers) - 1 ? 'One player left' : 'Something else');
-            dd($users_out, 'Players out total: ' . count($users_out), 'All players total: ' . count($allPlayers), count($users_out) == count($allPlayers) ? 'Everyone is out' : 'Someone is in');
+            dd($users_out, 'Users who were last: ' . count($users_in), 'Players out total: ' . count($users_out), 'All players total: ' . count($allPlayers), count($users_out) == count($allPlayers) ? 'Everyone is out' : 'Someone is in');
 
             // Update week/round.
             $game_id->week = $current_week;
