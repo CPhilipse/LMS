@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class GameRecord extends Model
 {
+    // Laravel takes timestamps by default with, even though it is not added in the migration. By setting it to false, laravel will ignore it.
     public $timestamps = false;
 
     /**

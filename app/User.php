@@ -39,7 +39,7 @@ class User extends Authenticatable
 
     // User (model/entity) has many games
     public function games () {
-        // This user belongs to many games through the GameRecord.
+        // This user belongs to many games through the GameRecord. withPivot so these attributes will be accessible from the controller
         return $this->belongsToMany('App\Game', 'App\GameRecord')->withPivot('user_id', 'game_id', 'admin', 'invited', 'point', 'chosen', 'out', 'team');
     }
 }
