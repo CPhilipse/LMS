@@ -476,10 +476,6 @@ class GameController extends Controller
                     session()->forget('chosenTeamRecord');
                 }
 
-                /*
-                 * >>>>>> WORKS
-                 *
-                 * */
                 // Rule:: If there is only one player left add a point to this user his record. Reset game.
                 if (count($users_out) == count($allPlayers) - 1) {
                     // Add point to the user who were left.
@@ -494,24 +490,21 @@ class GameController extends Controller
                     // Reset chosen team record. So that any team can be chosen again by the user.
                     session()->forget('chosenTeamRecord');
                 }
-                /*
-                 * >>>>>> WORKS
-                 *
-                 * */
 
-//                $chosenTeamRecordSession = [];
-//                $chosenTeamRecordSession[] = session('chosenTeamRecord');
-//                if(isset($chosenTeamRecordSession)) {
-//                    // Rule: user has chosen all teams. Remaining users get a point and game resets.
-//                    if(count($chosenTeamRecordSession) <= count($league[0])) {
-//                        if ($game_id->users[$i]->pivot->out == 0) {
-//                            $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule_out], ['point' => + 1, 'chosen' => 0, 'team' => '', 'out' => 0]);
-//                        }
-//                        if ($game_id->users[$i]->pivot->out == 1) {
-//                            $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule_out], ['chosen' => 0, 'team' => '', 'out' => 0]);
-//                        }
-//                    }
-//                }
+                // Put all the chosen teams saved in session from the game in an array so we can count it
+                $chosenTeamRecordSession = [];
+                $chosenTeamRecordSession[] = session('chosenTeamRecord');
+                if(isset($chosenTeamRecordSession)) {
+                    // Rule: user has chosen all teams. Remaining users get a point and game resets.
+                    if(count($chosenTeamRecordSession) == count($league[0])) {
+                        if ($game_id->users[$i]->pivot->out == 0) {
+                            $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule_out_check], ['point' => + 1, 'chosen' => 0, 'team' => '', 'out' => 0]);
+                        }
+                        if ($game_id->users[$i]->pivot->out == 1) {
+                            $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule_out_check], ['chosen' => 0, 'team' => '', 'out' => 0]);
+                        }
+                    }
+                }
                 $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule_out_check], ['chosen' => 0, 'team' => '']);
             }
 
