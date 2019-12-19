@@ -410,35 +410,33 @@ class GameController extends Controller
 
                 $user_id_rule = $game_id->users[$users]->id;
 
-                // WORKS
                 // Check whether the user their choice is equal to the team that won.
                 // RULE:: if user chosen team lost, you out.
-//                if($user_choice == $round[1]) {
-//                    $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
-//                } else {
-//                    if($user_choice == $round[3]) {
-//                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
-//                    } else {
-//                        if($user_choice == $round[5]) {
-//                            $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
-//                        } else {
-//                            if($user_choice == $round[7]) {
-//                                $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
-//                            } else {
-//                                if($user_choice == $round[8]) {
-//                                    $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
-//                                } else {
-//                                    if($user_choice == $round[10]) {
-//                                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
-//                                    } else {
-//                                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '', 'out' => 1]);
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-                // WORKS
+                if($user_choice == $round[1]) {
+                    $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+                } else {
+                    if($user_choice == $round[3]) {
+                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+                    } else {
+                        if($user_choice == $round[5]) {
+                            $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+                        } else {
+                            if($user_choice == $round[7]) {
+                                $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+                            } else {
+                                if($user_choice == $round[8]) {
+                                    $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+                                } else {
+                                    if($user_choice == $round[10]) {
+                                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+                                    } else {
+                                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '', 'out' => 1]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             $users_out = [];
@@ -464,7 +462,7 @@ class GameController extends Controller
 
                     // Add point to the users who were last
                     for($add_point = 0; $add_point < count($users_in); $add_point++) {
-                        $game_id->users()->updateExistingPivot(['user_id' => $users_in[$add_point]], ['point' => + 1]);
+                        $game_id->users()->updateExistingPivot(['user_id' => $users_in[$add_point]], ['point' => + 1, 'chosen' => 0, 'team' => '', 'out' => 0]);
                     }
 
                     // Reset game.
@@ -508,8 +506,8 @@ class GameController extends Controller
                 $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule_out_check], ['chosen' => 0, 'team' => '']);
             }
 
-//            dd($users_out, 'Players out total: ' . count($users_out), 'All players total: ' . count($allPlayers), count($users_out) == count($allPlayers) - 1 ? 'One player left' : 'Something else');
-            dd($users_out, 'Users who were last: ' . count($users_in), 'Players out total: ' . count($users_out), 'All players total: ' . count($allPlayers), count($users_out) == count($allPlayers) ? 'Everyone is out' : 'Someone is in');
+            dd($users_out, 'Players out total: ' . count($users_out), 'All players total: ' . count($allPlayers), count($users_out) == count($allPlayers) - 1 ? 'One player left' : 'Something else');
+//            dd($users_out, 'Users who were last: ' . count($users_in), 'Players out total: ' . count($users_out), 'All players total: ' . count($allPlayers), count($users_out) == count($allPlayers) ? 'Everyone is out' : 'Someone is in');
 
             // Update week/round.
             $game_id->week = $current_week;
