@@ -31,18 +31,25 @@
                         @endif
 
                     <span class="ml-4" style="padding-left: 6px">
-                        <button type="button" class="btn btn-outline-dark col-5" onclick="location.href = '{{route('showGame')}}';">Nieuw spel aanmaken</button>
+                        {{-- Button redirect to create game page --}}
+                        <button type="button" class="btn btn-outline-dark col-5" onclick="location.href = '{{route('showGame')}}';">
+                            Nieuw spel aanmaken
+                        </button>
                     </span>
                     <span class="pl-5">
+                        {{-- Button redirect to overview route --}}
                         <button type="button" class="btn btn-outline-dark col-5" onclick="location.href = '{{route('overview')}}';">
                             Mijn spellen
                         </button>
                     </span>
 
+                    {{-- Show all games in reverse so that the new made games go on top --}}
                     @foreach($games->reverse() as $game)
                             <hr>
+                            {{-- Give id to route so the controller will know which game the user needs to be redirected to --}}
                             <a style="color: black; font-size: 15px;" href="{{ route('game', ['id' => $game->id]) }}">
                                 <div class="p-1 mt-3" style="text-align: center;">
+                                    {{-- Show the name of the game --}}
                                     {{$game->name}}
                                 </div>
                             </a>

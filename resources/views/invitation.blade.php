@@ -5,6 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
 
+                {{-- Header --}}
                 <div class="container" style="background-color: black;">
                     <div class="jumbotron" style="background-color: black;">
                         <h1 style="text-align: center; color: white; font-weight: bold;">Uitnodiging</h1>
@@ -20,8 +21,9 @@
                             </div>
                         @endif
 
+                        {{-- Request id of the game to fill in the id for the route, so you'll be on the invitation page of a certain game --}}
                         <form name="form" action="{{route('invitation', request()->route('id'))}}" method="GET">
-                            {{--                                <form name="form" action="{{route('game', ['id' => request()->route('id')])}}" method="POST">--}}
+                            {{-- Safety tag against attacks --}}
                             @csrf
                             <input style="height: 50px" class="col-12" type="text" name="invitation" placeholder="Uitnodigingslink...">
 
