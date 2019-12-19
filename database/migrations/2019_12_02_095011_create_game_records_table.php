@@ -18,6 +18,7 @@ class CreateGameRecordsTable extends Migration
 
             // Define user_id - so define which user belongs to certain games.
             $table->unsignedBigInteger('user_id');
+            // Make just made user_id FK so you can make a relation.
             $table->foreign('user_id')->references('id')->on('users');
 
             // Define game_id - so define which game belongs to certain users.
