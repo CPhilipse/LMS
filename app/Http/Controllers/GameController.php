@@ -433,16 +433,39 @@ class GameController extends Controller
                 // The comparison is being executed correctly, but the users don't seem to be updated right, at least the users who have it wrong are nog being updated with out.
 //                 dd($round[1] == $user_choice ? 'Same team' . $user_choice . ' - ' . $round[1] : 'Wrong' . $user_choice . ' - ' . $round[1]);
 
-                // Check which teams won, check which users choose for these teams and let them pass. All the others are wrong then and are out.
-                if($comp1 || $comp2 || $comp3 || $comp4 || $comp5 || $comp6) {
-                    if($user_choice == $round[1] || $round[3] || $round[5] || $round[7] || $round[8] || $round[10]) {
-                        // ISSUE:: No matter what the user has chosen, the user goes in here. Is there something wrong with the condition? The condition above goes correct, so.. what then?
+                // Check whether the user their choice is equal to the team that won.
+                // But here all the users go through and not out. Wut?
+//                if($user_choice == $round[1] || $round[3] || $round[5] || $round[7] || $round[8] || $round[10]) {
+//                    $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+//                } else {
+//                    $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '', 'out' => 1]);
+//                }
+
+                // Now all the users go out.
+                if($user_choice == $round[1]) {
+                    $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+                } else {
+                    if($user_choice == $round[3]) {
                         $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
                     } else {
-                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '', 'out' => 1]);
+                        if($user_choice == $round[5]) {
+                            $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+                        } else {
+                            if($user_choice == $round[7]) {
+                                $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+                            } else {
+                                if($user_choice == $round[8]) {
+                                    $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+                                } else {
+                                    if($user_choice == $round[10]) {
+                                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
+                                    } else {
+                                        $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '', 'out' => 1]);
+                                    }
+                                }
+                            }
+                        }
                     }
-                } else {
-                    $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '', 'out' => 1]);
                 }
             }
             // The comps do give the correct outputs - true, true, true, true, false, false
@@ -459,12 +482,11 @@ class GameController extends Controller
             $won_teams[] = $round[7];
             $won_teams[] = $round[8];
             $won_teams[] = $round[10];
-            dd($won_comps, $user_choices, $won_teams);
+            dd($won_comps, $user_choices, $won_teams, $user_choices[0] == $round[1] ? 'Team won! You won!' . $round[1] : 'Wrong.');
 
             /*
              * TODO::
-             *   1. Conditions above seem to work, but check anyway.
-             *   2. Points aren't being added. So check the rules conditions below.
+             *   1. Points aren't being added. So check the rules conditions below.
              *
              * */
 
