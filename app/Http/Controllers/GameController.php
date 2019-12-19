@@ -430,18 +430,8 @@ class GameController extends Controller
 
                 $user_id_rule = $game_id->users[$users]->id;
 
-                // The comparison is being executed correctly, but the users don't seem to be updated right, at least the users who have it wrong are nog being updated with out.
-//                 dd($round[1] == $user_choice ? 'Same team' . $user_choice . ' - ' . $round[1] : 'Wrong' . $user_choice . ' - ' . $round[1]);
-
                 // Check whether the user their choice is equal to the team that won.
-                // But here all the users go through and not out. Wut?
-//                if($user_choice == $round[1] || $round[3] || $round[5] || $round[7] || $round[8] || $round[10]) {
-//                    $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
-//                } else {
-//                    $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '', 'out' => 1]);
-//                }
-
-                // Now all the users go out.
+                // RULE of thumb:: if user chosen team lost, you out.
                 if($user_choice == $round[1]) {
                     $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule], ['chosen' => 0, 'team' => '']);
                 } else {
@@ -468,27 +458,6 @@ class GameController extends Controller
                     }
                 }
             }
-            // The comps do give the correct outputs - true, true, true, true, false, false
-            $won_comps[] = $comp1;
-            $won_comps[] = $comp2;
-            $won_comps[] = $comp3;
-            $won_comps[] = $comp4;
-            $won_comps[] = $comp5;
-            $won_comps[] = $comp6;
-
-            $won_teams[] = $round[1];
-            $won_teams[] = $round[3];
-            $won_teams[] = $round[5];
-            $won_teams[] = $round[7];
-            $won_teams[] = $round[8];
-            $won_teams[] = $round[10];
-            dd($won_comps, $user_choices, $won_teams, $user_choices[0] == $round[1] ? 'Team won! You won!' . $round[1] : 'Wrong.');
-
-            /*
-             * TODO::
-             *   1. Points aren't being added. So check the rules conditions below.
-             *
-             * */
 
             $users_out = [];
             for ($i = 0; $i < count($allPlayers); $i++) {
@@ -537,7 +506,7 @@ class GameController extends Controller
                 }
                 $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule_out], ['chosen' => 0, 'team' => '']);
             }
-            dd('Prevent from updating week.');
+//            dd('Prevent from updating week.');
             // Update week/round.
             $game_id->week = $current_week;
             $game_id->save();

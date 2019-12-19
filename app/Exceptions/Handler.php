@@ -42,10 +42,15 @@ class Handler extends ExceptionHandler
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
      */
     public function render($request, Exception $exception)
     {
+        // On creating game it gives a constraint violation error, but it still works. The user may not see an error, so redirect to home.
+        if ($exception instanceof \Illuminate\Database\QueryException) {
+            return redirect()->route('home');
+        }
+
         return parent::render($request, $exception);
     }
 }

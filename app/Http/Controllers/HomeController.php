@@ -25,7 +25,10 @@ class HomeController extends Controller
     public function index()
     {
         $allGames = Game::all();
-//        dd($allGames);
+
+        // Forget all session keys which should be empty on home
+        session()->forget(['lobbyExistingGame', 'saveNotice', 'succesfulDeleteOfUser', 'userExistsInGame',
+            'alreadyInvited', 'self', 'nope', 'chooseTeam', 'alreadyVotedFor', 'rightLink', 'lobby', ]);
 
         return view('home')->with('games', $allGames);
     }
