@@ -17,6 +17,7 @@
     .prevv, .nextt {
         cursor: pointer;
         position: absolute;
+        /* Messages mess up the position of the arrows, so when message occurs, switch up the position of the arrows. */
         @if(session('rightLink') || session('chooseTeam') || session('alreadyVotedFor') == true)
         top: 40%!important;
         @endif
@@ -54,6 +55,7 @@
         list-style-type: none;
         padding: 0;
     }
+    /* Show the teams in competition pairs  */
     .comp:nth-of-type(4n+3), .comp:nth-of-type(4n+3) + * {
         background-color: #000;
         color: white;
@@ -63,11 +65,11 @@
         border-radius: 4px;
     }
     .comp:nth-of-type(4n+1), .comp:nth-of-type(4n+1) + * {
-        /*background-color: #7f7880;*/
         padding-left: 25px;
         padding-bottom: 10px;
         padding-top: 10px;
     }
+    /* Hide the static implemented week in the league */
     .comp:nth-child(13) {
         display: none;
     }
@@ -77,8 +79,10 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
 
+                {{-- Header --}}
                 <div class="container" style="background-color: black;">
                     <div class="jumbotron" style="background-color: black;">
+                        {{-- Show the name of the game you're in --}}
                         <h1 style="text-align: center; color: white; font-weight: bold;">{{$game->name}}</h1>
                     </div>
                 </div>
@@ -111,9 +115,13 @@
                     </div>
                 @endif
 
+                {{-- Tabs block --}}
                 <div class="w3-bar w3-black">
+                    {{-- Get all users --}}
                     @foreach($allPlayers as $player)
+                        {{-- Check whether the logged in user is in this game --}}
                         @if($user_id == $player->pivot->user_id)
+                            {{-- Check whether the logged in user is admin, if so show settings, otherwise don't. --}}
                             @if($player->pivot->admin == 1)
                                 <button class="w3-bar-item w3-button tablink w3-btns" onclick="openTab(event,'Settings')">Instellingen</button>
                                 <button class="w3-bar-item w3-button tablink" onclick="openTab(event,'Rules')">Spelregels</button>
@@ -128,8 +136,11 @@
                 </div>
 
                 {{-- Tab > Rules --}}
+                {{-- Get all users --}}
                 @foreach($allPlayers as $player)
+                    {{-- Check whether the logged in user is in this game --}}
                     @if($user_id == $player->pivot->user_id)
+                        {{-- Check whether the logged in user is admin, if so don't put the rules tab overlap the settings tab. --}}
                         @if($player->pivot->admin == 1)
                             <div id="Rules" class="w3-container w3-border tab" style="display:none">
                                 @else
@@ -167,16 +178,22 @@
 
                 {{-- Tab > Players --}}
                 <div id="Players" class="w3-border tab" style="display:none">
+                    {{-- Get all users --}}
                     @foreach($allPlayers as $player)
+                        {{-- Check whether the logged in user is in this game --}}
                         @if($user_id == $player->pivot->user_id)
+                            {{-- Check whether the logged in user is admin, if so show all users with option to delete them and option to delete the actual game. --}}
                             @if($player->pivot->admin == 1)
                                 @foreach($allPlayers as $player)
                                     <div style="border-bottom: 1px solid black; height: 75px; list-style-type: none">
+                                        {{-- Show all points of each user --}}
                                         <span style="float: left; padding-left: 25px; padding-top: 25px">{{$player->name}} - {{$player->pivot->point}}</span>
                                         {{-- Only admin can delete the game and delete users from his game --}}
                                         @if($player->pivot->admin == 1)
+                                            {{-- Give game id to the controller by passing it to the route so the controller knows which game to delete --}}
                                             <a href="{{route('deleteGame', ['id' => $game->id])}}" style="float: right;padding-right: 25px; padding-top: 25px">Verwijder spel</a>
                                         @else
+                                            {{-- Give player id to the controller by passing it to the route so the controller knows which user to delete --}}
                                             <a href="{{route('deleteUser', ['id' => $game->id, 'user_id' => $player->id])}}" style="float: right;padding-right: 25px; padding-top: 25px">X</a>
                                         @endif
                                     </div>
@@ -195,13 +212,16 @@
 
                 {{-- Tab > Rounds --}}
                 <div id="Rounds" class="w3-container w3-border tab" style="display:none">
+                    {{-- Count $league for that is the number of rounds in the league --}}
                     @for($row = 0; $row < count($league); $row++)
                         <div class="mySlides">
                             <a class="prevv" onclick="plusSlides(-1)">&#10094;</a>
                             <a class="nextt" onclick="plusSlides(1)">&#10095;</a>
                             <h2 class="round"><b>Ronde {{$row}}</b></h2>
                             <div style="margin: 0!important" id="timer" class="timer">
+                                {{-- Vue timer component, clarity for the user what the time frames are for each round. --}}
                                 <time-default
+                                    {{-- Loop through all the dates defined in the controller where it was it an array. Start and end separately. --}}
                                     starttime="{{$weeksStart[$row] . " 00:00:00"}}"
                                     endtime="{{$weeksEnd[$row] . " 00:00:00"}}"
                                     trans='{
@@ -220,7 +240,9 @@
                                 ></time-default>
                             </div>
 
+                            {{-- Form for handling the voting of the user --}}
                             <form style="padding-top: 15px; margin: 0;" name="form" action="{{route('voteTeam', ['id' => $game->id])}}" method="POST">
+                                {{-- Safety tag against attacks --}}
                                 @csrf
                                 {{-- Foreach over all users to access their pivot data. --}}
                                 @foreach($allPlayers as $player)
@@ -244,18 +266,22 @@
                                                 <ul class="teams">
                                                     {{-- Loop through 2D dimensional array --}}
                                                     @for($col = 0; $col < count($league[0]); $col++)
+                                                        {{-- Show buttons only in the round where the number in the end of that array is equal to the current week --}}
                                                         @if(end($league[$row]) == $current_week)
                                                             <li class="comp"><input type='radio' name='team' value='{{$league[$row][$col]}}'>{{$league[$row][$col]}}</li>
                                                         @else
+                                                            {{-- Not current week so don't show buttons to vote. --}}
                                                             <li class="comp">{{$league[$row][$col]}}</li>
                                                         @endif
                                                     @endfor
                                                 </ul>
                                             @else
+                                                {{-- Show which team the user has voted on in a fancy disables button --}}
                                                 <button style="cursor: default;height: 50px; margin-bottom: 2.5px;" type="button" class="btn btn-outline-dark col-12" disabled>
                                                     U heeft gekozen voor {{$player->pivot->team}}.
                                                 </button>
                                                 <ul class="teams">
+                                                    {{-- Loop through 2D dimensional array to show the comps/teams --}}
                                                     @for($col = 0; $col < count($league[0]); $col++)
                                                         <li class="comp">{{$league[$row][$col]}}</li>
                                                     @endfor
@@ -263,6 +289,7 @@
                                             @endif
                                         @else
                                             <ul class="teams">
+                                                {{-- Loop through 2D dimensional array to show the comps/teams --}}
                                                 @for($col = 0; $col < count($league[0]); $col++)
                                                     <li class="comp">{{$league[$row][$col]}}</li>
                                                 @endfor
@@ -275,6 +302,7 @@
                     @endfor
 
                     <script>
+                        // JS for handling the round slides
                         var slideIndex = 1;
                         showSlides(slideIndex);
 
@@ -353,7 +381,9 @@
                                 </div>
                             @endif
 
+                            {{-- Form for adding users into the game you're on --}}
                             <form style="padding-top: 15px; margin: 0;" name="form" action="{{route('addUserExistingGame', ['id' => $game->id])}}" method="POST">
+                                {{-- Safety tag against attacks --}}
                                 @csrf
                                 <input style="height: 50px; max-width: 91%;" class="col-10" type="text" name="email" placeholder="E-mail van diegene die uitgenodigd wil worden...">
 
@@ -362,13 +392,17 @@
                                 </button>
                             </form>
 
+                            {{-- Form for changing the name of the game you're on --}}
                             <form name="form" action="{{route('updateGame', ['id' => $game->id])}}" method="POST">
+                                {{-- Safety tag against attacks --}}
                                 @csrf
                                 <div class="pt-3">
+                                    {{-- Show corresponding uuid of the game --}}
                                     <input style="height: 50px" class="col-12" type="text" name="uuid" value="{{$uuid}}" disabled>
                                 </div>
 
                                 <div class="pt-3">
+                                    {{-- Show corresponding name of the game --}}
                                     <input style="height: 50px" class="col-12" type="text" name="game_name" value="{{$game_name}}">
                                 </div>
 

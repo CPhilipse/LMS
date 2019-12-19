@@ -23,6 +23,7 @@ class GameController extends Controller
      */
     public function index(Request $request, $id)
     {
+        // As documented the hardcoded/static league with their static outcomes.
         $outcome =
             [
                 [0, 2, 1, 3, 2, 4, 1, 3, 2, 1, 4, 3, 31],

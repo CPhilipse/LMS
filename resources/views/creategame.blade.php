@@ -49,7 +49,9 @@
                             </div>
                         @endif
 
+                        {{-- Form for adding users into this new game --}}
                         <form name="form" action="{{route('addUser')}}" method="POST">
+                            {{-- Safety tag against attacks --}}
                             @csrf
                             <input style="height: 50px; max-width: 91%;" class="col-10" type="text" name="email" placeholder="E-mail van diegene die uitgenodigd wil worden...">
 
@@ -58,12 +60,15 @@
                             </button>
                         </form>
 
+                        {{-- Form for naming the game --}}
                         <form name="form" action="{{route('createGame')}}" method="POST">
+                            {{-- Safety tag against attacks --}}
                             @csrf
                             <div class="pt-3">
                                 <input style="height: 50px" class="col-12" type="text" name="gameName" placeholder="Naam van het spel...">
                             </div>
                             <div class="pt-3">
+                                {{-- Show corresponding uuid of the game --}}
                                 <input style="height: 50px" class="col-12" type="text" name="uuid" value="{{$uuid}}" disabled>
                             </div>
 
