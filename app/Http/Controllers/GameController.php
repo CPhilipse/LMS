@@ -520,7 +520,7 @@ class GameController extends Controller
                 $game_id->users()->updateExistingPivot(['user_id' => $user_id_rule_out_check], ['chosen' => 0, 'team' => '']);
             }
 
-            dd($users_out, 'Players out total: ' . count($users_out), 'All players total: ' . count($allPlayers), count($users_out) == count($allPlayers) - 1 ? 'One player left' : 'Something else');
+//            dd($users_out, 'Players out total: ' . count($users_out), 'All players total: ' . count($allPlayers), count($users_out) == count($allPlayers) - 1 ? 'One player left' : 'Something else');
 //            dd($users_out, 'Users who were last: ' . count($users_in), 'Players out total: ' . count($users_out), 'All players total: ' . count($allPlayers), count($users_out) == count($allPlayers) ? 'Everyone is out' : 'Someone is in');
 
             // Change week in database with the current week.
@@ -612,13 +612,13 @@ class GameController extends Controller
         $madeGame_id = Game::all()->last()->id;
 
         // Check whether somebody was added.
-        if($lobby !== null) {
+        if(isset($lobby)) {
             // If so, make those users part of the game.
             foreach ($lobby as $user_id => $invited) {
                 // Find invited user
                 $user = User::find($user_id);
                 // Create record for this user
-                $user->games()->attach(['user_id' => $user_id, 'game_id' => $madeGame_id], ['admin' => 0, 'point' => 0, 'invited' => $invited]);
+                $user->games()->attach(['game_id' => $madeGame_id], ['admin' => 0, 'point' => 0, 'invited' => $invited]);
             }
         }
 

@@ -28,7 +28,7 @@ class HomeController extends Controller
 
         // Forget all session keys which should be empty on home
         session()->forget(['lobbyExistingGame', 'saveNotice', 'succesfulDeleteOfUser', 'userExistsInGame',
-            'alreadyInvited', 'self', 'nope', 'chooseTeam', 'alreadyVotedFor', 'rightLink', 'lobby', ]);
+            'alreadyInvited', 'self', 'nope', 'chooseTeam', 'alreadyVotedFor', 'rightLink', ]);
 
         return view('home')->with('games', $allGames);
     }
