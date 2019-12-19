@@ -52,6 +52,7 @@
 
 <template>
     <div>
+        <!-- If the timer is not expired show it counting down -->
         <div v-show ="statusType !== 'expired'">
             <div class="day">
                 <span class="number">{{ days }}</span>
@@ -72,6 +73,7 @@
             <div class="status-tag" :class="statusType">{{ statusText }}</div>
         </div>
 
+        <!-- If the timer is expired show it being on 0 -->
         <div v-show ="statusType == 'expired'">
             <div class="day">
             <span class="number">0</span>
@@ -89,7 +91,6 @@
             <span class="number">0</span>
             <div class="format">{{ wordString.seconds }}</div>
         </div>
-        <!--        <div class="message">{{ message }}</div>-->
         <div class="status-tag" :class="statusType">{{ statusText }}</div>
         </div>
     </div>
@@ -97,10 +98,7 @@
 
 <script>
     export default {
-        // mounted() {
-        //     console.log('Component mounted.')
-        // }
-
+        // Attributes used in the component in the blade
         props: ['starttime','endtime','trans'] ,
         data: function(){
             return{
@@ -122,6 +120,7 @@
         created: function () {
             this.wordString = JSON.parse(this.trans);
         },
+        // mounted will be executed in the end, like render in react-native
         mounted(){
             this.start = new Date(this.starttime).getTime();
             this.end = new Date(this.endtime).getTime();
